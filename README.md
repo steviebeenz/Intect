@@ -28,5 +28,3 @@ Intect is an intelligent anti-cheat solution that protects your server from hack
 
 
 ## COMMANDS
-- /intect <verbose>
-- /intect <diagnostics> <statistics>/<performance>
