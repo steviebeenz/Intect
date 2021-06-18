@@ -9,6 +9,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.logging.Level;
+
 public class TickManager implements Runnable {
 
     @Getter

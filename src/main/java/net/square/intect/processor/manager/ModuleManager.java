@@ -45,7 +45,7 @@ public class ModuleManager {
         for (Constructor<?> constructor : CONSTRUCTORS) {
             try {
                 Check e = (Check) constructor.newInstance(data);
-                if(e.getCheckInfo().bukkit()) {
+                if (e.getCheckInfo().bukkit()) {
                     Bukkit.getPluginManager().registerEvents(e, Intect.getIntect());
                 }
                 checkList.add(e);
@@ -59,16 +59,11 @@ public class ModuleManager {
 
     public static void setup() {
         for (Class<?> clazz : CHECKS) {
-            //if (Config.ENABLED_CHECKS.contains(clazz.getSimpleName())) {
             try {
                 CONSTRUCTORS.add(clazz.getConstructor(PlayerStorage.class));
-                //Bukkit.getLogger().info(clazz.getSimpleName() + " is enabled!");
             } catch (NoSuchMethodException exception) {
                 exception.printStackTrace();
             }
-            //} else {
-            //    Bukkit.getLogger().info(clazz.getSimpleName() + " is disabled!");
-            //}
         }
 
         Intect.getIntect().getLogger().log(Level.INFO, "Setup " + CONSTRUCTORS.size() + " modules");

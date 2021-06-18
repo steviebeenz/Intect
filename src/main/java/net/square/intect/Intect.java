@@ -35,6 +35,9 @@ public final class Intect extends JavaPlugin {
     public void onEnable() {
 
         // Plugin startup logic
+
+        this.getLogger().log(Level.INFO, "Trying to start intect...");
+
         final double now = System.currentTimeMillis();
         intect = this;
 

@@ -23,6 +23,7 @@ public class PacketManager {
 
     public void setupReceivor() {
         this.receivorList.put("v1_8_R3", new ReceivorV1_8_R3(this.intect));
+        Intect.getIntect().getLogger().log(Level.INFO, String.format("Implemented %d receivers!", receivorList.size()));
     }
 
     public void initPacketHandler() {
@@ -31,7 +32,7 @@ public class PacketManager {
 
         if (receivorList.containsKey(runningVersion)) {
             this.packetReceivor = receivorList.get(runningVersion);
-            this.intect.getLogger().log(Level.INFO, "Using adapter " + runningVersion);
+            this.intect.getLogger().log(Level.INFO, "Using adapter: " + runningVersion);
         }
     }
 }
