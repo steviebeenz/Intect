@@ -3,6 +3,7 @@ package net.square.intect.commands;
 import net.square.intect.Intect;
 import net.square.intect.checks.objectable.Check;
 import net.square.intect.processor.data.PlayerStorage;
+import net.square.intect.processor.manager.UpdateManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -36,7 +37,12 @@ public class IntectCommand implements CommandExecutor {
         // -> /intect <var0> <var1> <var2>
         final String var0 = args[0];
 
-        if (var0.equalsIgnoreCase("verbose")) {
+        if (var0.equalsIgnoreCase("info")) {
+
+            sendDefaultInfo(sender);
+            return true;
+
+        } else if (var0.equalsIgnoreCase("verbose")) {
             // Verbose sub command
 
             if (!(sender instanceof Player)) {
@@ -139,6 +145,7 @@ public class IntectCommand implements CommandExecutor {
         final String prefix = Intect.getIntect().getPrefix();
 
         sender.sendMessage(prefix + "Available subcommands:");
+        sender.sendMessage(prefix + "/intect info: Show default info");
         sender.sendMessage(prefix + "/intect verbose: Enable or disable verbose output");
         sender.sendMessage(prefix + "/intect diagnostics: Show intect diagnostics");
         sender.sendMessage(prefix + "/intect debug modulename-type: Output debug for module");
@@ -148,11 +155,29 @@ public class IntectCommand implements CommandExecutor {
 
         final String prefix = Intect.getIntect().getPrefix();
 
-        sender.sendMessage(
-            String.format(
-                "%sRunning Intect %s (one day old)", prefix, Intect.getIntect().getDescription().getVersion()));
+        sendIntectVer(sender, prefix);
         sender.sendMessage(prefix + "Made in Germany by the Intect development team");
         sender.sendMessage(prefix + "Visit our website for a full list of contributors");
-        sender.sendMessage(prefix + "Certified for SquareCode (verified)");
+    }
+
+    private void sendIntectVer(CommandSender sender, String prefix) {
+
+        int running = Integer.parseInt(intect.getDescription().getVersion());
+        int latest = UpdateManager.getLatestBuild();
+
+        String message = "";
+        if (latest == -1) {
+            message = "Error fetching version";
+        } else if (running > latest) {
+            message = "Unknown version(custom build?)";
+        } else if (running == latest) {
+            message = "Latest version";
+        } else if (running < latest) {
+            int var = latest - running;
+            message = "Outdated (" + var + " versions behind)";
+        }
+
+        sender.sendMessage(
+            prefix + "Running Intect v" + running + " (" + message.toLowerCase() + ")");
     }
 }

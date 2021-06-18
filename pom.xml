@@ -5,12 +5,12 @@
 
     <groupId>net.square</groupId>
     <artifactId>intect</artifactId>
-    <version>1.0.0</version>
+    <version>24</version>
 
     <packaging>jar</packaging>
 
     <name>Intect</name>
-    <description>Intect is an event- packetbased, hyper-threaded polyheuristic cheat detection software, providing fair
+    <description>Intect is an event- packetbased cheat detection software, providing fair
         play
     </description>
     <url>https://squarecode.de</url>

@@ -7,10 +7,7 @@ import net.square.intect.commands.IntectCommand;
 import net.square.intect.listener.bukkit.BukkitInteractListener;
 import net.square.intect.listener.bukkit.PlayerInjectListener;
 import net.square.intect.listener.bukkit.PlayerUninjectListener;
-import net.square.intect.processor.manager.ModuleManager;
-import net.square.intect.processor.manager.PacketManager;
-import net.square.intect.processor.manager.StorageManager;
-import net.square.intect.processor.manager.TickManager;
+import net.square.intect.processor.manager.*;
 import net.square.intect.utils.metrics.Metrics;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -43,6 +40,8 @@ public final class Intect extends JavaPlugin {
 
         packetManager = new PacketManager(this);
         storageManager = new StorageManager();
+
+        UpdateManager.init();
         ModuleManager.setup();
 
         PacketEvents.create(this).load();
