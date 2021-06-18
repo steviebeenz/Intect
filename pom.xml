@@ -79,11 +79,19 @@
         </dependency>
 
         <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>4.0.3</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
             <scope>provided</scope>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.20</version>
         </dependency>
+
     </dependencies>
 
     <build>
