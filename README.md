@@ -33,6 +33,3 @@ Intect is an intelligent anti-cheat solution that protects your server from hack
 - /intect <verbose>
 
 - /intect <diagnostics> <statistics>/<performance>
-  
-
-<img src="https://bstats.org/signatures/bukkit/Intect.svg">
