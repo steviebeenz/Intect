@@ -10,6 +10,7 @@ import net.square.intect.listener.bukkit.PlayerUninjectListener;
 import net.square.intect.processor.manager.ModuleManager;
 import net.square.intect.processor.manager.PacketManager;
 import net.square.intect.processor.manager.TickManager;
+import net.square.intect.utils.metrics.Metrics;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -41,6 +42,8 @@ public final class Intect extends JavaPlugin {
         ModuleManager.setup();
 
         PacketEvents.create(this).load();
+
+        new Metrics(this, 11518);
 
         this.getServer().getPluginManager().registerEvents(new PlayerInjectListener(this), this);
         this.getServer().getPluginManager().registerEvents(new PlayerUninjectListener(this), this);
