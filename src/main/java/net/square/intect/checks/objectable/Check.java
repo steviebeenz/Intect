@@ -37,9 +37,9 @@ public abstract class Check implements IntectHandler, Listener {
             .forEach(player ->
                          player.sendMessage(ChatColor.translateAlternateColorCodes(
                              '&',
-                             Intect.getIntect().getPrefix() + "§7"+ storage.getPlayer()
-                                 .getName() + " failed §c" + checkInfo.name()
-                                 + "§7(Vl:"+testCount+")"
+                             Intect.getIntect().getPrefix() + "§7" + storage.getPlayer()
+                                 .getName() + " failed §c" + checkInfo.name() +
+                                 " "+ checkInfo.type() + " §7(Vl:" + testCount + ")"
                          )));
 
         PositionProcessor positionProcessor = storage.getPositionProcessor();
