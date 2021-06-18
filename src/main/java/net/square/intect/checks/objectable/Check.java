@@ -51,7 +51,7 @@ public abstract class Check implements IntectHandler, Listener {
         if (testCount > checkInfo.maxVL()) {
 
             Intect.getIntect().getServer().getOnlinePlayers().forEach(player -> {
-                if (player.hasPermission("intect.admin.verbose")) {
+                if (player.hasPermission("intect.admin.notify")) {
                     player.sendMessage(Intect.getIntect().getPrefix()
                                            + "§c§lINFO §c" + storage.getPlayer().getName()
                                            + " §7is attacking suspiciously");
