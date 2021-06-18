@@ -1,10 +1,14 @@
 package net.square.intect.commands;
 
 import net.square.intect.Intect;
+import net.square.intect.checks.objectable.Check;
+import net.square.intect.processor.data.PlayerStorage;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 public class IntectCommand implements CommandExecutor {
 
@@ -42,14 +46,14 @@ public class IntectCommand implements CommandExecutor {
 
             final Player player = (Player) sender;
 
-            if (this.intect.getVerboseMode().contains(player)) {
+            if (this.intect.getStorageManager().getVerboseMode().contains(player)) {
 
-                this.intect.getVerboseMode().remove(player);
+                this.intect.getStorageManager().getVerboseMode().remove(player);
                 player.sendMessage(prefix + "You are §cno longer §7receiving verbose output");
 
             } else {
 
-                this.intect.getVerboseMode().add(player);
+                this.intect.getStorageManager().getVerboseMode().add(player);
                 player.sendMessage(prefix + "You are §anow §7receiving verbose output");
 
             }
@@ -85,6 +89,45 @@ public class IntectCommand implements CommandExecutor {
                 return true;
             }
 
+        } else if (var0.equalsIgnoreCase("debug")) {
+
+            if (args.length == 1) {
+                sender.sendMessage(prefix + "Available subcommands:");
+                sender.sendMessage(prefix + "/intect debug modulename-type: Output debug for module");
+                return true;
+            }
+
+            if (!(sender instanceof Player)) {
+                sender.sendMessage(prefix + "§cYou must be a player to execute this command!");
+                return true;
+            }
+
+            final Player player = (Player) sender;
+            final String module = args[1].toLowerCase();
+
+            PlayerStorage playerStorage = PlayerStorage.storageHashMap.get(player);
+            List<Check> checks = playerStorage.getChecks();
+
+            for (Check check : checks) {
+                String s1 = check.getCheckInfo().name().toLowerCase() + "-" + check.getCheckInfo().type().toLowerCase();
+                if (s1.equalsIgnoreCase(module)) {
+
+                    List<Player> debugMode = check.getDebugMode();
+
+                    if (debugMode.contains(player)) {
+
+                        player.sendMessage(prefix + "You are §cno longer §7receiving debug output for module §c" + s1);
+                        debugMode.remove(player);
+
+                    } else {
+
+                        player.sendMessage(prefix + "You are §anow §7receiving debug output for module §c" + s1);
+                        debugMode.add(player);
+                    }
+                }
+            }
+            return true;
+
         } else {
             sendDefaultCommandOverview(sender);
             return true;
@@ -98,6 +141,7 @@ public class IntectCommand implements CommandExecutor {
         sender.sendMessage(prefix + "Available subcommands:");
         sender.sendMessage(prefix + "/intect verbose: Enable or disable verbose output");
         sender.sendMessage(prefix + "/intect diagnostics: Show intect diagnostics");
+        sender.sendMessage(prefix + "/intect debug modulename-type: Output debug for module");
     }
 
     private void sendDefaultInfo(CommandSender sender) {

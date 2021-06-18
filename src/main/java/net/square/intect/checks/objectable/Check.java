@@ -1,5 +1,6 @@
 package net.square.intect.checks.objectable;
 
+import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.Setter;
 import net.square.intect.Intect;
@@ -8,8 +9,10 @@ import net.square.intect.processor.data.PlayerStorage;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -25,6 +28,9 @@ public abstract class Check implements IntectHandler, Listener {
     public abstract void handle(final IntectPacket packet);
 
     @Getter
+    private final List<Player> debugMode = Lists.newArrayList();
+
+    @Getter
     private int testCount = 0;
 
     public void fail() {
@@ -32,7 +38,7 @@ public abstract class Check implements IntectHandler, Listener {
         CheckInfo checkInfo = getCheckInfo();
         testCount++;
 
-        Intect.getIntect()
+        Intect.getIntect().getStorageManager()
             .getVerboseMode()
             .forEach(player ->
                          player.sendMessage(ChatColor.translateAlternateColorCodes(
@@ -78,6 +84,15 @@ public abstract class Check implements IntectHandler, Listener {
                 "CheckInfo annotation hasn't been added to the class " + this.getClass().getSimpleName() + ".");
         }
         return null;
+    }
+
+    public void debug(String message) {
+
+        if(debugMode.isEmpty()) return;
+
+        if(debugMode.contains(storage.getPlayer())) {
+            storage.getPlayer().sendMessage(message);
+        }
     }
 
     public boolean shouldBypass() {

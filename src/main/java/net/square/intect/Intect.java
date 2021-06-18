@@ -9,6 +9,7 @@ import net.square.intect.listener.bukkit.PlayerInjectListener;
 import net.square.intect.listener.bukkit.PlayerUninjectListener;
 import net.square.intect.processor.manager.ModuleManager;
 import net.square.intect.processor.manager.PacketManager;
+import net.square.intect.processor.manager.StorageManager;
 import net.square.intect.processor.manager.TickManager;
 import net.square.intect.utils.metrics.Metrics;
 import org.bukkit.entity.Player;
@@ -20,10 +21,9 @@ import java.util.logging.Level;
 public final class Intect extends JavaPlugin {
 
     @Getter
-    private final List<Player> verboseMode = Lists.newArrayList();
-
-    @Getter
     private PacketManager packetManager;
+    @Getter
+    private StorageManager storageManager;
     @Getter
     private final TickManager tickManager = new TickManager();
     @Getter
@@ -42,6 +42,7 @@ public final class Intect extends JavaPlugin {
         intect = this;
 
         packetManager = new PacketManager(this);
+        storageManager = new StorageManager();
         ModuleManager.setup();
 
         PacketEvents.create(this).load();
