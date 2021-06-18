@@ -7,7 +7,7 @@ import net.square.intect.checks.objectable.IntectPacket;
 import net.square.intect.processor.data.PlayerStorage;
 import net.square.intect.utils.MathUtil;
 
-@CheckInfo(name = "Killaura", type = "R", description = "Checks for gcd bypass", maxVL = 20)
+@CheckInfo(name = "Killaura", type = "R", description = "Checks for gcd bypass", maxVL = 35)
 public class KillauraTypeR extends Check {
 
     public KillauraTypeR(PlayerStorage data) {
@@ -38,7 +38,7 @@ public class KillauraTypeR extends Check {
                 final double moduloPitch = Math.abs(pitch % constantPitch);
 
                 if (moduloPitch < 1.5E-5) {
-                    if (threshold++ > 2) {
+                    if (threshold++ > 7) {
                         fail();
                     }
                 } else {
