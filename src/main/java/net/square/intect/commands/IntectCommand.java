@@ -178,6 +178,6 @@ public class IntectCommand implements CommandExecutor {
         }
 
         sender.sendMessage(
-            prefix + "Running Intect v" + running + " (" + message.toLowerCase() + ")");
+            prefix + "Running Intect v" +running+ " (" + message.toLowerCase() + ")");
     }
 }
