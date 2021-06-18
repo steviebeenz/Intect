@@ -22,9 +22,11 @@ Intect is an intelligent anti-cheat solution that protects your server from hack
 
 
 ## PERMISSIONS
-- intect.command | For all commands
-- intect.admin.notify | For kick notification
+- intect.command                                      | For all commands
+- intect.admin.notify                                 | For kick notification
 
 
 
 ## COMMANDS
+- /intect <verbose>                                   |  Enable or disable the verbose output
+- /intect <diagnostics> <statistics>/<performance>    |  Show intect diagnostics
