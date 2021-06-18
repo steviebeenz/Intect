@@ -1,3 +1,6 @@
+![Alt text](https://bstats.org/signatures/bukkit/Intect.svg)
+<img src="https://bstats.org/signatures/bukkit/Intect.svg">
+
 # Intect
 Intect is an event- &amp; packetbased cheat detection software
 
