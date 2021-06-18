@@ -1,5 +1,5 @@
 name: Intect
-version: @project.version@
+version: ${project.version}
 main: net.square.intect.Intect
 authors: [ SquareCode ]
 description: Intect is an event- & packetbased, hyper-threaded & polyheuristic cheat detection software, providing fair play
