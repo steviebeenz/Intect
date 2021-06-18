@@ -22,8 +22,8 @@ public class PlayerJoinListener implements Listener {
 
         if (running < latest) {
             event.getPlayer().sendMessage(
-                Intect.getIntect().getPrefix() + "You`re §c" + (latest - running)
-                    + " §7Intect build(s) out of date!\n§7Download: §chttps://jenkins.squarecode.de/job/Intect/job/master/");
+                Intect.getIntect().getPrefix() + "You`re §c" + (latest - running) + " §7Intect build(s) out of date!");
+            event.getPlayer().sendMessage("§chttps://jenkins.squarecode.de/job/Intect/job/master/");
         }
     }
 }
