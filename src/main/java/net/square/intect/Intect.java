@@ -6,6 +6,7 @@ import lombok.Getter;
 import net.square.intect.commands.IntectCommand;
 import net.square.intect.listener.bukkit.BukkitInteractListener;
 import net.square.intect.listener.bukkit.PlayerInjectListener;
+import net.square.intect.listener.bukkit.PlayerJoinListener;
 import net.square.intect.listener.bukkit.PlayerUninjectListener;
 import net.square.intect.processor.manager.*;
 import net.square.intect.utils.metrics.Metrics;
@@ -51,6 +52,7 @@ public final class Intect extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new PlayerInjectListener(this), this);
         this.getServer().getPluginManager().registerEvents(new PlayerUninjectListener(this), this);
         this.getServer().getPluginManager().registerEvents(new BukkitInteractListener(), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
 
         this.getCommand("intect").setExecutor(new IntectCommand(this));
 
