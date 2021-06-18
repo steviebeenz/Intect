@@ -33,7 +33,7 @@ public class ModuleManager {
         KillauraTypeN.class,
         KillauraTypeO.class,
         KillauraTypeP.class,
-        KillauraTypeR.class,
+        //KillauraTypeR.class, // removed
         KillauraTypeS.class,
         KillauraTypeT.class
     };
