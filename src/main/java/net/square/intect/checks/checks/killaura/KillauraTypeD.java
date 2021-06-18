@@ -25,9 +25,9 @@ public class KillauraTypeD extends Check {
         final float deltaPitch = getStorage().getRotationProcessor().getDeltaPitch();
 
         if (deltaPitch < 0.1 && deltaYaw > 3.5) {
-            if (++threshold > 5) {
+            if (++threshold > 8) {
 
-                threshold = 0;
+                threshold = threshold - 3;
 
                 fail();
             }
@@ -37,5 +37,6 @@ public class KillauraTypeD extends Check {
     }
 
     @Override
-    public void handle(IntectPacket packet) { }
+    public void handle(IntectPacket packet) {
+    }
 }
