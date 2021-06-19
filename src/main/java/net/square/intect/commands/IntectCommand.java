@@ -165,14 +165,14 @@ public class IntectCommand implements CommandExecutor {
         int running = Integer.parseInt(intect.getDescription().getVersion());
         int latest = UpdateManager.getLatestBuild();
 
-        String message = "";
+        String message;
         if (latest == -1) {
             message = "Error fetching version";
         } else if (running > latest) {
             message = "Unknown version(custom build?)";
         } else if (running == latest) {
             message = "Latest version";
-        } else if (running < latest) {
+        } else {
             int var = latest - running;
             message = "Outdated (" + var + " versions behind)";
         }
