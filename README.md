@@ -36,5 +36,6 @@ Intect is an intelligent anti-cheat solution that protects your server from hack
 ## COMMANDS
 - /intect verbose                                     |  Enable or disable the verbose output
 - /intect diagnostics statistics/performance          |  Show intect diagnostics
-- /intect info                                        |  Show default informations
+- /intect version                                     |  Show default informations
 - /intect debug modulename-type                       |  Enable debug for some modules
+- /intect info playerName                             |  Show infos about a player 
