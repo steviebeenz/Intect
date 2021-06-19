@@ -1,4 +1,4 @@
-package net.square.intect.checks.checks.killaura;
+package net.square.intect.checks.checks.heuristics;
 
 import net.square.intect.checks.objectable.Check;
 import net.square.intect.checks.objectable.CheckInfo;

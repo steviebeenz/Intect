@@ -5,7 +5,7 @@
 
     <groupId>net.square</groupId>
     <artifactId>intect</artifactId>
-    <version>32</version>
+    <version>33</version>
 
     <packaging>jar</packaging>
 

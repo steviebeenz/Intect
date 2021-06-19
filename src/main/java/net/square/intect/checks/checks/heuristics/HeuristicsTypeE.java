@@ -1,4 +1,4 @@
-package net.square.intect.checks.checks.killaura;
+package net.square.intect.checks.checks.heuristics;
 
 import net.minecraft.server.v1_8_R3.PacketPlayInFlying;
 import net.square.intect.checks.objectable.Check;

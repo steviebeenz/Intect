@@ -54,7 +54,7 @@ public abstract class Check implements IntectHandler, Listener {
                                    positionProcessor.getZ()
             ));
 
-        if (testCount > checkInfo.maxVL()) {
+        if (testCount > checkInfo.maxVL() && !checkInfo.experimental()) {
 
             Intect.getIntect().getServer().getOnlinePlayers().forEach(player -> {
                 if (player.hasPermission("intect.admin.notify")) {
@@ -93,6 +93,10 @@ public abstract class Check implements IntectHandler, Listener {
         if(debugMode.contains(storage.getPlayer())) {
             storage.getPlayer().sendMessage(message);
         }
+    }
+
+    public Player getPlayer() {
+        return storage.getPlayer();
     }
 
     public boolean shouldBypass() {
