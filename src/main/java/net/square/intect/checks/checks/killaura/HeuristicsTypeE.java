@@ -6,10 +6,10 @@ import net.square.intect.checks.objectable.CheckInfo;
 import net.square.intect.checks.objectable.IntectPacket;
 import net.square.intect.processor.data.PlayerStorage;
 
-@CheckInfo(name = "Killaura", type = "L", description = "Checks for provocative movement", maxVL = 20)
-public class KillauraTypeL extends Check {
+@CheckInfo(name = "Heuristics", type = "E", description = "Checks for provocative movement", maxVL = 20)
+public class HeuristicsTypeE extends Check {
 
-    public KillauraTypeL(PlayerStorage data) {
+    public HeuristicsTypeE(PlayerStorage data) {
         super(data);
     }
 

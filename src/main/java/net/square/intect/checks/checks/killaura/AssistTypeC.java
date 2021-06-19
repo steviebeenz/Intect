@@ -11,10 +11,10 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
-@CheckInfo(name = "Killaura", type = "P", description = "Checks for generic flaw", maxVL = 20)
-public class KillauraTypeP extends Check {
+@CheckInfo(name = "Assist", type = "C", description = "Checks for generic flaw", maxVL = 20)
+public class AssistTypeC extends Check {
 
-    public KillauraTypeP(PlayerStorage data) {
+    public AssistTypeC(PlayerStorage data) {
         super(data);
     }
 

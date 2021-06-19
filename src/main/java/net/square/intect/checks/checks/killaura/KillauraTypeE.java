@@ -1,48 +1,56 @@
 package net.square.intect.checks.checks.killaura;
 
+import io.github.retrooper.packetevents.packetwrappers.NMSPacket;
+import io.github.retrooper.packetevents.packetwrappers.play.in.entityaction.WrappedPacketInEntityAction;
+import net.minecraft.server.v1_8_R3.PacketPlayInEntityAction;
 import net.square.intect.checks.objectable.Check;
 import net.square.intect.checks.objectable.CheckInfo;
 import net.square.intect.checks.objectable.IntectPacket;
 import net.square.intect.processor.data.PlayerStorage;
-import net.square.intect.utils.MathUtil;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerMoveEvent;
 
-@CheckInfo(name = "Killaura", type = "D", description = "Checks for invalid victim", maxVL = 20, bukkit = true)
+
+@CheckInfo(name = "Killaura", type = "E", description = "Checks for re-sprint delta", maxVL = 20)
 public class KillauraTypeE extends Check {
 
     public KillauraTypeE(PlayerStorage data) {
         super(data);
     }
 
+    private long lastStopSprinting = 0;
+
+    private int count = 0;
     private int threshold = 0;
 
-    @EventHandler
-    public void handle(PlayerMoveEvent event) {
+    @Override
+    public void handle(IntectPacket packet) {
 
         if (shouldBypass()) return;
 
-        final float deltaYaw = getStorage().getRotationProcessor().getDeltaYaw();
-        final float deltaPitch = getStorage().getRotationProcessor().getDeltaPitch();
+        if (packet.getRawPacket() instanceof PacketPlayInEntityAction) {
 
-        final double expander = Math.pow(2.0, 24.0);
+            final WrappedPacketInEntityAction wrapped = new WrappedPacketInEntityAction(
+                new NMSPacket(packet.getRawPacket()));
 
-        if (deltaYaw == 0.0f || deltaPitch == 0.0f) return;
+            WrappedPacketInEntityAction.PlayerAction action = wrapped.getAction();
 
-        final float gcd = (float) MathUtil.getVictim(
-            (long) (deltaPitch * expander), (long) (getStorage().getRotationProcessor().getLastDeltaPitch() * expander));
+            if (action == WrappedPacketInEntityAction.PlayerAction.START_SPRINTING) {
 
-        if (gcd < 131072.0f) {
-            if (++threshold > 2) {
-                threshold--;
+                final long deltaAction = now() - lastStopSprinting;
+                count = count + 1;
 
-                fail();
+                if (deltaAction < 40L) {
+                    if (threshold++ > 2) {
+                        fail();
+                        count = 0;
+                    }
+                } else {
+                   threshold = threshold > 0 ? threshold - 1 : 0;
+                }
             }
-        } else if (threshold > 0) {
-            --threshold;
+            if (action == WrappedPacketInEntityAction.PlayerAction.STOP_SPRINTING) {
+                count = count + 1;
+                lastStopSprinting = now();
+            }
         }
     }
-
-    @Override
-    public void handle(IntectPacket packet) { }
 }

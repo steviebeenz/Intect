@@ -24,18 +24,19 @@ public class ModuleManager {
         KillauraTypeE.class,
         KillauraTypeF.class,
         KillauraTypeG.class,
-        KillauraTypeH.class,
-        KillauraTypeI.class,
-        KillauraTypeJ.class,
-        KillauraTypeK.class,
-        KillauraTypeL.class,
-        KillauraTypeM.class,
-        KillauraTypeN.class,
-        KillauraTypeO.class,
-        KillauraTypeP.class,
-        //KillauraTypeR.class, // removed
-        KillauraTypeS.class,
-        KillauraTypeT.class
+
+        HeuristicsTypeA.class,
+        HeuristicsTypeB.class,
+        HeuristicsTypeC.class,
+        HeuristicsTypeD.class,
+        HeuristicsTypeE.class,
+        HeuristicsTypeF.class,
+        HeuristicsTypeG.class,
+
+        AssistTypeA.class,
+        AssistTypeB.class,
+        AssistTypeC.class,
+        AssistTypeD.class
     };
 
     private static final List<Constructor<?>> CONSTRUCTORS = new ArrayList<>();

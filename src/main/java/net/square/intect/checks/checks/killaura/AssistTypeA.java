@@ -7,10 +7,10 @@ import net.square.intect.checks.objectable.IntectPacket;
 import net.square.intect.processor.data.PlayerStorage;
 import net.square.intect.utils.MathUtil;
 
-@CheckInfo(name = "Killaura", type = "N", description = "Checks for modulo analysis", maxVL = 20)
-public class KillauraTypeN extends Check {
+@CheckInfo(name = "Assist", type = "A", description = "Checks for modulo analysis", maxVL = 20)
+public class AssistTypeA extends Check {
 
-    public KillauraTypeN(PlayerStorage data) {
+    public AssistTypeA(PlayerStorage data) {
         super(data);
     }
 

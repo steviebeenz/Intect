@@ -52,7 +52,5 @@ public class FastbowTypeA extends Check {
     }
 
     @Override
-    public void handle(IntectPacket packet) {
-
-    }
+    public void handle(IntectPacket packet) {}
 }

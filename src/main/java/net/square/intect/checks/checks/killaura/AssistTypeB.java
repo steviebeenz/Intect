@@ -8,10 +8,10 @@ import net.square.intect.processor.data.PlayerStorage;
 import net.square.intect.utils.MathUtil;
 import net.square.intect.utils.objectable.EvictingList;
 
-@CheckInfo(name = "Killaura", type = "O", description = "Checks for extreme smooth rotations", maxVL = 20)
-public class KillauraTypeO extends Check {
+@CheckInfo(name = "Assist", type = "B", description = "Checks for extreme smooth rotations", maxVL = 20)
+public class AssistTypeB extends Check {
 
-    public KillauraTypeO(PlayerStorage data) {
+    public AssistTypeB(PlayerStorage data) {
         super(data);
     }
 

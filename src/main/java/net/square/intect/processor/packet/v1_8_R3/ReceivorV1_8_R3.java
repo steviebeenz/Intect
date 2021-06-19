@@ -112,7 +112,9 @@ public class ReceivorV1_8_R3 implements PacketReceivor {
             data.getCombatProcessor().handleArmAnimation();
 
         }
+
         for (Check check : data.getChecks()) {
+
             check.handle(new IntectPacket(IntectPacket.Direction.RECEIVE, receive, player));
         }
     }

@@ -11,10 +11,10 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
-@CheckInfo(name = "Killaura", type = "T", description = "Checks for invalid deviation", maxVL = 20)
-public class KillauraTypeT extends Check {
+@CheckInfo(name = "Assist", type = "D", description = "Checks for invalid deviation", maxVL = 20)
+public class AssistTypeD extends Check {
 
-    public KillauraTypeT(PlayerStorage data) {
+    public AssistTypeD(PlayerStorage data) {
         super(data);
     }
 

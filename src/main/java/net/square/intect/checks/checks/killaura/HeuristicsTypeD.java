@@ -10,10 +10,10 @@ import net.square.intect.processor.data.PlayerStorage;
 import java.util.Deque;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@CheckInfo(name = "Killaura", type = "H", description = "Rotation samples", maxVL = 20)
-public class KillauraTypeH extends Check {
+@CheckInfo(name = "Heuristics", type = "D", description = "Rotation samples", maxVL = 20)
+public class HeuristicsTypeD extends Check {
 
-    public KillauraTypeH(PlayerStorage data) {
+    public HeuristicsTypeD(PlayerStorage data) {
         super(data);
     }
 
