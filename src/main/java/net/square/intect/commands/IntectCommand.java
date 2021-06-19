@@ -4,12 +4,16 @@ import net.square.intect.Intect;
 import net.square.intect.checks.objectable.Check;
 import net.square.intect.processor.data.PlayerStorage;
 import net.square.intect.processor.manager.UpdateManager;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class IntectCommand implements CommandExecutor {
 
@@ -37,7 +41,7 @@ public class IntectCommand implements CommandExecutor {
         // -> /intect <var0> <var1> <var2>
         final String var0 = args[0];
 
-        if (var0.equalsIgnoreCase("info")) {
+        if (var0.equalsIgnoreCase("version")) {
 
             sendDefaultInfo(sender);
             return true;
@@ -64,6 +68,52 @@ public class IntectCommand implements CommandExecutor {
 
             }
 
+            return true;
+
+        } else if (var0.equalsIgnoreCase("info")) {
+
+            if (args.length == 1) {
+                sender.sendMessage(prefix + "Available subcommands:");
+                sender.sendMessage(prefix + "/intect info playername: Get information about a player");
+                return true;
+            }
+
+            Player target = Bukkit.getPlayer(args[1]);
+
+            if (target == null || !target.isOnline()) {
+                sender.sendMessage(prefix + "§cCant find player. Spelling error?");
+                return true;
+            }
+
+            PlayerStorage playerStorage = PlayerStorage.storageHashMap.get(target);
+
+            sender.sendMessage(String.format("%s§7Information about §c%s", prefix, target.getName()));
+            sender.sendMessage(String.format("%s§7UUID: %s", prefix, target.getUniqueId()));
+            sender.sendMessage(
+                String.format("%s§7Address: %s", prefix, target.getAddress().getAddress().getHostAddress()));
+            sender.sendMessage(
+                String.format(
+                    "%s§7Sensitivity: %.3f%%", prefix, playerStorage.getRotationProcessor().getFinalSensitivity()));
+            sender.sendMessage("");
+            sender.sendMessage(prefix + "§7Violations:");
+
+            List<Check> collect = new ArrayList<>();
+            for (Check check111 : playerStorage.getChecks()) {
+                if (check111.getTestCount() > 0) {
+                    collect.add(check111);
+                }
+            }
+
+            if (collect.size() == 0) {
+                sender.sendMessage(prefix + "§cNo violations found");
+                return true;
+            }
+
+            for (Check check : collect) {
+                sender.sendMessage(
+                    prefix + " §8- §7" + check.getCheckInfo().name() + " (" + check.getCheckInfo().type() + ") - "
+                        + check.getTestCount());
+            }
             return true;
 
         } else if (var0.equalsIgnoreCase("diagnostics")) {
@@ -145,10 +195,11 @@ public class IntectCommand implements CommandExecutor {
         final String prefix = Intect.getIntect().getPrefix();
 
         sender.sendMessage(prefix + "Available subcommands:");
-        sender.sendMessage(prefix + "/intect info: Show default info");
+        sender.sendMessage(prefix + "/intect version: Show default info");
         sender.sendMessage(prefix + "/intect verbose: Enable or disable verbose output");
         sender.sendMessage(prefix + "/intect diagnostics: Show intect diagnostics");
         sender.sendMessage(prefix + "/intect debug modulename-type: Output debug for module");
+        sender.sendMessage(prefix + "/intect info playername: Get information about a player");
     }
 
     private void sendDefaultInfo(CommandSender sender) {
@@ -178,6 +229,6 @@ public class IntectCommand implements CommandExecutor {
         }
 
         sender.sendMessage(
-            prefix + "Running Intect v" +running+ " (" + message.toLowerCase() + ")");
+            prefix + "Running Intect v" + running + " (" + message.toLowerCase() + ")");
     }
 }
