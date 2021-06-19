@@ -8,6 +8,7 @@ import net.square.intect.checks.checks.assist.AssistTypeD;
 import net.square.intect.checks.checks.fastbow.FastbowTypeA;
 import net.square.intect.checks.checks.heuristics.*;
 import net.square.intect.checks.checks.killaura.*;
+import net.square.intect.checks.checks.pattern.PatternTypeA;
 import net.square.intect.checks.objectable.Check;
 import net.square.intect.processor.data.PlayerStorage;
 import org.bukkit.Bukkit;
@@ -42,6 +43,8 @@ public class ModuleManager {
         AssistTypeB.class,
         AssistTypeC.class,
         AssistTypeD.class
+
+        // PatternTypeA.class
 
     };
 
