@@ -30,9 +30,6 @@ public class PlayerStorage {
     private final PositionProcessor positionProcessor = new PositionProcessor(this);
     private final RotationProcessor rotationProcessor = new RotationProcessor(this);
 
-    private double lastLiquidYaw = 0.0;
-    private double lastLiquidPitch = 0.0;
-
     public PlayerStorage(Player player) {
         this.player = player;
     }

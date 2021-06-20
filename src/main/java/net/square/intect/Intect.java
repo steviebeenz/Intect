@@ -1,6 +1,5 @@
 package net.square.intect;
 
-import com.google.common.collect.Lists;
 import io.github.retrooper.packetevents.PacketEvents;
 import lombok.Getter;
 import net.square.intect.commands.IntectCommand;
@@ -10,10 +9,8 @@ import net.square.intect.listener.bukkit.PlayerJoinListener;
 import net.square.intect.listener.bukkit.PlayerUninjectListener;
 import net.square.intect.processor.manager.*;
 import net.square.intect.utils.metrics.Metrics;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.List;
 import java.util.logging.Level;
 
 public final class Intect extends JavaPlugin {
