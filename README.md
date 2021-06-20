@@ -15,9 +15,8 @@ Intect is an event- &amp; packetbased cheat detection software
 
 
 ## INTECT SUPPORT + REQUESTS
-- For feature requests and reporting erros, bugs and bypasses, utilize the Github issues task.
+- For feature requests and reporting errors, bugs and bypasses, utilize the Github issues task.
 - For simple questions about Intect, take a look in the wiki
-- For piracy and resource ownership related issues, PM SquareCode.
 
 
 
