@@ -12,8 +12,6 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class IntectCommand implements CommandExecutor {
 
@@ -87,15 +85,17 @@ public class IntectCommand implements CommandExecutor {
 
             PlayerStorage playerStorage = PlayerStorage.storageHashMap.get(target);
 
+            sender.sendMessage("");
+
             sender.sendMessage(String.format("%s§7Information about §c%s", prefix, target.getName()));
-            sender.sendMessage(String.format("%s§7UUID: %s", prefix, target.getUniqueId()));
+            sender.sendMessage(String.format("%s§7UUID %s", prefix, target.getUniqueId().toString().replace("-", "")));
             sender.sendMessage(
-                String.format("%s§7Address: %s", prefix, target.getAddress().getAddress().getHostAddress()));
+                String.format("%s§7Address %s", prefix, target.getAddress().getAddress().getHostAddress()));
             sender.sendMessage(
                 String.format(
-                    "%s§7Sensitivity: %.3f%%", prefix, playerStorage.getRotationProcessor().getFinalSensitivity()));
+                    "%s§7Sensitivity %.0f%%", prefix, playerStorage.getRotationProcessor().getFinalSensitivity()));
             sender.sendMessage("");
-            sender.sendMessage(prefix + "§7Violations:");
+            sender.sendMessage(prefix + "§7Violations");
 
             List<Check> collect = new ArrayList<>();
             for (Check check111 : playerStorage.getChecks()) {
@@ -111,8 +111,8 @@ public class IntectCommand implements CommandExecutor {
 
             for (Check check : collect) {
                 sender.sendMessage(
-                    prefix + " §8- §7" + check.getCheckInfo().name() + " (" + check.getCheckInfo().type() + ") - "
-                        + check.getTestCount());
+                    prefix + " §8- §7" + check.getCheckInfo().name() + " " + check.getCheckInfo().type() + " ("
+                        + check.getTestCount() + ")");
             }
             return true;
 
@@ -229,6 +229,6 @@ public class IntectCommand implements CommandExecutor {
         }
 
         sender.sendMessage(
-            prefix + "Running Intect v" + running + " (" + message.toLowerCase() + ")");
+            prefix + "Running Intect Build#" + running + " (" + message.toLowerCase() + ")");
     }
 }
