@@ -11,36 +11,49 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public final class BoundingBox {
+public final class BoundingBox
+{
 
     private double minX, minY, minZ;
     private double maxX, maxY, maxZ;
 
-    public BoundingBox(final double minX, final double maxX, final double minY, final double maxY, final double minZ, final double maxZ) {
-        if (minX < maxX) {
+    public BoundingBox(final double minX, final double maxX, final double minY, final double maxY, final double minZ,
+                       final double maxZ)
+    {
+        if (minX < maxX)
+        {
             this.minX = minX;
             this.maxX = maxX;
-        } else {
+        }
+        else
+        {
             this.minX = maxX;
             this.maxX = minX;
         }
-        if (minY < maxY) {
+        if (minY < maxY)
+        {
             this.minY = minY;
             this.maxY = maxY;
-        } else {
+        }
+        else
+        {
             this.minY = maxY;
             this.maxY = minY;
         }
-        if (minZ < maxZ) {
+        if (minZ < maxZ)
+        {
             this.minZ = minZ;
             this.maxZ = maxZ;
-        } else {
+        }
+        else
+        {
             this.minZ = maxZ;
             this.maxZ = minZ;
         }
     }
 
-    public BoundingBox(final Vector min, final Vector max) {
+    public BoundingBox(final Vector min, final Vector max)
+    {
 
         this.minX = min.getX();
         this.minY = min.getY();
@@ -51,7 +64,8 @@ public final class BoundingBox {
         this.maxZ = max.getZ();
     }
 
-    public BoundingBox(final Player player) {
+    public BoundingBox(final Player player)
+    {
         this.minX = player.getLocation().getX() - 0.3D;
         this.minY = player.getLocation().getY();
         this.minZ = player.getLocation().getZ() - 0.3D;
@@ -60,7 +74,8 @@ public final class BoundingBox {
         this.maxZ = player.getLocation().getZ() + 0.3D;
     }
 
-    public BoundingBox move(final double x, final double y, final double z) {
+    public BoundingBox move(final double x, final double y, final double z)
+    {
         this.minX += x;
         this.minY += y;
         this.minZ += z;
@@ -72,7 +87,8 @@ public final class BoundingBox {
         return this;
     }
 
-    public List<Block> getBlocks(final World world) {
+    public List<Block> getBlocks(final World world)
+    {
         final List<Block> blockList = new ArrayList<>();
 
         final double minX = this.minX;
@@ -82,9 +98,12 @@ public final class BoundingBox {
         final double maxY = this.maxY;
         final double maxZ = this.maxZ;
 
-        for (double x = minX; x <= maxX; x += (maxX - minX)) {
-            for (double y = minY; y <= maxY + 0.01; y += (maxY - minY)) {
-                for (double z = minZ; z <= maxZ; z += (maxZ - minZ)) {
+        for (double x = minX; x <= maxX; x += (maxX - minX))
+        {
+            for (double y = minY; y <= maxY + 0.01; y += (maxY - minY))
+            {
+                for (double z = minZ; z <= maxZ; z += (maxZ - minZ))
+                {
                     final Block block = world.getBlockAt(new Location(world, x, y, z));
                     blockList.add(block);
                 }
@@ -93,7 +112,8 @@ public final class BoundingBox {
         return blockList;
     }
 
-    public BoundingBox expand(final double x, final double y, final double z) {
+    public BoundingBox expand(final double x, final double y, final double z)
+    {
         this.minX -= x;
         this.minY -= y;
         this.minZ -= z;
@@ -105,7 +125,9 @@ public final class BoundingBox {
         return this;
     }
 
-    public BoundingBox expandSpecific(final double minX, final double maxX, final double minY, final double maxY, final double minZ, final double maxZ) {
+    public BoundingBox expandSpecific(final double minX, final double maxX, final double minY, final double maxY,
+                                      final double minZ, final double maxZ)
+    {
         this.minX -= minX;
         this.minY -= minY;
         this.minZ -= minZ;
@@ -118,7 +140,8 @@ public final class BoundingBox {
     }
 
     //Copied from MCP 1.8.8
-    public BoundingBox union(final BoundingBox other) {
+    public BoundingBox union(final BoundingBox other)
+    {
         final double minX = Math.min(this.minX, other.minX);
         final double minY = Math.min(this.minY, other.minY);
         final double minZ = Math.min(this.minZ, other.minZ);
@@ -129,19 +152,23 @@ public final class BoundingBox {
         return new BoundingBox(minX, maxX, minY, maxY, minZ, maxZ);
     }
 
-    public double getSize() {
+    public double getSize()
+    {
         final Vector min = new Vector(minX, minY, minZ);
         final Vector max = new Vector(maxX, maxY, maxZ);
 
         return min.distance(max);
     }
 
-    public double collidesD(RayTrace ray, double tmin, double tmax) {
-        for (int i = 0; i < 3; i++) {
+    public double collidesD(RayTrace ray, double tmin, double tmax)
+    {
+        for (int i = 0; i < 3; i++)
+        {
             double d = 1 / ray.direction(i);
             double t0 = (min(i) - ray.origin(i)) * d;
             double t1 = (max(i) - ray.origin(i)) * d;
-            if (d < 0) {
+            if (d < 0)
+            {
                 double t = t0;
                 t0 = t1;
                 t1 = t;
@@ -153,8 +180,10 @@ public final class BoundingBox {
         return tmin;
     }
 
-    public double min(int i) {
-        switch (i) {
+    public double min(int i)
+    {
+        switch (i)
+        {
             case 0:
                 return minX;
             case 1:
@@ -166,8 +195,10 @@ public final class BoundingBox {
         }
     }
 
-    public double max(int i) {
-        switch (i) {
+    public double max(int i)
+    {
+        switch (i)
+        {
             case 0:
                 return maxX;
             case 1:

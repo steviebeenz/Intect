@@ -10,27 +10,32 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.logging.Level;
 
-public class PacketManager {
+public class PacketManager
+{
 
     private final HashMap<String, PacketReceivor> receivorList = Maps.newHashMap();
     private final Intect intect;
     @Getter
     private PacketReceivor packetReceivor;
 
-    public PacketManager(Intect intect) {
+    public PacketManager(Intect intect)
+    {
         this.intect = intect;
     }
 
-    public void setupReceivor() {
+    public void setupReceivor()
+    {
         this.receivorList.put("v1_8_R3", new ReceivorV1_8_R3(this.intect));
         Intect.getIntect().getLogger().log(Level.INFO, String.format("Implemented %d receivers!", receivorList.size()));
     }
 
-    public void initPacketHandler() {
+    public void initPacketHandler()
+    {
         String runningVersion = intect.getRunningVersion();
         this.intect.getLogger().log(Level.INFO, "Found running version: " + runningVersion);
 
-        if (receivorList.containsKey(runningVersion)) {
+        if (receivorList.containsKey(runningVersion))
+        {
             this.packetReceivor = receivorList.get(runningVersion);
             this.intect.getLogger().log(Level.INFO, "Using adapter: " + runningVersion);
         }

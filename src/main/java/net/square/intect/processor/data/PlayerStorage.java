@@ -15,7 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 
 @Data
-public class PlayerStorage {
+public class PlayerStorage
+{
 
     public static HashMap<Player, PlayerStorage> storageHashMap = Maps.newHashMap();
 
@@ -30,7 +31,8 @@ public class PlayerStorage {
     private final PositionProcessor positionProcessor = new PositionProcessor(this);
     private final RotationProcessor rotationProcessor = new RotationProcessor(this);
 
-    public PlayerStorage(Player player) {
+    public PlayerStorage(Player player)
+    {
         this.player = player;
     }
 }

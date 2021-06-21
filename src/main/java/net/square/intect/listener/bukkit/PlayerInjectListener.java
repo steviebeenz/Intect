@@ -7,16 +7,19 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class PlayerInjectListener implements Listener {
+public class PlayerInjectListener implements Listener
+{
 
     private final Intect intect;
 
-    public PlayerInjectListener(Intect intect) {
+    public PlayerInjectListener(Intect intect)
+    {
         this.intect = intect;
     }
 
     @EventHandler
-    public void handle(PlayerJoinEvent event) {
+    public void handle(PlayerJoinEvent event)
+    {
         long now = System.currentTimeMillis();
 
         Player player = event.getPlayer();

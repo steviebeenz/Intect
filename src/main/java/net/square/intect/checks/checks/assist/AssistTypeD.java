@@ -12,9 +12,11 @@ import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
 @CheckInfo(name = "Assist", type = "D", description = "Checks for invalid deviation", maxVL = 20)
-public class AssistTypeD extends Check {
+public class AssistTypeD extends Check
+{
 
-    public AssistTypeD(PlayerStorage data) {
+    public AssistTypeD(PlayerStorage data)
+    {
         super(data);
     }
 
@@ -23,14 +25,17 @@ public class AssistTypeD extends Check {
     private int threshold = 0;
 
     @Override
-    public void handle(IntectPacket packet) {
+    public void handle(IntectPacket packet)
+    {
 
         if (shouldBypass()) return;
 
-        if(packet.getRawPacket() instanceof PacketPlayInFlying.PacketPlayInPositionLook) {
+        if (packet.getRawPacket() instanceof PacketPlayInFlying.PacketPlayInPositionLook)
+        {
             final Entity target = getStorage().getCombatProcessor().getTarget();
 
-            if (target != null) {
+            if (target != null)
+            {
                 final Location origin = packet.getPlayer().getLocation().clone();
                 final Vector end = target.getLocation().clone().toVector();
 
@@ -41,20 +46,26 @@ public class AssistTypeD extends Check {
 
                 final double difference = Math.abs(fixedRotYaw - optimalYaw);
 
-                if (deltaYaw > 3f) {
+                if (deltaYaw > 3f)
+                {
                     assistDifferenceSamples.add(difference);
                 }
-                if (assistDifferenceSamples.isFull()) {
+                if (assistDifferenceSamples.isFull())
+                {
                     final double average = MathUtil.getAverage(assistDifferenceSamples);
                     final double deviation = MathUtil.getStandardDeviation(assistDifferenceSamples);
 
                     final boolean invalid = average < 7 && deviation < 12;
 
-                    if (invalid) {
-                        if (++threshold > 3) {
+                    if (invalid)
+                    {
+                        if (++threshold > 3)
+                        {
                             fail();
                         }
-                    } else {
+                    }
+                    else
+                    {
                         threshold -= threshold > 0 ? 1 : 0;
                     }
                     assistDifferenceSamples.remove(0);

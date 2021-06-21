@@ -7,19 +7,24 @@ import net.square.intect.checks.objectable.IntectPacket;
 import net.square.intect.processor.data.PlayerStorage;
 
 @CheckInfo(name = "Killaura", type = "G", description = "Checks for open inventory", maxVL = 20)
-public class KillauraTypeG extends Check {
+public class KillauraTypeG extends Check
+{
 
-    public KillauraTypeG(PlayerStorage data) {
+    public KillauraTypeG(PlayerStorage data)
+    {
         super(data);
     }
 
     @Override
-    public void handle(IntectPacket packet) {
+    public void handle(IntectPacket packet)
+    {
 
         if (shouldBypass()) return;
 
-        if(packet.getRawPacket() instanceof PacketPlayInUseEntity) {
-            if (getStorage().getActionProcessor().isInventory()) {
+        if (packet.getRawPacket() instanceof PacketPlayInUseEntity)
+        {
+            if (getStorage().getActionProcessor().isInventory())
+            {
                 fail();
             }
         }

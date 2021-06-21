@@ -9,9 +9,11 @@ import net.square.intect.utils.MathUtil;
 import net.square.intect.utils.objectable.EvictingList;
 
 @CheckInfo(name = "Assist", type = "B", description = "Checks for extreme smooth rotations", maxVL = 20)
-public class AssistTypeB extends Check {
+public class AssistTypeB extends Check
+{
 
-    public AssistTypeB(PlayerStorage data) {
+    public AssistTypeB(PlayerStorage data)
+    {
         super(data);
     }
 
@@ -21,11 +23,13 @@ public class AssistTypeB extends Check {
     private int threshold = 0;
 
     @Override
-    public void handle(IntectPacket packet) {
+    public void handle(IntectPacket packet)
+    {
 
         if (shouldBypass()) return;
 
-        if(packet.getRawPacket() instanceof PacketPlayInFlying) {
+        if (packet.getRawPacket() instanceof PacketPlayInFlying)
+        {
             float yawAccel = getStorage().getRotationProcessor().getJoltYaw();
             float pitchAccel = getStorage().getRotationProcessor().getJoltPitch();
 
@@ -34,7 +38,8 @@ public class AssistTypeB extends Check {
             yawAccelSamples.add(yawAccel);
             pitchAccelSamples.add(pitchAccel);
 
-            if (yawAccelSamples.isFull() && pitchAccelSamples.isFull()) {
+            if (yawAccelSamples.isFull() && pitchAccelSamples.isFull())
+            {
                 final double yawAccelAverage = MathUtil.getAverage(yawAccelSamples);
                 final double pitchAccelAverage = MathUtil.getAverage(pitchAccelSamples);
 
@@ -46,11 +51,15 @@ public class AssistTypeB extends Check {
                 final boolean deviationInvalid = yawAccelDeviation < (5 * 5) && pitchAccelDeviation > (5 * 5)
                     && !exemptRotation;
 
-                if (averageInvalid && deviationInvalid) {
-                    if (threshold++ > 8) {
+                if (averageInvalid && deviationInvalid)
+                {
+                    if (threshold++ > 8)
+                    {
                         fail();
                     }
-                } else {
+                }
+                else
+                {
                     threshold -= threshold > 0 ? 1 : 0;
                 }
                 yawAccelSamples.remove(0);

@@ -8,20 +8,24 @@ import net.square.intect.processor.data.PlayerStorage;
 import net.square.intect.utils.MathUtil;
 
 @CheckInfo(name = "Assist", type = "A", description = "Checks for modulo analysis", maxVL = 20)
-public class AssistTypeA extends Check {
+public class AssistTypeA extends Check
+{
 
-    public AssistTypeA(PlayerStorage data) {
+    public AssistTypeA(PlayerStorage data)
+    {
         super(data);
     }
 
     private int threshold = 0;
 
     @Override
-    public void handle(IntectPacket packet) {
+    public void handle(IntectPacket packet)
+    {
 
         if (shouldBypass()) return;
 
-        if (packet.getRawPacket() instanceof PacketPlayInFlying) {
+        if (packet.getRawPacket() instanceof PacketPlayInFlying)
+        {
             final float deltaYaw = getStorage().getRotationProcessor().getDeltaYaw();
             float deltaPitch = getStorage().getRotationProcessor().getDeltaPitch();
 
@@ -44,7 +48,8 @@ public class AssistTypeA extends Check {
             final double previousY = getStorage().getRotationProcessor().getLastDeltaPitch() / constantPitch;
 
             if (deltaYaw > 0.0 && deltaPitch
-                > 0.0 && deltaYaw < 20.f && deltaPitch < 20.f) {
+                > 0.0 && deltaYaw < 20.f && deltaPitch < 20.f)
+            {
                 final double moduloX = currentX % previousX;
                 final double moduloY = currentY % previousY;
 
@@ -54,11 +59,15 @@ public class AssistTypeA extends Check {
                 final boolean invalidX = moduloX > 90.d && floorModuloX > 0.1;
                 final boolean invalidY = moduloY > 90.d && floorModuloY > 0.1;
 
-                if (invalidX && invalidY) {
-                    if (threshold++ > 3) {
+                if (invalidX && invalidY)
+                {
+                    if (threshold++ > 3)
+                    {
                         fail();
                     }
-                } else {
+                }
+                else
+                {
                     threshold -= threshold > 0 ? 1 : 0;
                 }
             }

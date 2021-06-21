@@ -8,9 +8,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 @CheckInfo(name = "Killaura", type = "C", description = "Checks for sprint acceleration", maxVL = 20, bukkit = true)
-public class KillauraTypeC extends Check {
+public class KillauraTypeC extends Check
+{
 
-    public KillauraTypeC(PlayerStorage data) {
+    public KillauraTypeC(PlayerStorage data)
+    {
         super(data);
     }
 
@@ -20,7 +22,8 @@ public class KillauraTypeC extends Check {
     private int threshold = 0;
 
     @EventHandler
-    public void handle(PlayerMoveEvent event) {
+    public void handle(PlayerMoveEvent event)
+    {
 
         if (shouldBypass()) return;
 
@@ -29,12 +32,16 @@ public class KillauraTypeC extends Check {
 
         final double accel = Math.abs(movement - lastMovement);
 
-        if ((event.getPlayer().isSprinting() || movement > 0.27) && accel < 0.01 && lastAccel < 0.01) {
+        if ((event.getPlayer().isSprinting() || movement > 0.27) && accel < 0.01 && lastAccel < 0.01)
+        {
 
-            if (++threshold > 10) {
+            if (++threshold > 10)
+            {
                 fail();
             }
-        } else if (threshold > 0) {
+        }
+        else if (threshold > 0)
+        {
             threshold -= 3;
         }
         lastAccel = accel;
@@ -42,6 +49,7 @@ public class KillauraTypeC extends Check {
     }
 
     @Override
-    public void handle(IntectPacket packet) {
+    public void handle(IntectPacket packet)
+    {
     }
 }

@@ -7,28 +7,35 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-public class BukkitInteractListener implements Listener {
+public class BukkitInteractListener implements Listener
+{
 
     @EventHandler
-    public void onBlockBreak(final BlockBreakEvent event) {
+    public void onBlockBreak(final BlockBreakEvent event)
+    {
         final PlayerStorage data = PlayerStorage.storageHashMap.get(event.getPlayer());
-        if (data != null) {
+        if (data != null)
+        {
             data.getActionProcessor().handleBukkitBlockBreak();
         }
     }
 
     @EventHandler
-    public void onPlayerInteract(final PlayerInteractEvent event) {
+    public void onPlayerInteract(final PlayerInteractEvent event)
+    {
         final PlayerStorage data = PlayerStorage.storageHashMap.get(event.getPlayer());
-        if (data != null) {
+        if (data != null)
+        {
             data.getActionProcessor().handleInteract(event);
         }
     }
 
     @EventHandler
-    public void onBlockPlace(final BlockPlaceEvent event) {
+    public void onBlockPlace(final BlockPlaceEvent event)
+    {
         final PlayerStorage data = PlayerStorage.storageHashMap.get(event.getPlayer());
-        if (data != null) {
+        if (data != null)
+        {
             data.getActionProcessor().handleBukkitPlace();
         }
     }

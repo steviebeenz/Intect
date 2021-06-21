@@ -18,7 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-public class ModuleManager {
+public class ModuleManager
+{
 
     public static final Class<?>[] CHECKS = new Class[]{
         FastbowTypeA.class,
@@ -50,16 +51,21 @@ public class ModuleManager {
 
     private static final List<Constructor<?>> CONSTRUCTORS = new ArrayList<>();
 
-    public static List<Check> loadChecks(final PlayerStorage data) {
+    public static List<Check> loadChecks(final PlayerStorage data)
+    {
         final List<Check> checkList = new ArrayList<>();
-        for (Constructor<?> constructor : CONSTRUCTORS) {
-            try {
+        for (Constructor<?> constructor : CONSTRUCTORS)
+        {
+            try
+            {
                 Check e = (Check) constructor.newInstance(data);
-                if (e.getCheckInfo().bukkit()) {
+                if (e.getCheckInfo().bukkit())
+                {
                     Bukkit.getPluginManager().registerEvents(e, Intect.getIntect());
                 }
                 checkList.add(e);
-            } catch (Exception exception) {
+            } catch (Exception exception)
+            {
                 System.err.println("Failed to load checks for " + data.getPlayer().getName());
                 exception.printStackTrace();
             }
@@ -67,11 +73,15 @@ public class ModuleManager {
         return checkList;
     }
 
-    public static void setup() {
-        for (Class<?> clazz : CHECKS) {
-            try {
+    public static void setup()
+    {
+        for (Class<?> clazz : CHECKS)
+        {
+            try
+            {
                 CONSTRUCTORS.add(clazz.getConstructor(PlayerStorage.class));
-            } catch (NoSuchMethodException exception) {
+            } catch (NoSuchMethodException exception)
+            {
                 exception.printStackTrace();
             }
         }

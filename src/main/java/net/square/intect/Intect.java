@@ -13,7 +13,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Level;
 
-public final class Intect extends JavaPlugin {
+public final class Intect extends JavaPlugin
+{
 
     @Getter
     private PacketManager packetManager;
@@ -27,7 +28,8 @@ public final class Intect extends JavaPlugin {
     private final String prefix = "§8[§c§lIntect§8] §7";
 
     @Override
-    public void onEnable() {
+    public void onEnable()
+    {
 
         // Plugin startup logic
 
@@ -63,14 +65,16 @@ public final class Intect extends JavaPlugin {
     }
 
     @Override
-    public void onDisable() {
+    public void onDisable()
+    {
 
         // Plugin shutdown logic
 
         tickManager.stop();
     }
 
-    public String getRunningVersion() {
+    public String getRunningVersion()
+    {
         String a = getServer().getClass().getPackage().getName();
         return a.substring(a.lastIndexOf('.') + 1);
     }

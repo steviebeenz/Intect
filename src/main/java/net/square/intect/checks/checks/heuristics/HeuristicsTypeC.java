@@ -9,9 +9,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 @CheckInfo(name = "Heuristics", type = "C", description = "Checks for invalid tam", maxVL = 20, bukkit = true)
-public class HeuristicsTypeC extends Check {
+public class HeuristicsTypeC extends Check
+{
 
-    public HeuristicsTypeC(PlayerStorage data) {
+    public HeuristicsTypeC(PlayerStorage data)
+    {
         super(data);
     }
 
@@ -22,7 +24,8 @@ public class HeuristicsTypeC extends Check {
     private int threshold = 0;
 
     @EventHandler
-    public void handle(PlayerMoveEvent event) {
+    public void handle(PlayerMoveEvent event)
+    {
 
         if (shouldBypass()) return;
 
@@ -31,20 +34,27 @@ public class HeuristicsTypeC extends Check {
         Location to = event.getTo();
         Location from = event.getFrom();
 
-        if (to.getYaw() == from.getYaw() && to.getPitch() == from.getPitch() && to.distance(from) > 0.0) {
+        if (to.getYaw() == from.getYaw() && to.getPitch() == from.getPitch() && to.distance(from) > 0.0)
+        {
             totalAimMoves = totalAimMoves + 1;
         }
 
-        if ((to.getYaw() != from.getYaw() || to.getPitch() != from.getPitch()) && to.distance(from) > 0.0) {
+        if ((to.getYaw() != from.getYaw() || to.getPitch() != from.getPitch()) && to.distance(from) > 0.0)
+        {
             totalAimPosLook = totalAimPosLook + 1;
         }
 
-        if (totalMoves == 50) {
-            if (totalAimPosLook <= 35) {
-                if (++threshold > 10) {
+        if (totalMoves == 50)
+        {
+            if (totalAimPosLook <= 35)
+            {
+                if (++threshold > 10)
+                {
                     fail();
                 }
-            } else {
+            }
+            else
+            {
                 threshold -= ((threshold > 0) ? 1 : 0);
             }
             totalMoves = 0;
@@ -54,6 +64,7 @@ public class HeuristicsTypeC extends Check {
     }
 
     @Override
-    public void handle(IntectPacket packet) {
+    public void handle(IntectPacket packet)
+    {
     }
 }

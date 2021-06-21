@@ -9,16 +9,19 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 @CheckInfo(name = "Heuristics", type = "B", description = "Checks for invalid victim", maxVL = 20, bukkit = true)
-public class HeuristicsTypeB extends Check {
+public class HeuristicsTypeB extends Check
+{
 
-    public HeuristicsTypeB(PlayerStorage data) {
+    public HeuristicsTypeB(PlayerStorage data)
+    {
         super(data);
     }
 
     private int threshold = 0;
 
     @EventHandler
-    public void handle(PlayerMoveEvent event) {
+    public void handle(PlayerMoveEvent event)
+    {
 
         if (shouldBypass()) return;
 
@@ -30,19 +33,26 @@ public class HeuristicsTypeB extends Check {
         if (deltaYaw == 0.0f || deltaPitch == 0.0f) return;
 
         final float gcd = (float) MathUtil.getVictim(
-            (long) (deltaPitch * expander), (long) (getStorage().getRotationProcessor().getLastDeltaPitch() * expander));
+            (long) (deltaPitch * expander),
+            (long) (getStorage().getRotationProcessor().getLastDeltaPitch() * expander));
 
-        if (gcd < 131072.0f) {
-            if (++threshold > 2) {
+        if (gcd < 131072.0f)
+        {
+            if (++threshold > 2)
+            {
                 threshold--;
 
                 fail();
             }
-        } else if (threshold > 0) {
+        }
+        else if (threshold > 0)
+        {
             --threshold;
         }
     }
 
     @Override
-    public void handle(IntectPacket packet) { }
+    public void handle(IntectPacket packet)
+    {
+    }
 }

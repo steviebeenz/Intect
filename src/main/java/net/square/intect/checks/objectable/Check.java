@@ -17,11 +17,13 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public abstract class Check implements IntectHandler, Listener {
+public abstract class Check implements IntectHandler, Listener
+{
 
     private PlayerStorage storage;
 
-    public Check(final PlayerStorage data) {
+    public Check(final PlayerStorage data)
+    {
         this.storage = data;
     }
 
@@ -33,7 +35,8 @@ public abstract class Check implements IntectHandler, Listener {
     @Getter
     private int testCount = 0;
 
-    public void fail() {
+    public void fail()
+    {
 
         CheckInfo checkInfo = getCheckInfo();
         testCount++;
@@ -45,7 +48,7 @@ public abstract class Check implements IntectHandler, Listener {
                              '&',
                              Intect.getIntect().getPrefix() + "§7" + storage.getPlayer()
                                  .getName() + " failed §c" + checkInfo.name() +
-                                 " "+ checkInfo.type() + " §7(Vl:" + testCount + ")"
+                                 " " + checkInfo.type() + " §7(Vl:" + testCount + ")"
                          )));
 
         PositionProcessor positionProcessor = storage.getPositionProcessor();
@@ -54,15 +57,24 @@ public abstract class Check implements IntectHandler, Listener {
                                    positionProcessor.getZ()
             ));
 
-        if (testCount > checkInfo.maxVL() && !checkInfo.experimental()) {
+        if (testCount > checkInfo.maxVL() && !checkInfo.experimental())
+        {
 
-            Intect.getIntect().getServer().getOnlinePlayers().forEach(player -> {
-                if (player.hasPermission("intect.admin.notify")) {
-                    player.sendMessage(Intect.getIntect().getPrefix()
-                                           + "§c§lINFO §c" + storage.getPlayer().getName()
-                                           + " §7is attacking suspiciously");
-                }
-            });
+            Intect.getIntect()
+                .getServer()
+                .getOnlinePlayers()
+                .forEach(player ->
+                         {
+                             if (player.hasPermission(
+                                 "intect.admin.notify"))
+                             {
+                                 player.sendMessage(
+                                     Intect.getIntect().getPrefix()
+                                         + "§c§lINFO §c"
+                                         + storage.getPlayer().getName()
+                                         + " §7is attacking suspiciously");
+                             }
+                         });
 
             Intect.getIntect()
                 .getServer()
@@ -76,46 +88,57 @@ public abstract class Check implements IntectHandler, Listener {
         }
     }
 
-    public CheckInfo getCheckInfo() {
-        if (this.getClass().isAnnotationPresent(CheckInfo.class)) {
+    public CheckInfo getCheckInfo()
+    {
+        if (this.getClass().isAnnotationPresent(CheckInfo.class))
+        {
             return this.getClass().getAnnotation(CheckInfo.class);
-        } else {
+        }
+        else
+        {
             System.err.println(
                 "CheckInfo annotation hasn't been added to the class " + this.getClass().getSimpleName() + ".");
         }
         return null;
     }
 
-    public void debug(String message) {
+    public void debug(String message)
+    {
 
-        if(debugMode.isEmpty()) return;
+        if (debugMode.isEmpty()) return;
 
-        if(debugMode.contains(storage.getPlayer())) {
+        if (debugMode.contains(storage.getPlayer()))
+        {
             storage.getPlayer().sendMessage(message);
         }
     }
 
-    public Player getPlayer() {
+    public Player getPlayer()
+    {
         return storage.getPlayer();
     }
 
-    public boolean shouldBypass() {
+    public boolean shouldBypass()
+    {
         PlayerStorage storage = getStorage();
         return (now() - getStorage().getCombatProcessor().getLastHit()) > 750 ||
             storage.getPlayer().getGameMode() == GameMode.CREATIVE
             || storage.getPlayer().getGameMode() == GameMode.SPECTATOR;
     }
 
-    public long now() {
+    public long now()
+    {
         return System.currentTimeMillis();
     }
 
-    public long elapsed(long now, long start) {
+    public long elapsed(long now, long start)
+    {
         return now - start;
     }
 
     @Override
-    public boolean isEnabled() {
+    public boolean isEnabled()
+    {
         return true;
     }
 }

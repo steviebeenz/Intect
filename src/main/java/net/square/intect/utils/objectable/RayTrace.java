@@ -3,23 +3,28 @@ package net.square.intect.utils.objectable;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-public final class RayTrace {
+public final class RayTrace
+{
 
     private final Vector origin;
     private final Vector direction;
 
-    public RayTrace(final Vector origin, final Vector direction) {
+    public RayTrace(final Vector origin, final Vector direction)
+    {
         this.origin = origin;
         this.direction = direction;
     }
 
-    public RayTrace(final Player player) {
+    public RayTrace(final Player player)
+    {
         this.origin = player.getEyeLocation().toVector();
         this.direction = player.getEyeLocation().getDirection();
     }
 
-    public double origin(int i) {
-        switch (i) {
+    public double origin(int i)
+    {
+        switch (i)
+        {
             case 0:
                 return origin.getX();
             case 1:
@@ -31,8 +36,10 @@ public final class RayTrace {
         }
     }
 
-    public double direction(int i) {
-        switch (i) {
+    public double direction(int i)
+    {
+        switch (i)
+        {
             case 0:
                 return direction.getX();
             case 1:

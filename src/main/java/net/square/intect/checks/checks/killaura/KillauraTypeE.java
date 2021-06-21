@@ -10,9 +10,11 @@ import net.square.intect.processor.data.PlayerStorage;
 
 
 @CheckInfo(name = "Killaura", type = "E", description = "Checks for re-sprint delta", maxVL = 20)
-public class KillauraTypeE extends Check {
+public class KillauraTypeE extends Check
+{
 
-    public KillauraTypeE(PlayerStorage data) {
+    public KillauraTypeE(PlayerStorage data)
+    {
         super(data);
     }
 
@@ -22,32 +24,40 @@ public class KillauraTypeE extends Check {
     private int threshold = 0;
 
     @Override
-    public void handle(IntectPacket packet) {
+    public void handle(IntectPacket packet)
+    {
 
         if (shouldBypass()) return;
 
-        if (packet.getRawPacket() instanceof PacketPlayInEntityAction) {
+        if (packet.getRawPacket() instanceof PacketPlayInEntityAction)
+        {
 
             final WrappedPacketInEntityAction wrapped = new WrappedPacketInEntityAction(
                 new NMSPacket(packet.getRawPacket()));
 
             WrappedPacketInEntityAction.PlayerAction action = wrapped.getAction();
 
-            if (action == WrappedPacketInEntityAction.PlayerAction.START_SPRINTING) {
+            if (action == WrappedPacketInEntityAction.PlayerAction.START_SPRINTING)
+            {
 
                 final long deltaAction = now() - lastStopSprinting;
                 count = count + 1;
 
-                if (deltaAction < 40L) {
-                    if (threshold++ > 2) {
+                if (deltaAction < 40L)
+                {
+                    if (threshold++ > 2)
+                    {
                         fail();
                         count = 0;
                     }
-                } else {
-                   threshold = threshold > 0 ? threshold - 1 : 0;
+                }
+                else
+                {
+                    threshold = threshold > 0 ? threshold - 1 : 0;
                 }
             }
-            if (action == WrappedPacketInEntityAction.PlayerAction.STOP_SPRINTING) {
+            if (action == WrappedPacketInEntityAction.PlayerAction.STOP_SPRINTING)
+            {
                 count = count + 1;
                 lastStopSprinting = now();
             }

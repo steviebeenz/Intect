@@ -7,20 +7,24 @@ import net.square.intect.checks.objectable.IntectPacket;
 import net.square.intect.processor.data.PlayerStorage;
 
 @CheckInfo(name = "Heuristics", type = "E", description = "Checks for provocative movement", maxVL = 20)
-public class HeuristicsTypeE extends Check {
+public class HeuristicsTypeE extends Check
+{
 
-    public HeuristicsTypeE(PlayerStorage data) {
+    public HeuristicsTypeE(PlayerStorage data)
+    {
         super(data);
     }
 
     private int threshold = 0;
 
     @Override
-    public void handle(IntectPacket packet) {
+    public void handle(IntectPacket packet)
+    {
 
         if (shouldBypass()) return;
 
-        if (packet.getRawPacket() instanceof PacketPlayInFlying) {
+        if (packet.getRawPacket() instanceof PacketPlayInFlying)
+        {
             final float pitch = getStorage().getRotationProcessor().getPitch();
             final float deltaYaw =
                 getStorage().getRotationProcessor().getYaw() - getStorage().getRotationProcessor().getLastYaw();
@@ -31,16 +35,22 @@ public class HeuristicsTypeE extends Check {
 
             final boolean invalid = (invalidPitch || invalidYaw) && pitch < 89f;
 
-            if (invalid) {
-                if (threshold++ > 20) {
+            if (invalid)
+            {
+                if (threshold++ > 20)
+                {
                     fail();
                 }
-            } else {
+            }
+            else
+            {
                 threshold -= threshold > 0 ? 1 : 0;
             }
         }
     }
-    private boolean validRotation(float rotation) {
+
+    private boolean validRotation(float rotation)
+    {
         return rotation > 2F && rotation < 35F;
     }
 }

@@ -12,25 +12,30 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
 @CheckInfo(name = "Killaura", type = "B", description = "Checks for combat angle", maxVL = 20)
-public class KillauraTypeB extends Check {
+public class KillauraTypeB extends Check
+{
 
-    public KillauraTypeB(PlayerStorage data) {
+    public KillauraTypeB(PlayerStorage data)
+    {
         super(data);
     }
 
     private int combatAnalyticsThreshold = 0;
 
     @Override
-    public void handle(IntectPacket packet) {
+    public void handle(IntectPacket packet)
+    {
 
         if (shouldBypass()) return;
 
-        if (packet.getRawPacket() instanceof PacketPlayInUseEntity) {
+        if (packet.getRawPacket() instanceof PacketPlayInUseEntity)
+        {
 
             WrappedPacketInUseEntity packetPlayInUseEntity = new WrappedPacketInUseEntity(
                 new NMSPacket(packet.getRawPacket()));
 
-            if (packetPlayInUseEntity.getAction() == WrappedPacketInUseEntity.EntityUseAction.ATTACK) {
+            if (packetPlayInUseEntity.getAction() == WrappedPacketInUseEntity.EntityUseAction.ATTACK)
+            {
 
                 final Entity entity = packetPlayInUseEntity.getEntity();
 
@@ -41,11 +46,14 @@ public class KillauraTypeB extends Check {
 
                 float angle = packet.getPlayer().getEyeLocation().getDirection().angle(vec);
 
-                if (angle > 2.0) {
-                    if (combatAnalyticsThreshold++ > 1) {
+                if (angle > 2.0)
+                {
+                    if (combatAnalyticsThreshold++ > 1)
+                    {
                         fail();
                     }
-                } else
+                }
+                else
                     combatAnalyticsThreshold -= combatAnalyticsThreshold > 0 ? 1 : 0;
             }
         }

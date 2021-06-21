@@ -6,7 +6,8 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class StorageManager {
+public class StorageManager
+{
 
     @Getter
     private final List<Player> verboseMode = Lists.newArrayList();

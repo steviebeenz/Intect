@@ -8,7 +8,8 @@ import net.square.intect.utils.MathUtil;
 import java.util.ArrayDeque;
 
 @Getter
-public final class RotationProcessor {
+public final class RotationProcessor
+{
 
     private final PlayerStorage data;
 
@@ -24,11 +25,13 @@ public final class RotationProcessor {
 
     private double finalSensitivity;
 
-    public RotationProcessor(final PlayerStorage data) {
+    public RotationProcessor(final PlayerStorage data)
+    {
         this.data = data;
     }
 
-    public void handle(final float yaw, final float pitch) {
+    public void handle(final float yaw, final float pitch)
+    {
         lastYaw = this.yaw;
         lastPitch = this.pitch;
 
@@ -49,12 +52,14 @@ public final class RotationProcessor {
 
         processCinematic();
 
-        if (deltaPitch > 0 && deltaPitch < 30) {
+        if (deltaPitch > 0 && deltaPitch < 30)
+        {
             processSensitivity();
         }
     }
 
-    private void processCinematic() {
+    private void processCinematic()
+    {
         final float yawAccelAccel = Math.abs(joltYaw - lastJoltYaw);
         final float pitchAccelAccel = Math.abs(joltPitch - lastJoltPitch);
 
@@ -64,25 +69,33 @@ public final class RotationProcessor {
         final boolean exponentialYaw = String.valueOf(yawAccelAccel).contains("E");
         final boolean exponentialPitch = String.valueOf(pitchAccelAccel).contains("E");
 
-        if (sensitivity < 100 && (exponentialYaw || exponentialPitch)) {
+        if (sensitivity < 100 && (exponentialYaw || exponentialPitch))
+        {
             cinematicTicks += 3;
-        } else if (invalidYaw || invalidPitch) {
+        }
+        else if (invalidYaw || invalidPitch)
+        {
             cinematicTicks += 1;
-        } else {
+        }
+        else
+        {
             if (cinematicTicks > 0) cinematicTicks--;
         }
-        if (cinematicTicks > 20) {
+        if (cinematicTicks > 20)
+        {
             cinematicTicks--;
         }
 
         cinematic = cinematicTicks > 8 || (Intect.getIntect().getTickManager().getTicks() - lastCinematic < 120);
 
-        if (cinematic && cinematicTicks > 8) {
+        if (cinematic && cinematicTicks > 8)
+        {
             lastCinematic = Intect.getIntect().getTickManager().getTicks();
         }
     }
 
-    private void processSensitivity() {
+    private void processSensitivity()
+    {
         final float gcd = (float) MathUtil.getGcd(deltaPitch, lastDeltaPitch);
         final double sensitivityModifier = Math.cbrt(0.8333 * gcd);
         final double sensitivityStepTwo = (sensitivityModifier / 0.6) - 0.3333;
@@ -90,9 +103,10 @@ public final class RotationProcessor {
 
         this.finalSensitivity = finalSensitivity;
 
-        sensitivitySamples.add((int)finalSensitivity);
+        sensitivitySamples.add((int) finalSensitivity);
 
-        if (sensitivitySamples.size() >= 40) {
+        if (sensitivitySamples.size() >= 40)
+        {
             this.sensitivity = MathUtil.getMode(sensitivitySamples);
 
             final float gcdOne = (sensitivity / 200F) * 0.6F + 0.2F;

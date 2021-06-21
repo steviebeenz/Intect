@@ -13,25 +13,30 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IntectCommand implements CommandExecutor {
+public class IntectCommand implements CommandExecutor
+{
 
     private final Intect intect;
 
-    public IntectCommand(Intect intect) {
+    public IntectCommand(Intect intect)
+    {
         this.intect = intect;
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
+    public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args)
+    {
 
         final String prefix = Intect.getIntect().getPrefix();
 
-        if (!sender.hasPermission("intect.command")) {
+        if (!sender.hasPermission("intect.command"))
+        {
             sendDefaultInfo(sender);
             return true;
         }
 
-        if (args.length == 0) {
+        if (args.length == 0)
+        {
             sendDefaultCommandOverview(sender);
             return true;
         }
@@ -39,27 +44,34 @@ public class IntectCommand implements CommandExecutor {
         // -> /intect <var0> <var1> <var2>
         final String var0 = args[0];
 
-        if (var0.equalsIgnoreCase("version")) {
+        if (var0.equalsIgnoreCase("version"))
+        {
 
             sendDefaultInfo(sender);
             return true;
 
-        } else if (var0.equalsIgnoreCase("verbose")) {
+        }
+        else if (var0.equalsIgnoreCase("verbose"))
+        {
             // Verbose sub command
 
-            if (!(sender instanceof Player)) {
+            if (!(sender instanceof Player))
+            {
                 sender.sendMessage(prefix + "§cYou must be a player to execute this command!");
                 return true;
             }
 
             final Player player = (Player) sender;
 
-            if (this.intect.getStorageManager().getVerboseMode().contains(player)) {
+            if (this.intect.getStorageManager().getVerboseMode().contains(player))
+            {
 
                 this.intect.getStorageManager().getVerboseMode().remove(player);
                 player.sendMessage(prefix + "You are §cno longer §7receiving verbose output");
 
-            } else {
+            }
+            else
+            {
 
                 this.intect.getStorageManager().getVerboseMode().add(player);
                 player.sendMessage(prefix + "You are §anow §7receiving verbose output");
@@ -68,9 +80,12 @@ public class IntectCommand implements CommandExecutor {
 
             return true;
 
-        } else if (var0.equalsIgnoreCase("info")) {
+        }
+        else if (var0.equalsIgnoreCase("info"))
+        {
 
-            if (args.length == 1) {
+            if (args.length == 1)
+            {
                 sender.sendMessage(prefix + "Available subcommands:");
                 sender.sendMessage(prefix + "/intect info playername: Get information about a player");
                 return true;
@@ -78,7 +93,8 @@ public class IntectCommand implements CommandExecutor {
 
             Player target = Bukkit.getPlayer(args[1]);
 
-            if (target == null || !target.isOnline()) {
+            if (target == null || !target.isOnline())
+            {
                 sender.sendMessage(prefix + "§cCant find player. Spelling error?");
                 return true;
             }
@@ -98,28 +114,35 @@ public class IntectCommand implements CommandExecutor {
             sender.sendMessage(prefix + "§7Violations");
 
             List<Check> collect = new ArrayList<>();
-            for (Check check111 : playerStorage.getChecks()) {
-                if (check111.getTestCount() > 0) {
+            for (Check check111 : playerStorage.getChecks())
+            {
+                if (check111.getTestCount() > 0)
+                {
                     collect.add(check111);
                 }
             }
 
-            if (collect.size() == 0) {
+            if (collect.size() == 0)
+            {
                 sender.sendMessage(prefix + "§cNo violations found");
                 return true;
             }
 
-            for (Check check : collect) {
+            for (Check check : collect)
+            {
                 sender.sendMessage(
                     prefix + " §8- §7" + check.getCheckInfo().name() + " " + check.getCheckInfo().type() + " ("
                         + check.getTestCount() + ")");
             }
             return true;
 
-        } else if (var0.equalsIgnoreCase("diagnostics")) {
+        }
+        else if (var0.equalsIgnoreCase("diagnostics"))
+        {
             // Diagnostics sub command
 
-            if (args.length == 1) {
+            if (args.length == 1)
+            {
                 sender.sendMessage(prefix + "Available subcommands:");
                 sender.sendMessage(prefix + "/intect diagnostics performance: Output performance data");
                 sender.sendMessage(prefix + "/intect diagnostics statistics: Output check statistics");
@@ -128,32 +151,41 @@ public class IntectCommand implements CommandExecutor {
 
             final String var1 = args[1];
 
-            if (var1.equalsIgnoreCase("performance")) {
+            if (var1.equalsIgnoreCase("performance"))
+            {
 
                 sender.sendMessage(prefix + "§cCurrently unavailable!");
                 return true;
 
-            } else if (var1.equalsIgnoreCase("statistics")) {
+            }
+            else if (var1.equalsIgnoreCase("statistics"))
+            {
 
                 sender.sendMessage(prefix + "§cCurrently unavailable!");
                 return true;
 
-            } else {
+            }
+            else
+            {
                 sender.sendMessage(prefix + "Available subcommands:");
                 sender.sendMessage(prefix + "/intect diagnostics performance: Output performance data");
                 sender.sendMessage(prefix + "/intect diagnostics statistics: Output check statistics");
                 return true;
             }
 
-        } else if (var0.equalsIgnoreCase("debug")) {
+        }
+        else if (var0.equalsIgnoreCase("debug"))
+        {
 
-            if (args.length == 1) {
+            if (args.length == 1)
+            {
                 sender.sendMessage(prefix + "Available subcommands:");
                 sender.sendMessage(prefix + "/intect debug modulename-type: Output debug for module");
                 return true;
             }
 
-            if (!(sender instanceof Player)) {
+            if (!(sender instanceof Player))
+            {
                 sender.sendMessage(prefix + "§cYou must be a player to execute this command!");
                 return true;
             }
@@ -164,18 +196,23 @@ public class IntectCommand implements CommandExecutor {
             PlayerStorage playerStorage = PlayerStorage.storageHashMap.get(player);
             List<Check> checks = playerStorage.getChecks();
 
-            for (Check check : checks) {
+            for (Check check : checks)
+            {
                 String s1 = check.getCheckInfo().name().toLowerCase() + "-" + check.getCheckInfo().type().toLowerCase();
-                if (s1.equalsIgnoreCase(module)) {
+                if (s1.equalsIgnoreCase(module))
+                {
 
                     List<Player> debugMode = check.getDebugMode();
 
-                    if (debugMode.contains(player)) {
+                    if (debugMode.contains(player))
+                    {
 
                         player.sendMessage(prefix + "You are §cno longer §7receiving debug output for module §c" + s1);
                         debugMode.remove(player);
 
-                    } else {
+                    }
+                    else
+                    {
 
                         player.sendMessage(prefix + "You are §anow §7receiving debug output for module §c" + s1);
                         debugMode.add(player);
@@ -184,13 +221,16 @@ public class IntectCommand implements CommandExecutor {
             }
             return true;
 
-        } else {
+        }
+        else
+        {
             sendDefaultCommandOverview(sender);
             return true;
         }
     }
 
-    private void sendDefaultCommandOverview(CommandSender sender) {
+    private void sendDefaultCommandOverview(CommandSender sender)
+    {
 
         final String prefix = Intect.getIntect().getPrefix();
 
@@ -202,7 +242,8 @@ public class IntectCommand implements CommandExecutor {
         sender.sendMessage(prefix + "/intect info playername: Get information about a player");
     }
 
-    private void sendDefaultInfo(CommandSender sender) {
+    private void sendDefaultInfo(CommandSender sender)
+    {
 
         final String prefix = Intect.getIntect().getPrefix();
 
@@ -211,19 +252,27 @@ public class IntectCommand implements CommandExecutor {
         sender.sendMessage(prefix + "Visit our website for a full list of contributors");
     }
 
-    private void sendIntectVer(CommandSender sender, String prefix) {
+    private void sendIntectVer(CommandSender sender, String prefix)
+    {
 
         int running = Integer.parseInt(intect.getDescription().getVersion());
         int latest = UpdateManager.getLatestBuild();
 
         String message;
-        if (latest == -1) {
+        if (latest == -1)
+        {
             message = "Error fetching version";
-        } else if (running > latest) {
+        }
+        else if (running > latest)
+        {
             message = "Unknown version(custom build?)";
-        } else if (running == latest) {
+        }
+        else if (running == latest)
+        {
             message = "Latest version";
-        } else {
+        }
+        else
+        {
             int var = latest - running;
             message = "Outdated (" + var + " versions behind)";
         }

@@ -1,6 +1,7 @@
 package net.square.intect.checks.objectable;
 
-public interface IntectHandler {
+public interface IntectHandler
+{
 
     CheckInfo getCheckInfo();
 

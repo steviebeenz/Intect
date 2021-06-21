@@ -5,19 +5,24 @@ import net.square.intect.utils.objectable.Pair;
 
 import java.util.*;
 
-public class MathUtil {
+public class MathUtil
+{
 
     public static final double EXPANDER = Math.pow(2, 24);
 
-    public static long getVictim(final long a, final long b) {
-        try {
+    public static long getVictim(final long a, final long b)
+    {
+        try
+        {
             return (b <= 16384L) ? a : getVictim(b, a % b);
-        } catch (Exception ignored) {
+        } catch (Exception ignored)
+        {
             return 0;
         }
     }
 
-    public static double getVariance(final Collection<? extends Number> data) {
+    public static double getVariance(final Collection<? extends Number> data)
+    {
         int count = 0;
 
         double sum = 0.0;
@@ -25,38 +30,45 @@ public class MathUtil {
 
         double average;
 
-        for (final Number number : data) {
+        for (final Number number : data)
+        {
             sum += number.doubleValue();
             ++count;
         }
 
         average = sum / count;
 
-        for (final Number number : data) {
+        for (final Number number : data)
+        {
             variance += Math.pow(number.doubleValue() - average, 2.0);
         }
 
         return variance;
     }
 
-    public static double getStandardDeviation(final Collection<? extends Number> data) {
+    public static double getStandardDeviation(final Collection<? extends Number> data)
+    {
         final double variance = getVariance(data);
 
         return Math.sqrt(variance);
     }
 
-    public boolean isScientificNotation(final Number num) {
+    public boolean isScientificNotation(final Number num)
+    {
         return (num.toString().contains("E"));
     }
 
-    public boolean mathOnGround(final double posY) {
+    public boolean mathOnGround(final double posY)
+    {
         return posY % 0.015625 == 0;
     }
 
-    public Pair<List<Double>, List<Double>> getOutliers(final Collection<? extends Number> collection) {
+    public Pair<List<Double>, List<Double>> getOutliers(final Collection<? extends Number> collection)
+    {
         final List<Double> values = new ArrayList<>();
 
-        for (final Number number : collection) {
+        for (final Number number : collection)
+        {
             values.add(number.doubleValue());
         }
 
@@ -68,11 +80,14 @@ public class MathUtil {
 
         final Pair<List<Double>, List<Double>> tuple = new Pair<>(new ArrayList<>(), new ArrayList<>());
 
-        for (final Double value : values) {
-            if (value < lowThreshold) {
+        for (final Double value : values)
+        {
+            if (value < lowThreshold)
+            {
                 tuple.getX().add(value);
             }
-            else if (value > highThreshold) {
+            else if (value > highThreshold)
+            {
                 tuple.getY().add(value);
             }
         }
@@ -80,13 +95,15 @@ public class MathUtil {
         return tuple;
     }
 
-    public double getSkewness(final Collection<? extends Number> data) {
+    public double getSkewness(final Collection<? extends Number> data)
+    {
         double sum = 0;
         int count = 0;
 
         final List<Double> numbers = Lists.newArrayList();
 
-        for (final Number number : data) {
+        for (final Number number : data)
+        {
             sum += number.doubleValue();
             ++count;
 
@@ -95,17 +112,21 @@ public class MathUtil {
 
         Collections.sort(numbers);
 
-        final double mean =  sum / count;
-        final double median = (count % 2 != 0) ? numbers.get(count / 2) : (numbers.get((count - 1) / 2) + numbers.get(count / 2)) / 2;
+        final double mean = sum / count;
+        final double median = (count % 2 != 0)
+            ? numbers.get(count / 2)
+            : (numbers.get((count - 1) / 2) + numbers.get(count / 2)) / 2;
         final double variance = getVariance(data);
 
         return 3 * (mean - median) / variance;
     }
 
-    public static double getAverage(final Collection<? extends Number> data) {
+    public static double getAverage(final Collection<? extends Number> data)
+    {
         double sum = 0;
         long count = 0;
-        for (Number datum : data) {
+        for (Number datum : data)
+        {
             double doubleValue = datum.doubleValue();
             sum += doubleValue;
             count++;
@@ -113,16 +134,19 @@ public class MathUtil {
         return count > 0 ? sum / count : 0D;
     }
 
-    public double getKurtosis(final Collection<? extends Number> data) {
+    public double getKurtosis(final Collection<? extends Number> data)
+    {
         double sum = 0.0;
         int count = 0;
 
-        for (Number number : data) {
+        for (Number number : data)
+        {
             sum += number.doubleValue();
             ++count;
         }
 
-        if (count < 3.0) {
+        if (count < 3.0)
+        {
             return 0.0;
         }
 
@@ -133,7 +157,8 @@ public class MathUtil {
         double variance = 0.0;
         double varianceSquared = 0.0;
 
-        for (final Number number : data) {
+        for (final Number number : data)
+        {
             variance += Math.pow(average - number.doubleValue(), 2.0);
             varianceSquared += Math.pow(average - number.doubleValue(), 4.0);
         }
@@ -141,15 +166,19 @@ public class MathUtil {
         return efficiencyFirst * (varianceSquared / Math.pow(variance / sum, 2.0)) - efficiencySecond;
     }
 
-    public static int getMode(Collection<? extends Number> array) {
+    public static int getMode(Collection<? extends Number> array)
+    {
         int mode = (int) array.toArray()[0];
         int maxCount = 0;
-        for (Number value : array) {
+        for (Number value : array)
+        {
             int count = 1;
-            for (Number i : array) {
+            for (Number i : array)
+            {
                 if (i.equals(value))
                     count++;
-                if (count > maxCount) {
+                if (count > maxCount)
+                {
                     mode = (int) value;
                     maxCount = count;
                 }
@@ -158,10 +187,12 @@ public class MathUtil {
         return mode;
     }
 
-    public Number getModeUsingMaps(Collection<? extends Number> samples) {
+    public Number getModeUsingMaps(Collection<? extends Number> samples)
+    {
         final Map<Number, Integer> occurenceMap = new HashMap<>();
 
-        for (Number entry : samples) {
+        for (Number entry : samples)
+        {
             if (!occurenceMap.containsKey(entry)) occurenceMap.put(entry, 1);
             else occurenceMap.put(entry, occurenceMap.get(entry) + 1);
         }
@@ -169,8 +200,10 @@ public class MathUtil {
         Number mode = null;
         int occurences = 0;
 
-        for (Map.Entry<Number, Integer> entry : occurenceMap.entrySet()) {
-            if (entry.getValue() > occurences) {
+        for (Map.Entry<Number, Integer> entry : occurenceMap.entrySet())
+        {
+            if (entry.getValue() > occurences)
+            {
                 occurences = entry.getValue();
                 mode = entry.getKey();
             }
@@ -179,31 +212,42 @@ public class MathUtil {
         return mode;
     }
 
-    private double getMedian(final List<Double> data) {
-        if (data.size() % 2 == 0) {
+    private double getMedian(final List<Double> data)
+    {
+        if (data.size() % 2 == 0)
+        {
             return (data.get(data.size() / 2) + data.get(data.size() / 2 - 1)) / 2;
-        } else {
+        }
+        else
+        {
             return data.get(data.size() / 2);
         }
     }
 
-    public static long getGcd(final long current, final long previous) {
+    public static long getGcd(final long current, final long previous)
+    {
         return (previous <= 16384L) ? current : getGcd(previous, current % previous);
     }
 
-    public static double getGcd(final double a, final double b) {
-        if (a < b) {
+    public static double getGcd(final double a, final double b)
+    {
+        if (a < b)
+        {
             return getGcd(b, a);
         }
 
-        if (Math.abs(b) < 0.001) {
+        if (Math.abs(b) < 0.001)
+        {
             return a;
-        } else {
+        }
+        else
+        {
             return getGcd(b, a - Math.floor(a / b) * b);
         }
     }
 
-    public double getCps(final Collection<? extends Number> data) {
+    public double getCps(final Collection<? extends Number> data)
+    {
         return (20 / getAverage(data)) * 50;
     }
 

@@ -17,9 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @CheckInfo(name = "Killaura", type = "A", description = "Makes a attack raytrace", maxVL = 20)
-public class KillauraTypeA extends Check {
+public class KillauraTypeA extends Check
+{
 
-    public KillauraTypeA(PlayerStorage data) {
+    public KillauraTypeA(PlayerStorage data)
+    {
         super(data);
     }
 
@@ -32,11 +34,13 @@ public class KillauraTypeA extends Check {
     private int attackRaytraceThreshold = 0;
 
     @Override
-    public void handle(IntectPacket packet) {
+    public void handle(IntectPacket packet)
+    {
 
         if (shouldBypass()) return;
 
-        if (packet.getRawPacket() instanceof PacketPlayInUseEntity) {
+        if (packet.getRawPacket() instanceof PacketPlayInUseEntity)
+        {
 
             WrappedPacketInUseEntity packetPlayInUseEntity = new WrappedPacketInUseEntity(
                 new NMSPacket(packet.getRawPacket()));
@@ -47,13 +51,16 @@ public class KillauraTypeA extends Check {
 
             combat = true;
 
-        } else if (packet.getRawPacket() instanceof PacketPlayInFlying.PacketPlayInPositionLook) {
+        }
+        else if (packet.getRawPacket() instanceof PacketPlayInFlying.PacketPlayInPositionLook)
+        {
 
             if (!combat) return;
 
             if (distances.size() >= 5) distances.remove(0);
 
-            if (elapsed(System.nanoTime() / 1000000, lastFlying) <= 500) {
+            if (elapsed(System.nanoTime() / 1000000, lastFlying) <= 500)
+            {
 
                 combat = false;
 
@@ -65,12 +72,14 @@ public class KillauraTypeA extends Check {
 
                 if (dist != -1) distances.add(dist);
 
-                if (distances.size() >= 5) {
+                if (distances.size() >= 5)
+                {
 
                     double total = 0;
                     double avgReach = 0;
 
-                    for (int i = 0; i < distances.size(); i++) {
+                    for (int i = 0; i < distances.size(); i++)
+                    {
                         total += distances.get(i);
                         avgReach = total / distances.size();
                     }
@@ -78,11 +87,14 @@ public class KillauraTypeA extends Check {
                     double maxAvgReach = 4.5;
                     double maxDistance = 4.8;
 
-                    if (avgReach >= maxAvgReach && dist >= maxDistance) {
-                        if (++attackRaytraceThreshold > 1) {
+                    if (avgReach >= maxAvgReach && dist >= maxDistance)
+                    {
+                        if (++attackRaytraceThreshold > 1)
+                        {
                             fail();
                         }
-                    } else
+                    }
+                    else
                         attackRaytraceThreshold = 0;
                 }
             }

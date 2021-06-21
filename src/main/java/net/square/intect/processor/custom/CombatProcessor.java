@@ -6,7 +6,8 @@ import net.square.intect.processor.data.PlayerStorage;
 import org.bukkit.entity.Entity;
 
 @Getter
-public final class CombatProcessor {
+public final class CombatProcessor
+{
 
     private final PlayerStorage data;
 
@@ -18,12 +19,15 @@ public final class CombatProcessor {
 
     private Entity target, lastTarget;
 
-    public CombatProcessor(final PlayerStorage data) {
+    public CombatProcessor(final PlayerStorage data)
+    {
         this.data = data;
     }
 
-    public void handleUseEntity(final WrappedPacketInUseEntity wrapper) {
-        if (wrapper.getAction() != WrappedPacketInUseEntity.EntityUseAction.ATTACK || wrapper.getEntity() == null) {
+    public void handleUseEntity(final WrappedPacketInUseEntity wrapper)
+    {
+        if (wrapper.getAction() != WrappedPacketInUseEntity.EntityUseAction.ATTACK || wrapper.getEntity() == null)
+        {
             return;
         }
 
@@ -31,29 +35,35 @@ public final class CombatProcessor {
         target = wrapper.getEntity();
         lastHit = System.currentTimeMillis();
 
-        distance = data.getPlayer().getLocation().toVector().setY(0).distance(target.getLocation().toVector().setY(0)) - .42;
+        distance =
+            data.getPlayer().getLocation().toVector().setY(0).distance(target.getLocation().toVector().setY(0)) - .42;
 
         ++hits;
 
         hitTicks = 0;
 
-        if (target != lastTarget) {
+        if (target != lastTarget)
+        {
             ++currentTargets;
         }
     }
 
-    public void handleArmAnimation() {
+    public void handleArmAnimation()
+    {
         ++swings;
     }
 
-    public void handleFlying() {
+    public void handleFlying()
+    {
         ++hitTicks;
         currentTargets = 0;
 
-        if (swings > 1) {
+        if (swings > 1)
+        {
             hitMissRatio = ((double) hits / (double) swings) * 100;
         }
-        if (hits > 100 || swings > 100) {
+        if (hits > 100 || swings > 100)
+        {
             hits = swings = 0;
         }
     }

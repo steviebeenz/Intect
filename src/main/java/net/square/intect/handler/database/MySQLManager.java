@@ -6,11 +6,13 @@ import com.zaxxer.hikari.pool.HikariPool;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class MySQLManager {
+public class MySQLManager
+{
 
     private final HikariPool hikariPool;
 
-    public MySQLManager() throws HikariPool.PoolInitializationException {
+    public MySQLManager() throws HikariPool.PoolInitializationException
+    {
 
         String address = "";
         String database = "";
@@ -42,8 +44,10 @@ public class MySQLManager {
         // this.createTables();
     }
 
-    public void createTables() {
-        try (Connection connection = getConnection()) {
+    public void createTables()
+    {
+        try (Connection connection = getConnection())
+        {
 
             /*
             Soon table structure for the best experience
@@ -51,24 +55,31 @@ public class MySQLManager {
 
             connection.createStatement().execute("");
 
-        } catch (SQLException throwable) {
+        } catch (SQLException throwable)
+        {
             throwable.printStackTrace();
         }
     }
 
-    public Connection getConnection() {
-        try {
+    public Connection getConnection()
+    {
+        try
+        {
             return this.hikariPool.getConnection();
-        } catch (SQLException throwable) {
+        } catch (SQLException throwable)
+        {
             throwable.printStackTrace();
             return null;
         }
     }
 
-    public void close() {
-        try {
+    public void close()
+    {
+        try
+        {
             this.hikariPool.shutdown();
-        } catch (InterruptedException e) {
+        } catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
     }

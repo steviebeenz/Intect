@@ -16,7 +16,8 @@ import java.util.concurrent.FutureTask;
 import java.util.function.Predicate;
 
 @Getter
-public final class PositionProcessor {
+public final class PositionProcessor
+{
 
     private final PlayerStorage data;
 
@@ -27,11 +28,13 @@ public final class PositionProcessor {
 
     private boolean onGround, lastOnGround, mathematicallyOnGround;
 
-    public PositionProcessor(final PlayerStorage data) {
+    public PositionProcessor(final PlayerStorage data)
+    {
         this.data = data;
     }
 
-    public void handle(final double x, final double y, final double z, final boolean onGround) {
+    public void handle(final double x, final double y, final double z, final boolean onGround)
+    {
         //FIX THIS TELEPORT SYSTEM.
 
         lastX = this.x;
@@ -57,51 +60,70 @@ public final class PositionProcessor {
         mathematicallyOnGround = y % 0.015625 == 0.0;
     }
 
-    public boolean isCollidingAtLocation(double drop, Predicate<Material> predicate, CollisionType collisionType) {
+    public boolean isCollidingAtLocation(double drop, Predicate<Material> predicate, CollisionType collisionType)
+    {
         final ArrayList<Material> materials = new ArrayList<>();
 
-        for (double x = -0.3; x <= 0.3; x += 0.3) {
-            for (double z = -0.3; z <= 0.3; z += 0.3) {
+        for (double x = -0.3; x <= 0.3; x += 0.3)
+        {
+            for (double z = -0.3; z <= 0.3; z += 0.3)
+            {
                 final Material material = Objects.requireNonNull(
                     getBlock(data.getPlayer().getLocation().clone().add(x, drop, z))).getType();
-                if (material != null) {
+                if (material != null)
+                {
                     materials.add(material);
                 }
             }
         }
 
-        if (collisionType == CollisionType.ALL) {
-            for (Material material : materials) {
-                if (!predicate.test(material)) {
+        if (collisionType == CollisionType.ALL)
+        {
+            for (Material material : materials)
+            {
+                if (!predicate.test(material))
+                {
                     return false;
                 }
             }
             return true;
-        } else {
+        }
+        else
+        {
             return materials.stream().allMatch(predicate);
         }
     }
 
     //Taken from Fiona. If you have anything better, please let me know, thanks.
-    public Block getBlock(final Location location) {
-        if (location.getWorld().isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4)) {
+    public Block getBlock(final Location location)
+    {
+        if (location.getWorld().isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4))
+        {
             return location.getBlock();
-        } else {
-            FutureTask<Block> futureTask = new FutureTask<>(() -> {
-                location.getWorld().loadChunk(location.getBlockX() >> 4, location.getBlockZ() >> 4);
-                return location.getBlock();
-            });
+        }
+        else
+        {
+            FutureTask<Block> futureTask = new FutureTask<>(() ->
+                                                            {
+                                                                location.getWorld()
+                                                                    .loadChunk(location.getBlockX() >> 4,
+                                                                               location.getBlockZ() >> 4);
+                                                                return location.getBlock();
+                                                            });
             Bukkit.getScheduler().runTask(Intect.getIntect(), futureTask);
-            try {
+            try
+            {
                 return futureTask.get();
-            } catch (final Exception exception) {
+            } catch (final Exception exception)
+            {
                 exception.printStackTrace();
             }
             return null;
         }
     }
 
-    public enum CollisionType {
+    public enum CollisionType
+    {
         ANY, ALL
     }
 }

@@ -2,7 +2,8 @@ package net.square.intect.processor.receivor;
 
 import org.bukkit.entity.Player;
 
-public interface PacketReceivor {
+public interface PacketReceivor
+{
 
     void inject(Player player);
 

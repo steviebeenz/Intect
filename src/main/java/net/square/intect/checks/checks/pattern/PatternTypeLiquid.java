@@ -7,9 +7,11 @@ import net.square.intect.processor.custom.RotationProcessor;
 import net.square.intect.processor.data.PlayerStorage;
 
 @CheckInfo(name = "Pattern", type = "Liquid", maxVL = 5, description = "Checks for liquid heuristics")
-public class PatternTypeLiquid extends Check {
+public class PatternTypeLiquid extends Check
+{
 
-    public PatternTypeLiquid(PlayerStorage data) {
+    public PatternTypeLiquid(PlayerStorage data)
+    {
         super(data);
     }
 
@@ -19,7 +21,8 @@ public class PatternTypeLiquid extends Check {
     private double lastLiquidPitch = 0.0;
 
     @Override
-    public void handle(IntectPacket packet) {
+    public void handle(IntectPacket packet)
+    {
 
         if (shouldBypass()) return;
 
@@ -34,15 +37,19 @@ public class PatternTypeLiquid extends Check {
         double yaw = deltaYaw - this.lastLiquidYaw;
         double pitch = deltaPitch - this.lastLiquidPitch;
 
-        if (pitch != 0.0 && yaw != 0.0) {
+        if (pitch != 0.0 && yaw != 0.0)
+        {
             debug(String.format("pitch=%.5f yaw=%.5f", Math.abs(pitch), Math.abs(yaw)));
         }
 
-        if (pitch > 20.0 && yaw > 0.0) {
+        if (pitch > 20.0 && yaw > 0.0)
+        {
             //if (threshold++ > 0) {
-                getPlayer().sendMessage("§c§lLIQUID PATTERN (GCD FLAW BYPASS)");
+            getPlayer().sendMessage("§c§lLIQUID PATTERN (GCD FLAW BYPASS)");
             //}
-        } else {
+        }
+        else
+        {
             threshold -= threshold > 0 ? 1 : 0;
         }
 

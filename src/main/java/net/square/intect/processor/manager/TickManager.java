@@ -11,19 +11,22 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.logging.Level;
 
-public class TickManager implements Runnable {
+public class TickManager implements Runnable
+{
 
     @Getter
     private int ticks;
     private static BukkitTask task;
 
-    public void start() {
+    public void start()
+    {
         assert task == null : "TickProcessor has already been started!";
 
         task = Bukkit.getScheduler().runTaskTimer(Intect.getIntect(), this, 0L, 1L);
     }
 
-    public void stop() {
+    public void stop()
+    {
         if (task == null) return;
 
         task.cancel();
@@ -31,19 +34,23 @@ public class TickManager implements Runnable {
     }
 
     @Override
-    public void run() {
+    public void run()
+    {
         ticks++;
 
-        PlayerStorage.storageHashMap.forEach((player, data) -> {
-            final Entity target = data.getCombatProcessor().getTarget();
-            final Entity lastTarget = data.getCombatProcessor().getLastTarget();
-            if (target != null && lastTarget != null) {
-                if (target != lastTarget) {
-                    data.getTargetLocations().clear();
-                }
-                Location location = target.getLocation();
-                data.getTargetLocations().add(new Pair<>(location, ticks));
-            }
-        });
+        PlayerStorage.storageHashMap.forEach((player, data) ->
+                                             {
+                                                 final Entity target = data.getCombatProcessor().getTarget();
+                                                 final Entity lastTarget = data.getCombatProcessor().getLastTarget();
+                                                 if (target != null && lastTarget != null)
+                                                 {
+                                                     if (target != lastTarget)
+                                                     {
+                                                         data.getTargetLocations().clear();
+                                                     }
+                                                     Location location = target.getLocation();
+                                                     data.getTargetLocations().add(new Pair<>(location, ticks));
+                                                 }
+                                             });
     }
 }
