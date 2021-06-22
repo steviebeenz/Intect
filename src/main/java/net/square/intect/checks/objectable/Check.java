@@ -51,15 +51,8 @@ public abstract class Check implements IntectHandler, Listener
                                  " " + checkInfo.type() + " §7(Vl:" + testCount + ")"
                          )));
 
-        PositionProcessor positionProcessor = storage.getPositionProcessor();
-        storage.getPlayer()
-            .teleport(new Location(storage.getPlayer().getWorld(), positionProcessor.getX(), positionProcessor.getY(),
-                                   positionProcessor.getZ()
-            ));
-
         if (testCount > checkInfo.maxVL() && !checkInfo.experimental())
         {
-
             Intect.getIntect()
                 .getServer()
                 .getOnlinePlayers()

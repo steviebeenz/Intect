@@ -1,10 +1,7 @@
 package net.square.intect.processor.manager;
 
 import net.square.intect.Intect;
-import net.square.intect.checks.checks.assist.AssistTypeA;
-import net.square.intect.checks.checks.assist.AssistTypeB;
-import net.square.intect.checks.checks.assist.AssistTypeC;
-import net.square.intect.checks.checks.assist.AssistTypeD;
+import net.square.intect.checks.checks.assist.*;
 import net.square.intect.checks.checks.fastbow.FastbowTypeA;
 import net.square.intect.checks.checks.heuristics.*;
 import net.square.intect.checks.checks.killaura.*;
@@ -43,7 +40,8 @@ public class ModuleManager
         AssistTypeA.class,
         AssistTypeB.class,
         AssistTypeC.class,
-        AssistTypeD.class
+        AssistTypeD.class,
+        AssistTypeE.class
 
         // PatternTypeLiquid.class
 
