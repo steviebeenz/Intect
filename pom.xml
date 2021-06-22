@@ -5,13 +5,12 @@
 
     <groupId>net.square</groupId>
     <artifactId>intect</artifactId>
-    <version>43</version>
+    <version>44</version>
 
     <packaging>jar</packaging>
 
     <name>Intect</name>
-    <description>Intect is an event- packetbased cheat detection software, providing fair
-        play
+    <description>Intect is an event and packetbased cheat detection software, providing fair play
     </description>
     <url>https://squarecode.de</url>
 
@@ -24,11 +23,6 @@
     <repositories>
 
         <repository>
-            <id>jit</id>
-            <url>https://jitpack.io</url>
-        </repository>
-
-        <repository>
             <id>spigotmc-repo</id>
             <url>https://repo.squarecode.de/repository/spigot/</url>
         </repository>
@@ -36,21 +30,6 @@
         <repository>
             <id>spigotmc-packet</id>
             <url>https://repo.squarecode.de/repository/packet/</url>
-        </repository>
-
-        <repository>
-            <id>funke</id>
-            <url>https://nexus.funkemunky.cc/content/repositories/releases/</url>
-        </repository>
-
-        <repository>
-            <id>nexus-repo</id>
-            <url>https://repo.dmulloy2.net/nexus/repository/public/</url>
-        </repository>
-
-        <repository>
-            <id>maven-public-repo</id>
-            <url>https://repo.maven.apache.org/maven2/</url>
         </repository>
 
     </repositories>
