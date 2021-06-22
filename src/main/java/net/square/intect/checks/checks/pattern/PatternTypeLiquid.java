@@ -15,8 +15,6 @@ public class PatternTypeLiquid extends Check
         super(data);
     }
 
-    private int threshold = 0;
-
     private double lastLiquidYaw = 0.0;
     private double lastLiquidPitch = 0.0;
 
@@ -42,16 +40,9 @@ public class PatternTypeLiquid extends Check
             debug(String.format("pitch=%.5f yaw=%.5f", Math.abs(pitch), Math.abs(yaw)));
         }
 
-        if (pitch > 20.0 && yaw > 0.0)
-        {
-            //if (threshold++ > 0) {
-            getPlayer().sendMessage("§c§lLIQUID PATTERN (GCD FLAW BYPASS)");
-            //}
-        }
-        else
-        {
-            threshold -= threshold > 0 ? 1 : 0;
-        }
+        /*
+         * Fail method with good if settings
+         */
 
         this.lastLiquidYaw = deltaYaw;
         this.lastLiquidPitch = deltaPitch;

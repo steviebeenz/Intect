@@ -73,6 +73,10 @@ public final class Intect extends JavaPlugin
         tickManager.stop();
     }
 
+    /**
+     * Return server version based on the running environment package name
+     * @return String running version
+     */
     public String getRunningVersion()
     {
         String a = getServer().getClass().getPackage().getName();
