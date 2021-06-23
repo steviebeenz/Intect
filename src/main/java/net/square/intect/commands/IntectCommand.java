@@ -139,7 +139,7 @@ public class IntectCommand implements CommandExecutor
             List<Check> collect = new ArrayList<>();
             for (Check check111 : playerStorage.getChecks())
             {
-                if (check111.getTestCount() > 0)
+                if (check111.getVerbose() > 0)
                 {
                     collect.add(check111);
                 }
@@ -155,7 +155,7 @@ public class IntectCommand implements CommandExecutor
             {
                 sender.sendMessage(
                     prefix + " §8- §7" + check.getCheckInfo().name() + " " + check.getCheckInfo().type() + " ("
-                        + check.getTestCount() + ")");
+                        + check.getVerbose() + ")");
             }
             return true;
 

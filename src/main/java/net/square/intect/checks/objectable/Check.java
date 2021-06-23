@@ -31,27 +31,27 @@ public abstract class Check implements IntectHandler, Listener
     @Getter
     private final List<Player> debugMode = Lists.newArrayList();
 
+    CheckInfo checkInfo = getCheckInfo();
+
     @Getter
-    private int testCount = 0;
+    private int verbose = 0;
 
     public void fail()
     {
 
-        CheckInfo checkInfo = getCheckInfo();
-        testCount++;
+        verbose++;
 
         Intect.getIntect().getStorageManager()
             .getVerboseMode()
             .forEach(player ->
-                         // &9&lIntect &8> &fSnxqe &7failed &fFly C &7VL[&9187&7]
                          player.sendMessage(ChatColor.translateAlternateColorCodes(
                              '&',
                              Intect.getIntect().getPrefix() + "§f" + storage.getPlayer()
                                  .getName() + " §7failed §f" + checkInfo.name() +
-                                 " " + checkInfo.type() + " §7VL[§9" + testCount + "§7]"
+                                 " " + checkInfo.type() + " §7VL[§9" + verbose + "§7]"
                          )));
 
-        if (testCount > checkInfo.maxVL() && !checkInfo.experimental())
+        if (verbose > checkInfo.maxVL() && !checkInfo.experimental())
         {
 
             Bukkit.broadcastMessage(
@@ -65,7 +65,7 @@ public abstract class Check implements IntectHandler, Listener
                                     + "" + checkInfo.name() + "(T" + checkInfo.type()
                                     + ")/" + UUID.randomUUID()));
 
-            testCount = 0;
+            verbose = 0;
         }
     }
 
