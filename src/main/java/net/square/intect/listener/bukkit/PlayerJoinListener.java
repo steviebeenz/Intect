@@ -1,7 +1,6 @@
 package net.square.intect.listener.bukkit;
 
 import net.square.intect.Intect;
-import net.square.intect.processor.manager.UpdateManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -19,7 +18,7 @@ public class PlayerJoinListener implements Listener
         }
 
         int running = Integer.parseInt(Intect.getIntect().getDescription().getVersion());
-        int latest = UpdateManager.getLatestBuild();
+        int latest = Intect.getIntect().getUpdateManager().getLatestBuild();
 
         if (running < latest)
         {

@@ -11,9 +11,9 @@ import java.nio.charset.StandardCharsets;
 public class UpdateManager
 {
 
-    private static int latestBuild = -1;
+    private int latestBuild = -1;
 
-    private static String readAll(Reader rd) throws IOException
+    private String readAll(Reader rd) throws IOException
     {
         StringBuilder sb = new StringBuilder();
         int cp;
@@ -24,27 +24,22 @@ public class UpdateManager
         return sb.toString();
     }
 
-    private static JsonObject readJsonFromUrl(String url) throws IOException
+    public JsonObject readJsonFromUrl(String url) throws IOException
     {
-        InputStream is = new URL(url).openStream();
-        try
+        try (InputStream is = new URL(url).openStream())
         {
             BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
             String jsonText = readAll(rd);
-            JsonObject json = new JsonParser().parse(jsonText).getAsJsonObject();
-            return json;
-        } finally
-        {
-            is.close();
+            return new JsonParser().parse(jsonText).getAsJsonObject();
         }
     }
 
-    public static int getLatestBuild()
+    public int getLatestBuild()
     {
         return latestBuild;
     }
 
-    public static void init()
+    public void performCheck()
     {
         try
         {
@@ -54,16 +49,14 @@ public class UpdateManager
         {
             latestBuild = -1;
         }
-        Intect.getIntect().getServer().getScheduler().runTaskTimerAsynchronously(Intect.getIntect(), () ->
-        {
-            try
-            {
-                latestBuild = readJsonFromUrl("https://jenkins.squarecode.de/job/Intect/job/master/api/json").get(
-                    "lastSuccessfulBuild").getAsJsonObject().get("number").getAsInt();
-            } catch (IOException e)
-            {
-                latestBuild = -1;
-            }
-        }, 100, 100);
+    }
+
+    public void init()
+    {
+        performCheck();
+        Intect.getIntect()
+            .getServer()
+            .getScheduler()
+            .runTaskAsynchronously(Intect.getIntect(), this::performCheck);
     }
 }
