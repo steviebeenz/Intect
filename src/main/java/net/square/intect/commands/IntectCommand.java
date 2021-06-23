@@ -282,15 +282,15 @@ public class IntectCommand implements CommandExecutor
             int mYear = calendar.get(Calendar.YEAR);
             int mMonth = calendar.get(Calendar.MONTH);
             int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+            int mHours = calendar.get(Calendar.HOUR);
             int mMinute = calendar.get(Calendar.MINUTE);
             int mSecs = calendar.get(Calendar.SECOND);
 
             if (latest)
             {
                 sender.sendMessage(
-                    String.format("%sBuild %d (LATEST) released at (%d.%d.%d - %d:%d)", prefix, running, mDay, mMonth,
-                                  mYear, mMinute,
-                                  mSecs));
+                    String.format("%sBuild %d (LATEST) released at (%d.%d.%d - %d:%d:%d)", prefix, running, mDay, mMonth,
+                                  mYear, mHours, mMinute, mSecs));
 
                 sender.sendMessage(String.format("%sChanges:", prefix));
 
@@ -317,9 +317,8 @@ public class IntectCommand implements CommandExecutor
             else
             {
                 sender.sendMessage(
-                    String.format("%sBuild %d (RUNNING) released at (%d.%d.%d - %d:%d)", prefix, running, mDay, mMonth,
-                                  mYear, mMinute,
-                                  mSecs));
+                    String.format("%sBuild %d (RUNNING) released at (%d.%d.%d - %d:%d:%d)", prefix, running, mDay, mMonth,
+                                  mYear, mHours, mMinute, mSecs));
             }
 
         } catch (IOException e)
