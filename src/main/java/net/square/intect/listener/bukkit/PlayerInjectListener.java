@@ -20,17 +20,8 @@ public class PlayerInjectListener implements Listener
     @EventHandler
     public void handle(PlayerJoinEvent event)
     {
-        long now = System.currentTimeMillis();
-
         Player player = event.getPlayer();
         PlayerStorage.storageHashMap.put(player, new PlayerStorage(player));
         this.intect.getPacketManager().getPacketReceivor().inject(player);
-
-        player.sendMessage(
-            String.format(
-                "%s§7Successfully inject storage after §a%dms", Intect.getIntect().getPrefix(),
-                System.currentTimeMillis()
-                    - now
-            ));
     }
 }
