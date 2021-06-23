@@ -23,6 +23,8 @@ public final class Intect extends JavaPlugin
     @Getter
     private final TickManager tickManager = new TickManager();
     @Getter
+    private final UpdateManager updateManager = new UpdateManager();
+    @Getter
     private static Intect intect;
     @Getter
     private final String prefix = "§8[§c§lIntect§8] §7";
@@ -41,7 +43,7 @@ public final class Intect extends JavaPlugin
         packetManager = new PacketManager(this);
         storageManager = new StorageManager();
 
-        UpdateManager.init();
+        updateManager.init();
         ModuleManager.setup();
 
         PacketEvents.create(this).load();

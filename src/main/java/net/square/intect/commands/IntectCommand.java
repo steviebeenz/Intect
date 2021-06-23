@@ -1,16 +1,20 @@
 package net.square.intect.commands;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.square.intect.Intect;
 import net.square.intect.checks.objectable.Check;
 import net.square.intect.processor.data.PlayerStorage;
-import net.square.intect.processor.manager.UpdateManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class IntectCommand implements CommandExecutor
@@ -50,6 +54,25 @@ public class IntectCommand implements CommandExecutor
             sendDefaultInfo(sender);
             return true;
 
+        }
+        else if (var0.equalsIgnoreCase("update"))
+        {
+            sender.sendMessage(prefix + "§7Fetching newest version...");
+            intect.getServer().getScheduler().runTaskAsynchronously(intect, () ->
+            {
+                intect.getUpdateManager().performCheck();
+
+                int latest = intect.getUpdateManager().getLatestBuild();
+                int running = Integer.parseInt(intect.getDescription().getVersion());
+
+                fetchMoreInformation(running, sender, prefix, false);
+                fetchMoreInformation(latest, sender, prefix, true);
+
+                String s1 = formatBuildGeneric(running, latest);
+                sender.sendMessage(
+                    prefix + "Running Intect Build-" + running + " (" + s1.toLowerCase() + ")");
+
+            });
         }
         else if (var0.equalsIgnoreCase("verbose"))
         {
@@ -227,6 +250,7 @@ public class IntectCommand implements CommandExecutor
             sendDefaultCommandOverview(sender);
             return true;
         }
+        return true;
     }
 
     private void sendDefaultCommandOverview(CommandSender sender)
@@ -235,11 +259,74 @@ public class IntectCommand implements CommandExecutor
         final String prefix = Intect.getIntect().getPrefix();
 
         sender.sendMessage(prefix + "Available subcommands:");
+        sender.sendMessage(prefix + "/intect update: Checks for update");
         sender.sendMessage(prefix + "/intect version: Show default info");
         sender.sendMessage(prefix + "/intect verbose: Enable or disable verbose output");
         sender.sendMessage(prefix + "/intect diagnostics: Show intect diagnostics");
         sender.sendMessage(prefix + "/intect debug modulename-type: Output debug for module");
         sender.sendMessage(prefix + "/intect info playername: Get information about a player");
+    }
+
+    private void fetchMoreInformation(int running, CommandSender sender, String prefix, boolean latest)
+    {
+        try
+        {
+            JsonObject run = intect.getUpdateManager()
+                .readJsonFromUrl("https://jenkins.squarecode.de/job/Intect/job/master/" + running + "/api/json");
+
+            long timestamp = run.get("timestamp").getAsLong();
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(timestamp);
+
+            int mYear = calendar.get(Calendar.YEAR);
+            int mMonth = calendar.get(Calendar.MONTH);
+            int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+            int mMinute = calendar.get(Calendar.MINUTE);
+            int mSecs = calendar.get(Calendar.SECOND);
+
+            if (latest)
+            {
+                sender.sendMessage(
+                    String.format("%sBuild %d (LATEST) released at (%d.%d.%d - %d:%d)", prefix, running, mDay, mMonth,
+                                  mYear, mMinute,
+                                  mSecs));
+
+                sender.sendMessage(String.format("%sChanges:", prefix));
+
+                JsonObject latestCommits = intect.getUpdateManager()
+                    .readJsonFromUrl(
+                        String.format("https://jenkins.squarecode.de/job/Intect/job/master/%d/api/json", running));
+
+                JsonArray changeSets = latestCommits.get("changeSets").getAsJsonArray();
+                for (JsonElement changeSet : changeSets)
+                {
+                    JsonObject asJsonObject = changeSet.getAsJsonObject();
+
+                    int i = 1;
+
+                    for (JsonElement items : asJsonObject.get("items").getAsJsonArray())
+                    {
+                        String msg = items.getAsJsonObject().get("msg").getAsString();
+
+                        sender.sendMessage("§7#" + i + " - " + msg);
+                        i++;
+                    }
+                }
+            }
+            else
+            {
+                sender.sendMessage(
+                    String.format("%sBuild %d (RUNNING) released at (%d.%d.%d - %d:%d)", prefix, running, mDay, mMonth,
+                                  mYear, mMinute,
+                                  mSecs));
+            }
+
+        } catch (IOException e)
+        {
+            sender.sendMessage(String.format("%sYour version: Build-%d (ERROR|IN|REQ)", prefix, running));
+            sender.sendMessage(String.format("%sError: %s", prefix, e.getMessage()));
+        }
     }
 
     private void sendDefaultInfo(CommandSender sender)
@@ -252,12 +339,8 @@ public class IntectCommand implements CommandExecutor
         sender.sendMessage(prefix + "Visit our website for a full list of contributors");
     }
 
-    private void sendIntectVer(CommandSender sender, String prefix)
+    private String formatBuildGeneric(int running, int latest)
     {
-
-        int running = Integer.parseInt(intect.getDescription().getVersion());
-        int latest = UpdateManager.getLatestBuild();
-
         String message;
         if (latest == -1)
         {
@@ -276,8 +359,18 @@ public class IntectCommand implements CommandExecutor
             int var = latest - running;
             message = "Outdated (" + var + " versions behind)";
         }
+        return message;
+    }
+
+    private void sendIntectVer(CommandSender sender, String prefix)
+    {
+
+        int running = Integer.parseInt(intect.getDescription().getVersion());
+        int latest = intect.getUpdateManager().getLatestBuild();
+
+        String s = formatBuildGeneric(running, latest);
 
         sender.sendMessage(
-            prefix + "Running Intect Build#" + running + " (" + message.toLowerCase() + ")");
+            prefix + "Running Intect Build#" + running + " (" + s.toLowerCase() + ")");
     }
 }
