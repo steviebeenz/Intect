@@ -156,4 +156,10 @@ public class ReceivorV1_8_R3 implements PacketReceivor
             channel.pipeline().remove("PacketInjector");
         }
     }
+
+    @Override
+    public String getName()
+    {
+        return "V1_8_R3";
+    }
 }

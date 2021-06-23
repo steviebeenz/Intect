@@ -7,7 +7,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-public class BukkitInteractListener implements Listener
+public class PlayerInteractListener implements Listener
 {
 
     @EventHandler

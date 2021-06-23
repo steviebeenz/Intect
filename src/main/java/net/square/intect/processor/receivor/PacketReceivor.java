@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 
 public interface PacketReceivor
 {
+    String getName();
 
     void inject(Player player);
 

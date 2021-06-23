@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.square.intect.Intect;
 import net.square.intect.checks.objectable.Check;
+import net.square.intect.menu.MainMenu;
 import net.square.intect.processor.data.PlayerStorage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -48,7 +49,20 @@ public class IntectCommand implements CommandExecutor
         // -> /intect <var0> <var1> <var2>
         final String var0 = args[0];
 
-        if (var0.equalsIgnoreCase("version"))
+        if (var0.equalsIgnoreCase("gui"))
+        {
+
+            if (!(sender instanceof Player))
+            {
+                sender.sendMessage(prefix + "§cYou must be a player to open a gui");
+                return true;
+            }
+
+            MainMenu.init((((Player) sender).getPlayer()));
+            return true;
+
+        }
+        else if (var0.equalsIgnoreCase("version"))
         {
 
             sendDefaultInfo(sender);
@@ -73,6 +87,7 @@ public class IntectCommand implements CommandExecutor
                     prefix + "Running Intect Build-" + running + " (" + s1.toLowerCase() + ")");
 
             });
+            return true;
         }
         else if (var0.equalsIgnoreCase("verbose"))
         {
@@ -250,7 +265,6 @@ public class IntectCommand implements CommandExecutor
             sendDefaultCommandOverview(sender);
             return true;
         }
-        return true;
     }
 
     private void sendDefaultCommandOverview(CommandSender sender)
@@ -259,6 +273,7 @@ public class IntectCommand implements CommandExecutor
         final String prefix = Intect.getIntect().getPrefix();
 
         sender.sendMessage(prefix + "Available subcommands:");
+        sender.sendMessage(prefix + "/intect gui: Open main menu");
         sender.sendMessage(prefix + "/intect update: Checks for update");
         sender.sendMessage(prefix + "/intect version: Show default info");
         sender.sendMessage(prefix + "/intect verbose: Enable or disable verbose output");
@@ -289,7 +304,8 @@ public class IntectCommand implements CommandExecutor
             if (latest)
             {
                 sender.sendMessage(
-                    String.format("%sBuild %d (LATEST) released at (%d.%d.%d - %d:%d:%d)", prefix, running, mDay, mMonth,
+                    String.format("%sBuild %d (LATEST) released at (%d.%d.%d - %d:%d:%d)", prefix, running, mDay,
+                                  mMonth,
                                   mYear, mHours, mMinute, mSecs));
 
                 sender.sendMessage(String.format("%sChanges:", prefix));
@@ -317,7 +333,8 @@ public class IntectCommand implements CommandExecutor
             else
             {
                 sender.sendMessage(
-                    String.format("%sBuild %d (RUNNING) released at (%d.%d.%d - %d:%d:%d)", prefix, running, mDay, mMonth,
+                    String.format("%sBuild %d (RUNNING) released at (%d.%d.%d - %d:%d:%d)", prefix, running, mDay,
+                                  mMonth,
                                   mYear, mHours, mMinute, mSecs));
             }
 
