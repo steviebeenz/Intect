@@ -4,11 +4,10 @@ import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.Setter;
 import net.square.intect.Intect;
-import net.square.intect.processor.custom.PositionProcessor;
 import net.square.intect.processor.data.PlayerStorage;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
@@ -44,30 +43,19 @@ public abstract class Check implements IntectHandler, Listener
         Intect.getIntect().getStorageManager()
             .getVerboseMode()
             .forEach(player ->
+                         // &9&lIntect &8> &fSnxqe &7failed &fFly C &7VL[&9187&7]
                          player.sendMessage(ChatColor.translateAlternateColorCodes(
                              '&',
-                             Intect.getIntect().getPrefix() + "§7" + storage.getPlayer()
-                                 .getName() + " failed §c" + checkInfo.name() +
-                                 " " + checkInfo.type() + " §7(Vl:" + testCount + ")"
+                             Intect.getIntect().getPrefix() + "§f" + storage.getPlayer()
+                                 .getName() + " §7failed §f" + checkInfo.name() +
+                                 " " + checkInfo.type() + " §7VL[§9" + testCount + "§7]"
                          )));
 
         if (testCount > checkInfo.maxVL() && !checkInfo.experimental())
         {
-            Intect.getIntect()
-                .getServer()
-                .getOnlinePlayers()
-                .forEach(player ->
-                         {
-                             if (player.hasPermission(
-                                 "intect.admin.notify"))
-                             {
-                                 player.sendMessage(
-                                     Intect.getIntect().getPrefix()
-                                         + "§c§lINFO §c"
-                                         + storage.getPlayer().getName()
-                                         + " §7is attacking suspiciously");
-                             }
-                         });
+
+            Bukkit.broadcastMessage(
+                Intect.getIntect().getPrefix() + "§f" + storage.getPlayer().getName() + " §7was removed for cheating.");
 
             Intect.getIntect()
                 .getServer()

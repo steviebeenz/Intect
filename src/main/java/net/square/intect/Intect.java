@@ -27,7 +27,7 @@ public final class Intect extends JavaPlugin
     @Getter
     private static Intect intect;
     @Getter
-    private final String prefix = "§8[§c§lIntect§8] §7";
+    private final String prefix = "§9§lIntect §8> §7";
 
     @Override
     public void onEnable()
