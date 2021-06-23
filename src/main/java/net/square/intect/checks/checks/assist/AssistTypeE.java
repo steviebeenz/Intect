@@ -20,6 +20,9 @@ public class AssistTypeE extends Check
     @Override
     public void handle(IntectPacket packet)
     {
+
+        if (shouldBypass()) return;
+
         if (packet.getRawPacket() instanceof PacketPlayInFlying.PacketPlayInPositionLook)
         {
 

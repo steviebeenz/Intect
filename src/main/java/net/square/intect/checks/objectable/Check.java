@@ -8,6 +8,7 @@ import net.square.intect.processor.data.PlayerStorage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
@@ -38,8 +39,18 @@ public abstract class Check implements IntectHandler, Listener
 
     public void fail()
     {
-
         verbose++;
+
+        Bukkit.getScheduler().runTaskAsynchronously(Intect.getIntect(), () ->
+        {
+            Player currentPlayer = this.getPlayer();
+
+            Intect.getIntect()
+                .getMySQLManager()
+                .createLog(currentPlayer.getUniqueId(), currentPlayer.getName(), checkInfo.name(),
+                           verbose,
+                           ((CraftPlayer) currentPlayer).getHandle().ping);
+        });
 
         Intect.getIntect().getStorageManager()
             .getVerboseMode()
@@ -48,7 +59,7 @@ public abstract class Check implements IntectHandler, Listener
                              '&',
                              Intect.getIntect().getPrefix() + "§f" + storage.getPlayer()
                                  .getName() + " §7failed §f" + checkInfo.name() +
-                                 " " + checkInfo.type() + " §7VL[§9" + verbose + "§7]"
+                                 " " + checkInfo.maxVL() + checkInfo.type() + " §7VL[§9" + verbose + "§7]"
                          )));
 
         if (verbose > checkInfo.maxVL() && !checkInfo.experimental())
@@ -61,7 +72,7 @@ public abstract class Check implements IntectHandler, Listener
                 .getServer()
                 .getScheduler()
                 .runTask(Intect.getIntect(), () -> storage.getPlayer()
-                    .kickPlayer(Intect.getIntect().getPrefix() + "Intect-AI (Heuristics)\n"
+                    .kickPlayer(Intect.getIntect().getPrefix() + "Intect-AI (Combat)\n"
                                     + "" + checkInfo.name() + "(T" + checkInfo.type()
                                     + ")/" + UUID.randomUUID()));
 

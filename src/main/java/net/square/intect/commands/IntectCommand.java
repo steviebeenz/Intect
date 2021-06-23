@@ -110,7 +110,6 @@ public class IntectCommand implements CommandExecutor
             }
             else
             {
-
                 this.intect.getStorageManager().getVerboseMode().add(player);
                 player.sendMessage(prefix + "You are §anow §7receiving verbose output");
 

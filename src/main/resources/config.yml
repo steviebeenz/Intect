@@ -1,0 +1,35 @@
+# Violation logging
+logging:
+
+  # Should Intect send you ingame a message if a new update is available?
+  alert-updates: true
+
+  # Log links for /logs <logs> command
+  # All Hastebin servers that can be used for a log upload are listed here.
+  # This list is processed one after the other. If the first one does not work out, another one will be
+  # Server used to upload the logs.
+  logs-links:
+    - "https://paste.squarecode.de/documents"
+    - "https://paste.it-lampe.de/documents"
+    - "https://paste.mediahosting.io/documents"
+
+# Enable it for much more functions in intect
+mysql:
+
+  # Table prefix
+  prefix: "intect_"
+
+  # Address
+  address: "connection"
+
+  # Database name
+  database: "database"
+
+  # Username for login credentials
+  username: "username"
+
+  # Password for @username for login credentials
+  password: "password"
+
+  # Port for mysql
+  port: 3306

@@ -1,5 +1,7 @@
 package net.square.intect.listener.bukkit;
 
+import net.square.intect.Intect;
+import net.square.intect.handler.database.MySQLManager;
 import net.square.intect.menu.MainMenu;
 import net.square.intect.menu.ResourceMenu;
 import org.bukkit.Material;
@@ -71,6 +73,10 @@ public class PlayerInventoryListener implements Listener
             }
             else if (type == Material.PAPER && itemName.equalsIgnoreCase("§9Information"))
             {
+                MySQLManager mySQLManager = Intect.getIntect().getMySQLManager();
+
+                mySQLManager.logs = mySQLManager.getLogsCount();
+
                 MainMenu.init(player);
             }
         }

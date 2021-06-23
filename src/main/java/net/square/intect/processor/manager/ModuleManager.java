@@ -48,8 +48,6 @@ public class ModuleManager
 
     private static final List<Constructor<?>> CONSTRUCTORS = new ArrayList<>();
 
-
-
     public static List<Check> loadChecks(final PlayerStorage data)
     {
         final List<Check> checkList = new ArrayList<>();

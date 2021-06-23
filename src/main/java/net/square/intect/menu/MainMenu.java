@@ -55,11 +55,9 @@ public class MainMenu
         information.add("");
         information.add("§9Adapter: §f" + Intect.getIntect().getPacketManager().getPacketReceivor().getName());
         information.add("§9Build: §fBuild#" + Intect.getIntect().getDescription().getVersion());
-        information.add("§9Storage: §fSQLITE");
-        information.add("§9Discord: §cDisabled");
+        information.add("§9Storage: §fMYSQL");
         information.add("");
-        information.add("§9Total Bans: §cNo database");
-        information.add("§9Total Logs: §cNo database");
+        information.add("§9Total Logs: §f"+Intect.getIntect().getMySQLManager().logs);
         information.add("");
         information.add("§7Click to refresh");
         inventory.setItem(13, ItemAPI.getItem(Material.PAPER, "§9Information", 1, information));

@@ -20,7 +20,10 @@ public class PlayerJoinListener implements Listener
         int running = Integer.parseInt(Intect.getIntect().getDescription().getVersion());
         int latest = Intect.getIntect().getUpdateManager().getLatestBuild();
 
-        if (running < latest)
+        if (running < latest && Intect.getIntect()
+            .getConfigHandler()
+            .getYamlConfiguration()
+            .getBoolean("logging.alert-updates"))
         {
             event.getPlayer().sendMessage(
                 Intect.getIntect().getPrefix() + "You`re §9" + (latest - running) + " §7Intect build(s) out of date!");

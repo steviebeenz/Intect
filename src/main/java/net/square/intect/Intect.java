@@ -3,6 +3,9 @@ package net.square.intect;
 import io.github.retrooper.packetevents.PacketEvents;
 import lombok.Getter;
 import net.square.intect.commands.IntectCommand;
+import net.square.intect.commands.LogsCommand;
+import net.square.intect.handler.config.ConfigHandler;
+import net.square.intect.handler.database.MySQLManager;
 import net.square.intect.listener.bukkit.*;
 import net.square.intect.processor.manager.*;
 import net.square.intect.utils.metrics.Metrics;
@@ -18,6 +21,10 @@ public final class Intect extends JavaPlugin
     @Getter
     private StorageManager storageManager;
     @Getter
+    private MySQLManager mySQLManager;
+    @Getter
+    private ConfigHandler configHandler;
+    @Getter
     private final TickManager tickManager = new TickManager();
     @Getter
     private final UpdateManager updateManager = new UpdateManager();
@@ -27,19 +34,30 @@ public final class Intect extends JavaPlugin
     private final String prefix = "§9§lIntect §8> §7";
 
     @Override
+    public void onLoad()
+    {
+        this.configHandler = new ConfigHandler(this);
+    }
+
+    @Override
     public void onEnable()
     {
-
         // Plugin startup logic
+
+        final double now = System.currentTimeMillis();
 
         this.getLogger().log(Level.INFO, "Trying to start intect...");
 
-        final double now = System.currentTimeMillis();
         intect = this;
 
         packetManager = new PacketManager(this);
         storageManager = new StorageManager();
-
+        this.mySQLManager = new MySQLManager(this.configHandler.getYamlConfiguration().getString("mysql.address"),
+                                             this.configHandler.getYamlConfiguration().getString("mysql.database"),
+                                             this.configHandler.getYamlConfiguration().getString("mysql.username"),
+                                             this.configHandler.getYamlConfiguration().getString("mysql.password"),
+                                             this.configHandler.getYamlConfiguration().getInt("mysql.port"),
+                                             this.configHandler.getYamlConfiguration().getString("mysql.prefix"));
         updateManager.init();
         ModuleManager.setup();
 
@@ -54,6 +72,7 @@ public final class Intect extends JavaPlugin
         this.getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
 
         this.getCommand("intect").setExecutor(new IntectCommand(this));
+        this.getCommand("logs").setExecutor(new LogsCommand());
 
         tickManager.start();
 
@@ -71,10 +90,12 @@ public final class Intect extends JavaPlugin
         // Plugin shutdown logic
 
         tickManager.stop();
+        mySQLManager.close();
     }
 
     /**
      * Return server version based on the running environment package name
+     *
      * @return String running version
      */
     public String getRunningVersion()
