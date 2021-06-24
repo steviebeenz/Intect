@@ -140,7 +140,7 @@ public class IntectCommand implements CommandExecutor
 
             sender.sendMessage("");
 
-            sender.sendMessage(String.format("%s§7Information about §c%s", prefix, target.getName()));
+            sender.sendMessage(String.format("%s§7Information about §f%s", prefix, target.getName()));
             sender.sendMessage(String.format("%s§7UUID %s", prefix, target.getUniqueId().toString().replace("-", "")));
             sender.sendMessage(
                 String.format("%s§7Address %s", prefix, target.getAddress().getAddress().getHostAddress()));
