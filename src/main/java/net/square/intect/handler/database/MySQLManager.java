@@ -71,11 +71,9 @@ public class MySQLManager
              Statement statement = connection.createStatement())
         {
             statement.execute(
-                String.format(
-                    "INSERT INTO " + prefix + "logs(uuid, name, timestamp, checkType, violations, ping) "
-                        + "VALUES ('%s', '%s', '%d', '%s', '%d', '%d');",
-                    uuid, username, System.currentTimeMillis(), check, vio, ping
-                ));
+                "INSERT INTO " + prefix + "logs(uuid, name, timestamp , checkType, violations, ping) VALUES "
+                    + "('" + uuid + "', '" + username + "', '" + System.currentTimeMillis() + "', '" + check + "', '"
+                    + vio + "', '" + ping + "')");
         } catch (SQLException exception)
         {
             exception.printStackTrace();

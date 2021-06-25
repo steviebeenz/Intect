@@ -11,6 +11,8 @@ import net.square.intect.processor.manager.*;
 import net.square.intect.utils.metrics.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 
 public final class Intect extends JavaPlugin
@@ -24,6 +26,8 @@ public final class Intect extends JavaPlugin
     private MySQLManager mySQLManager;
     @Getter
     private ConfigHandler configHandler;
+    @Getter
+    private ExecutorService service = Executors.newCachedThreadPool();
     @Getter
     private final TickManager tickManager = new TickManager();
     @Getter

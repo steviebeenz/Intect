@@ -151,6 +151,9 @@ public class ReceivorV1_8_R3 implements PacketReceivor
     public void uninject(Player player)
     {
         Channel channel = channelHashMap.get(player);
+
+        if(channel == null) return;
+
         if (channel.pipeline().get("PacketInjector") != null)
         {
             channel.pipeline().remove("PacketInjector");

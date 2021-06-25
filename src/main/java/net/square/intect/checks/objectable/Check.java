@@ -41,23 +41,24 @@ public abstract class Check implements IntectHandler, Listener
     {
         verbose++;
 
-        Bukkit.getScheduler().runTaskAsynchronously(Intect.getIntect(), () ->
-        {
-            Player currentPlayer = this.getPlayer();
+        Player currentPlayer = getPlayer();
 
-            Intect.getIntect()
-                .getMySQLManager()
-                .createLog(currentPlayer.getUniqueId(), currentPlayer.getName(), checkInfo.name(),
-                           verbose,
-                           ((CraftPlayer) currentPlayer).getHandle().ping);
-        });
+        if (currentPlayer == null) return;
 
-        Intect.getIntect().getStorageManager()
+        Intect intect = Intect.getIntect();
+
+        intect.getService().submit(() -> intect
+            .getMySQLManager()
+            .createLog(currentPlayer.getUniqueId(), currentPlayer.getName(), checkInfo.name(),
+                       verbose,
+                       ((CraftPlayer) currentPlayer).getHandle().ping));
+
+        intect.getStorageManager()
             .getVerboseMode()
             .forEach(player ->
                          player.sendMessage(ChatColor.translateAlternateColorCodes(
                              '&',
-                             Intect.getIntect().getPrefix() + "§f" + storage.getPlayer()
+                             intect.getPrefix() + "§f" + currentPlayer
                                  .getName() + " §7failed §f" + checkInfo.name() +
                                  " " + checkInfo.maxVL() + checkInfo.type() + " §7VL[§9" + verbose + "§7]"
                          )));
@@ -66,17 +67,15 @@ public abstract class Check implements IntectHandler, Listener
         {
 
             Bukkit.broadcastMessage(
-                Intect.getIntect().getPrefix() + "§f" + storage.getPlayer().getName() + " §7was removed for cheating.");
+                intect.getPrefix() + "§f" + currentPlayer.getName() + " §7was removed for cheating.");
 
-            Intect.getIntect()
+            intect
                 .getServer()
                 .getScheduler()
-                .runTask(Intect.getIntect(), () -> storage.getPlayer()
-                    .kickPlayer(Intect.getIntect().getPrefix() + "Intect-AI (Combat)\n"
+                .runTask(intect, () -> storage.getPlayer()
+                    .kickPlayer(intect.getPrefix() + "Intect-AI (Combat)\n"
                                     + "" + checkInfo.name() + "(T" + checkInfo.type()
                                     + ")/" + UUID.randomUUID()));
-
-            verbose = 0;
         }
     }
 
