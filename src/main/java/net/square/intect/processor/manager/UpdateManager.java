@@ -57,6 +57,6 @@ public class UpdateManager
         Intect.getIntect()
             .getServer()
             .getScheduler()
-            .runTaskAsynchronously(Intect.getIntect(), this::performCheck);
+            .runTaskTimerAsynchronously(Intect.getIntect(), this::performCheck, 200, 200);
     }
 }

@@ -1,59 +1,24 @@
 package net.square.intect.utils.objectable;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.util.Vector;
 
-@Getter
-@Setter
-public final class CustomLocation
+public class CustomLocation
 {
 
-    private World world;
-    private double x, y, z;
-    private float yaw, pitch;
-    private boolean onGround;
-    private long timeStamp;
+    private double x;
+    private double y;
+    private double z;
 
-    public CustomLocation(World world, double x, double y, double z, float yaw, float pitch, boolean onGround)
+    private float yaw;
+    private float pitch;
+
+    public CustomLocation(double x, double y, double z, float yaw, float pitch)
     {
-        this.world = world;
         this.x = x;
         this.y = y;
         this.z = z;
         this.yaw = yaw;
         this.pitch = pitch;
-        this.onGround = onGround;
-        this.timeStamp = System.currentTimeMillis();
-    }
-
-    public Vector toVector()
-    {
-        return new Vector(x, y, z);
-    }
-
-    public CustomLocation offset(double x, double y, double z, float yaw, float pitch)
-    {
-        return new CustomLocation(world, this.x + x, this.y + y, this.z + z, this.yaw + yaw, this.pitch + pitch,
-                                  this.onGround);
-    }
-
-    public CustomLocation clone()
-    {
-        return new CustomLocation(world, x, y, z, yaw, pitch, onGround);
-    }
-
-    public static CustomLocation fromBukkit(Location location)
-    {
-        return new CustomLocation(location.getWorld(), location.getX(), location.getY(), location.getZ(),
-                                  location.getYaw(), location.getPitch(), false);
-    }
-
-    public Location toBukkit()
-    {
-        return new Location(world, x, y, z);
     }
 
     public Vector getDirection()
@@ -66,5 +31,55 @@ public final class CustomLocation
         vector.setX(-xz * Math.sin(Math.toRadians(rotX)));
         vector.setZ(xz * Math.cos(Math.toRadians(rotX)));
         return vector;
+    }
+
+    public double getX()
+    {
+        return x;
+    }
+
+    public void setX(double x)
+    {
+        this.x = x;
+    }
+
+    public double getY()
+    {
+        return y;
+    }
+
+    public void setY(double y)
+    {
+        this.y = y;
+    }
+
+    public double getZ()
+    {
+        return z;
+    }
+
+    public void setZ(double z)
+    {
+        this.z = z;
+    }
+
+    public float getYaw()
+    {
+        return yaw;
+    }
+
+    public void setYaw(float yaw)
+    {
+        this.yaw = yaw;
+    }
+
+    public float getPitch()
+    {
+        return pitch;
+    }
+
+    public void setPitch(float pitch)
+    {
+        this.pitch = pitch;
     }
 }

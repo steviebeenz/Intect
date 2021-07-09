@@ -8,12 +8,10 @@ import net.square.intect.processor.data.PlayerStorage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -37,9 +35,16 @@ public abstract class Check implements IntectHandler, Listener
     @Getter
     private int verbose = 0;
 
-    public void fail()
+    private double buffer = 0.0;
+
+    private boolean kicked = false;
+
+    public void fail(String message, String information, int points)
     {
-        verbose++;
+
+        if(kicked) return;
+
+        verbose = verbose + points;
 
         Player currentPlayer = getPlayer();
 
@@ -47,36 +52,44 @@ public abstract class Check implements IntectHandler, Listener
 
         Intect intect = Intect.getIntect();
 
-        intect.getService().submit(() -> intect
-            .getMySQLManager()
-            .createLog(currentPlayer.getUniqueId(), currentPlayer.getName(), checkInfo.name(),
-                       verbose,
-                       ((CraftPlayer) currentPlayer).getHandle().ping));
+        final String msg = information == null ? "" : "(" + information + ")";
 
-        intect.getStorageManager()
-            .getVerboseMode()
-            .forEach(player ->
-                         player.sendMessage(ChatColor.translateAlternateColorCodes(
-                             '&',
-                             intect.getPrefix() + "§f" + currentPlayer
-                                 .getName() + " §7failed §f" + checkInfo.name() +
-                                 " " + checkInfo.maxVL() + checkInfo.type() + " §7VL[§9" + verbose + "§7]"
-                         )));
-
-        if (verbose > checkInfo.maxVL() && !checkInfo.experimental())
+        for (Player player1 : intect.getStorageManager()
+            .getVerboseMode())
         {
-
-            Bukkit.broadcastMessage(
-                intect.getPrefix() + "§f" + currentPlayer.getName() + " §7was removed for cheating.");
-
-            intect
-                .getServer()
-                .getScheduler()
-                .runTask(intect, () -> storage.getPlayer()
-                    .kickPlayer(intect.getPrefix() + "Intect-AI (Combat)\n"
-                                    + "" + checkInfo.name() + "(T" + checkInfo.type()
-                                    + ")/" + UUID.randomUUID()));
+            player1.sendMessage(ChatColor.translateAlternateColorCodes(
+                '&',
+                String.format("%s§7Verbose: %s %s and failed %s %s(+%d - %d)", intect.getPrefix(),
+                              currentPlayer.getName(), message, checkInfo.name(), msg, points, verbose)
+            ));
         }
+
+        if (verbose >= checkInfo.maxVL() && !checkInfo.experimental())
+        {
+            kicked = true;
+
+            intect.getServer().getScheduler().runTask(intect, () ->
+            {
+                for (Player player : Bukkit.getOnlinePlayers())
+                {
+                    if (player.hasPermission("intect.admin.notify"))
+                    {
+                        player.sendMessage(intect.getPrefix() + "§c§lNotify §c" + currentPlayer.getName()
+                                               + " §7has been removed for attacking suspiciously");
+                    }
+                }
+                storage.getPlayer()
+                    .kickPlayer(intect.getPrefix() + "§7Attacking suspiciously");
+            });
+        }
+    }
+
+    public double increaseBuffer() {
+        return buffer = Math.min(10000, buffer + 1);
+    }
+
+    public void decreaseBufferBy(final double amount) {
+        buffer = Math.max(0, buffer - amount);
     }
 
     public CheckInfo getCheckInfo()
@@ -122,6 +135,7 @@ public abstract class Check implements IntectHandler, Listener
         return System.currentTimeMillis();
     }
 
+    @SuppressWarnings("unused")
     public long elapsed(long now, long start)
     {
         return now - start;

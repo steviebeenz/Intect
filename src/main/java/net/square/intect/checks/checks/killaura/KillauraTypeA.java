@@ -1,104 +1,63 @@
 package net.square.intect.checks.checks.killaura;
 
 import io.github.retrooper.packetevents.packetwrappers.NMSPacket;
-import io.github.retrooper.packetevents.packetwrappers.play.in.useentity.WrappedPacketInUseEntity;
+import io.github.retrooper.packetevents.packetwrappers.play.in.flying.WrappedPacketInFlying;
 import net.minecraft.server.v1_8_R3.PacketPlayInFlying;
-import net.minecraft.server.v1_8_R3.PacketPlayInUseEntity;
 import net.square.intect.checks.objectable.Check;
 import net.square.intect.checks.objectable.CheckInfo;
 import net.square.intect.checks.objectable.IntectPacket;
 import net.square.intect.processor.data.PlayerStorage;
-import net.square.intect.utils.objectable.AABB;
-import net.square.intect.utils.objectable.Ray;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
+import net.square.intect.utils.PlayerUtil;
+import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@CheckInfo(name = "Killaura", type = "A", description = "Makes a attack raytrace", maxVL = 20)
+@CheckInfo(name = "Killaura", type = "A", description = "Looking for invalid acceleration", maxVL = 20)
 public class KillauraTypeA extends Check
 {
-
     public KillauraTypeA(PlayerStorage data)
     {
         super(data);
     }
 
-    private boolean combat = false;
-
-    private final List<Double> distances = new ArrayList<>();
-
-    private long lastFlying = 0;
-
-    private int attackRaytraceThreshold = 0;
-
     @Override
     public void handle(IntectPacket packet)
     {
 
-        if (shouldBypass()) return;
+        if(shouldBypass()) return;
 
-        if (packet.getRawPacket() instanceof PacketPlayInUseEntity)
-        {
-
-            WrappedPacketInUseEntity packetPlayInUseEntity = new WrappedPacketInUseEntity(
-                new NMSPacket(packet.getRawPacket()));
-
-            Entity entity = packetPlayInUseEntity.getEntity();
-
-            if (!(entity instanceof LivingEntity)) return;
-
-            combat = true;
-
+        if(!(packet.getRawPacket() instanceof PacketPlayInFlying)) {
+            return;
         }
-        else if (packet.getRawPacket() instanceof PacketPlayInFlying.PacketPlayInPositionLook)
+
+        WrappedPacketInFlying wrapped = new WrappedPacketInFlying(new NMSPacket(packet.getRawPacket()));
+
+        if (wrapped.isLook() && getStorage().getCombatProcessor().getHitTicks() < 3)
         {
 
-            if (!combat) return;
+            final double deltaXZ = getStorage().getPositionProcessor().getDeltaXZ();
+            final double lastDeltaXZ = getStorage().getPositionProcessor().getLastDeltaXZ();
 
-            if (distances.size() >= 5) distances.remove(0);
+            final double acceleration = Math.abs(deltaXZ - lastDeltaXZ);
 
-            if (elapsed(System.nanoTime() / 1000000, lastFlying) <= 500)
+            final boolean sprinting = getStorage().getActionProcessor().isSprinting();
+
+            final boolean target = getStorage().getCombatProcessor().getTarget() != null &&
+                getStorage().getCombatProcessor().getTarget() instanceof Player;
+
+            final double baseSpeed = PlayerUtil.getBaseSpeed(getPlayer());
+
+            final boolean invalid = acceleration < .0025 && sprinting && target && deltaXZ > baseSpeed;
+
+            if (invalid)
             {
-
-                combat = false;
-
-                Ray ray = Ray.from(packet.getPlayer());
-                double dist = AABB.from(getStorage()
-                                            .getCombatProcessor().getTarget()).collidesD(ray,
-                                                                                         0, 10
-                );
-
-                if (dist != -1) distances.add(dist);
-
-                if (distances.size() >= 5)
+                if (increaseBuffer() > 5)
                 {
-
-                    double total = 0;
-                    double avgReach = 0;
-
-                    for (int i = 0; i < distances.size(); i++)
-                    {
-                        total += distances.get(i);
-                        avgReach = total / distances.size();
-                    }
-
-                    double maxAvgReach = 4.5;
-                    double maxDistance = 4.8;
-
-                    if (avgReach >= maxAvgReach && dist >= maxDistance)
-                    {
-                        if (++attackRaytraceThreshold > 1)
-                        {
-                            fail();
-                        }
-                    }
-                    else
-                        attackRaytraceThreshold = 0;
+                    fail("moved invalid", String.format("accel=%.4f dXZ=%.4f", acceleration, deltaXZ), 1);
                 }
             }
-            lastFlying = (System.nanoTime() / 1000000);
+            else
+            {
+                decreaseBufferBy(.45);
+            }
         }
     }
 }

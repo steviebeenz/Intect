@@ -17,8 +17,6 @@ public class HeuristicsTypeB extends Check
         super(data);
     }
 
-    private int threshold = 0;
-
     @EventHandler
     public void handle(PlayerMoveEvent event)
     {
@@ -38,16 +36,14 @@ public class HeuristicsTypeB extends Check
 
         if (gcd < 131072.0f)
         {
-            if (++threshold > 2)
+            if (increaseBuffer() > 2)
             {
-                threshold--;
-
-                fail();
+                fail("rotate invalid", String.format("gcd %.3f < 131072.0", gcd), 1);
             }
         }
-        else if (threshold > 0)
+        else
         {
-            --threshold;
+            decreaseBufferBy(0.25);
         }
     }
 

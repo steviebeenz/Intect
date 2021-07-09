@@ -16,7 +16,7 @@ public class TickManager implements Runnable
     {
         assert task == null : "TickProcessor has already been started!";
 
-        task = Bukkit.getScheduler().runTaskTimer(Intect.getIntect(), this, 0L, 1L);
+        task = Bukkit.getScheduler().runTaskTimerAsynchronously(Intect.getIntect(), this, 0L, 1L);
     }
 
     public void stop()

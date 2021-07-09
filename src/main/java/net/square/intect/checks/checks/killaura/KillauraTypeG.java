@@ -25,7 +25,7 @@ public class KillauraTypeG extends Check
         {
             if (getStorage().getActionProcessor().isInventory())
             {
-                fail();
+                fail("attacked while in inventory", null, 1);
             }
         }
     }

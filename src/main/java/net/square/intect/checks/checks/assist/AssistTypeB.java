@@ -20,8 +20,6 @@ public class AssistTypeB extends Check
     private final EvictingList<Float> yawAccelSamples = new EvictingList<>(20);
     private final EvictingList<Float> pitchAccelSamples = new EvictingList<>(20);
 
-    private int threshold = 0;
-
     @Override
     public void handle(IntectPacket packet)
     {
@@ -53,14 +51,14 @@ public class AssistTypeB extends Check
 
                 if (averageInvalid && deviationInvalid)
                 {
-                    if (threshold++ > 8)
+                    if (increaseBuffer() > 8)
                     {
-                        fail();
+                        fail("moved invalid", "dY < 1.5, yAD < 25", 1);
                     }
                 }
                 else
                 {
-                    threshold -= threshold > 0 ? 1 : 0;
+                    decreaseBufferBy(1);
                 }
                 yawAccelSamples.remove(0);
                 pitchAccelSamples.remove(0);

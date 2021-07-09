@@ -22,8 +22,6 @@ public class AssistTypeD extends Check
 
     private final EvictingList<Double> assistDifferenceSamples = new EvictingList<>(25);
 
-    private int threshold = 0;
-
     @Override
     public void handle(IntectPacket packet)
     {
@@ -59,14 +57,14 @@ public class AssistTypeD extends Check
 
                     if (invalid)
                     {
-                        if (++threshold > 3)
+                        if (increaseBuffer() > 3)
                         {
-                            fail();
+                            fail("moved invalid", "avg < 7, dev < 12", 1);
                         }
                     }
                     else
                     {
-                        threshold -= threshold > 0 ? 1 : 0;
+                        decreaseBufferBy(0.25);
                     }
                     assistDifferenceSamples.remove(0);
                 }

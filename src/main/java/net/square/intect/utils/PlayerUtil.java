@@ -27,7 +27,7 @@ public class PlayerUtil
     }
 
     @SuppressWarnings("unused")
-    public double getBaseSpeed(Player player)
+    public static double getBaseSpeed(Player player)
     {
         return 0.36 + (getPotionLevel(player, PotionEffectType.SPEED) * 0.062f) + ((player.getWalkSpeed() - 0.2f)
             * 1.6f);
@@ -53,7 +53,7 @@ public class PlayerUtil
         return 0;
     }
 
-    public int getPotionLevel(final Player player, final PotionEffectType effect)
+    public static int getPotionLevel(final Player player, final PotionEffectType effect)
     {
         //noinspection deprecation
         final int effectId = effect.getId();

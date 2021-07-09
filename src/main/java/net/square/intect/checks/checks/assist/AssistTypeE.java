@@ -30,7 +30,7 @@ public class AssistTypeE extends Check
 
             if (deltaYaw < 5.0f && lastDeltaYaw > 20.0f && lastLastDeltaYaw < 5.0f)
             {
-                fail();
+                fail("moved invalid", "dY < 5.0 lDY > 20.0", 1);
             }
 
             this.debug(

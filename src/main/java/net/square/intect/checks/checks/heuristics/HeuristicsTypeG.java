@@ -17,8 +17,6 @@ public class HeuristicsTypeG extends Check
 
     private double space = 0;
 
-    private int threshold = 0;
-
     @Override
     public void handle(IntectPacket packet)
     {
@@ -34,14 +32,14 @@ public class HeuristicsTypeG extends Check
 
             if (deltaYaw < 5F && lastDeltaYaw > 20F && lastLastDeltaYaw < 5F)
             {
-                if (threshold++ > 3)
+                if (increaseBuffer() > 3)
                 {
-                    fail();
+                    fail("rotated invalid", "dY < 5, lDY > 20", 1);
                 }
             }
             else
             {
-                threshold -= threshold > 0 ? 1 : 0;
+                decreaseBufferBy(0.75);
             }
             space = lastDeltaYaw;
         }

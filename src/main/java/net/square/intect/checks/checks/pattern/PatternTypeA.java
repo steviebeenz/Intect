@@ -6,11 +6,11 @@ import net.square.intect.checks.objectable.IntectPacket;
 import net.square.intect.processor.custom.RotationProcessor;
 import net.square.intect.processor.data.PlayerStorage;
 
-@CheckInfo(name = "Pattern", type = "Liquid", maxVL = 5, description = "Checks for liquid heuristics")
-public class PatternTypeLiquid extends Check
+@CheckInfo(name = "Pattern", type = "A", maxVL = 5, description = "Checks for liquid heuristics", experimental = true)
+public class PatternTypeA extends Check
 {
 
-    public PatternTypeLiquid(PlayerStorage data)
+    public PatternTypeA(PlayerStorage data)
     {
         super(data);
     }
@@ -35,14 +35,13 @@ public class PatternTypeLiquid extends Check
         double yaw = deltaYaw - this.lastLiquidYaw;
         double pitch = deltaPitch - this.lastLiquidPitch;
 
-        if (pitch != 0.0 && yaw != 0.0)
-        {
-            debug(String.format("pitch=%.5f yaw=%.5f", Math.abs(pitch), Math.abs(yaw)));
-        }
+        double sync = Math.abs(deltaYaw + deltaPitch + processor.getGcd());
 
-        /*
-         * Fail method with good if settings
-         */
+        //if (pitch != 0.0 && yaw != 0.0)
+        //{
+        //    debug(String.format("pitch=%.2f yaw=%.2f sync:%.2f threshold:%d >= 2", Math.abs(pitch), Math.abs(yaw), sync,
+        //                        threshold));
+        //}
 
         this.lastLiquidYaw = deltaYaw;
         this.lastLiquidPitch = deltaPitch;

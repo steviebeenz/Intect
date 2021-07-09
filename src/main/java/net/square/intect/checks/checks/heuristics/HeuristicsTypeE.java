@@ -15,8 +15,6 @@ public class HeuristicsTypeE extends Check
         super(data);
     }
 
-    private int threshold = 0;
-
     @Override
     public void handle(IntectPacket packet)
     {
@@ -37,14 +35,14 @@ public class HeuristicsTypeE extends Check
 
             if (invalid)
             {
-                if (threshold++ > 20)
+                if (increaseBuffer() > 20)
                 {
-                    fail();
+                    fail("rotated invalid", "iP | iY & pt < 89", 1);
                 }
             }
             else
             {
-                threshold -= threshold > 0 ? 1 : 0;
+                decreaseBufferBy(2);
             }
         }
     }

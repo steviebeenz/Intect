@@ -1,11 +1,13 @@
 package net.square.intect.processor.manager;
 
 import net.square.intect.Intect;
+import net.square.intect.checks.checks.aim.*;
 import net.square.intect.checks.checks.assist.*;
 import net.square.intect.checks.checks.fastbow.FastbowTypeA;
 import net.square.intect.checks.checks.heuristics.*;
 import net.square.intect.checks.checks.killaura.*;
-import net.square.intect.checks.checks.pattern.PatternTypeLiquid;
+import net.square.intect.checks.checks.pattern.PatternTypeA;
+import net.square.intect.checks.checks.reach.ReachTypeA;
 import net.square.intect.checks.objectable.Check;
 import net.square.intect.processor.data.PlayerStorage;
 import org.bukkit.Bukkit;
@@ -20,6 +22,12 @@ public class ModuleManager
     public static final Class<?>[] CHECKS = new Class[]{
         FastbowTypeA.class,
 
+        AimTypeA.class,
+        AimTypeB.class,
+        AimTypeC.class,
+        AimTypeD.class,
+        AimTypeE.class,
+
         KillauraTypeA.class,
         KillauraTypeB.class,
         KillauraTypeC.class,
@@ -27,10 +35,10 @@ public class ModuleManager
         KillauraTypeE.class,
         KillauraTypeF.class,
         KillauraTypeG.class,
+        KillauraTypeH.class,
 
         HeuristicsTypeA.class,
         HeuristicsTypeB.class,
-        HeuristicsTypeC.class,
         HeuristicsTypeD.class,
         HeuristicsTypeE.class,
         HeuristicsTypeF.class,
@@ -38,11 +46,12 @@ public class ModuleManager
 
         AssistTypeA.class,
         AssistTypeB.class,
-        AssistTypeC.class,
         AssistTypeD.class,
-        AssistTypeE.class
+        AssistTypeE.class,
 
-        // PatternTypeLiquid.class
+        ReachTypeA.class
+
+        //PatternTypeA.class
 
     };
 

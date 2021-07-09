@@ -3,9 +3,9 @@ package net.square.intect.commands;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import io.github.retrooper.packetevents.PacketEvents;
 import net.square.intect.Intect;
 import net.square.intect.checks.objectable.Check;
-import net.square.intect.menu.MainMenu;
 import net.square.intect.processor.data.PlayerStorage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -36,7 +36,7 @@ public class IntectCommand implements CommandExecutor
 
         if (!sender.hasPermission("intect.command"))
         {
-            sendDefaultInfo(sender);
+            this.intect.getServer().getScheduler().runTaskAsynchronously(intect, () -> sendDefaultInfo(sender));
             return true;
         }
 
@@ -49,29 +49,13 @@ public class IntectCommand implements CommandExecutor
         // -> /intect <var0> <var1> <var2>
         final String var0 = args[0];
 
-        if (var0.equalsIgnoreCase("gui"))
+        if (var0.equalsIgnoreCase("version"))
         {
-
-            if (!(sender instanceof Player))
-            {
-                sender.sendMessage(prefix + "§cYou must be a player to open a gui");
-                return true;
-            }
-
-            MainMenu.init((((Player) sender).getPlayer()));
+            this.intect.getServer().getScheduler().runTaskAsynchronously(intect, () -> sendDefaultInfo(sender));
             return true;
-
-        }
-        else if (var0.equalsIgnoreCase("version"))
-        {
-
-            sendDefaultInfo(sender);
-            return true;
-
         }
         else if (var0.equalsIgnoreCase("update"))
         {
-            sender.sendMessage(prefix + "§7Fetching newest version...");
             intect.getServer().getScheduler().runTaskAsynchronously(intect, () ->
             {
                 intect.getUpdateManager().performCheck();
@@ -79,18 +63,14 @@ public class IntectCommand implements CommandExecutor
                 int latest = intect.getUpdateManager().getLatestBuild();
                 int running = Integer.parseInt(intect.getDescription().getVersion());
 
-                sender.sendMessage("§8§m-----------------------------------");
-                sender.sendMessage("§8» §9§lRunning");
+                sender.sendMessage("");
+                sender.sendMessage(prefix + "§8» §7Running version");
                 fetchMoreInformation(running, sender, prefix, false);
 
-                sender.sendMessage("§8§m-----------------------------------");
-                sender.sendMessage("§8» §9§lLatest");
+                sender.sendMessage("");
+                sender.sendMessage(prefix + "§8» §7Latest version");
                 fetchMoreInformation(latest, sender, prefix, true);
-
-                sender.sendMessage("§8§m-----------------------------------");
-                sender.sendMessage(
-                    prefix + "Running Intect Build#" + running + " (" + formatBuildGeneric(running,
-                                                                                           latest).toLowerCase() + ")");
+                sender.sendMessage("");
             });
             return true;
         }
@@ -129,7 +109,7 @@ public class IntectCommand implements CommandExecutor
             if (args.length == 1)
             {
                 sender.sendMessage(prefix + "Available subcommands:");
-                sender.sendMessage(prefix + "/intect <info> <playerName>: Get information about a player");
+                sender.sendMessage(prefix + "/intect (info) (playerName): Get information about a player");
                 return true;
             }
 
@@ -145,13 +125,20 @@ public class IntectCommand implements CommandExecutor
 
             sender.sendMessage("");
 
-            sender.sendMessage(String.format("%s§7Information about §f%s", prefix, target.getName()));
+            sender.sendMessage(String.format("%s§7Information about §c%s", prefix, target.getName()));
             sender.sendMessage(String.format("%s§7UUID: %s", prefix, target.getUniqueId().toString().replace("-", "")));
             sender.sendMessage(
                 String.format("%s§7Address: %s", prefix, target.getAddress().getAddress().getHostAddress()));
             sender.sendMessage(
                 String.format(
                     "%s§7Sensitivity: %.0f%%", prefix, playerStorage.getRotationProcessor().getFinalSensitivity()));
+            sender.sendMessage(
+                String.format("%s§7Version: %s", prefix,
+                              PacketEvents.get()
+                                  .getPlayerUtils()
+                                  .getClientVersion(target)
+                                  .name()));
+            sender.sendMessage(String.format("%s§7Loaded: %d", prefix, playerStorage.getChecks().size()));
             sender.sendMessage("");
             sender.sendMessage(prefix + "§7Violations:");
 
@@ -186,8 +173,8 @@ public class IntectCommand implements CommandExecutor
             if (args.length == 1)
             {
                 sender.sendMessage(prefix + "Available subcommands:");
-                sender.sendMessage(prefix + "/intect <diagnostics> <performance>: Output performance data");
-                sender.sendMessage(prefix + "/intect <diagnostics> <statistics>: Output check statistics");
+                sender.sendMessage(prefix + "/intect <diagnostics) <performance): Output performance data");
+                sender.sendMessage(prefix + "/intect <diagnostics) <statistics): Output check statistics");
                 return true;
             }
 
@@ -210,8 +197,8 @@ public class IntectCommand implements CommandExecutor
             else
             {
                 sender.sendMessage(prefix + "Available subcommands:");
-                sender.sendMessage(prefix + "/intect <diagnostics> <performance>: Output performance data");
-                sender.sendMessage(prefix + "/intect <diagnostics> <statistics>: Output check statistics");
+                sender.sendMessage(prefix + "/intect (diagnostics) (performance): Output performance data");
+                sender.sendMessage(prefix + "/intect (diagnostics) (statistics): Output check statistics");
                 return true;
             }
 
@@ -222,7 +209,7 @@ public class IntectCommand implements CommandExecutor
             if (args.length == 1)
             {
                 sender.sendMessage(prefix + "Available subcommands:");
-                sender.sendMessage(prefix + "/intect <debug> <moduleName-type>: Output debug for module");
+                sender.sendMessage(prefix + "/intect (debug) (moduleName-type): Output debug for module");
                 return true;
             }
 
@@ -248,12 +235,12 @@ public class IntectCommand implements CommandExecutor
 
                     if (debugMode.contains(player))
                     {
-                        player.sendMessage(prefix + "You are §cno longer §7receiving debug output for module §f" + s1);
+                        player.sendMessage(prefix + "You are §cno longer §7receiving debug output for module §c" + s1);
                         debugMode.remove(player);
                     }
                     else
                     {
-                        player.sendMessage(prefix + "You are §anow §7receiving debug output for module §f" + s1);
+                        player.sendMessage(prefix + "You are §anow §7receiving debug output for module §c" + s1);
                         debugMode.add(player);
                     }
                 }
@@ -275,13 +262,12 @@ public class IntectCommand implements CommandExecutor
 
         sender.sendMessage("");
         sender.sendMessage(prefix + "Available subcommands:");
-        sender.sendMessage(prefix + "/intect <gui>: Open main menu");
-        sender.sendMessage(prefix + "/intect <update>: Checks for update");
-        sender.sendMessage(prefix + "/intect <version>: Show default info");
-        sender.sendMessage(prefix + "/intect <verbose>: Enable or disable verbose output");
-        sender.sendMessage(prefix + "/intect <diagnostics>: Show intect diagnostics");
-        sender.sendMessage(prefix + "/intect <debug> <moduleName-type>: Output debug for module");
-        sender.sendMessage(prefix + "/intect <info> <playerName>: Get information about a player");
+        sender.sendMessage(prefix + "/intect (update): Checks for update");
+        sender.sendMessage(prefix + "/intect (version): Show default info");
+        sender.sendMessage(prefix + "/intect (verbose): Enable or disable verbose output");
+        sender.sendMessage(prefix + "/intect (diagnostics): Show intect diagnostics");
+        sender.sendMessage(prefix + "/intect (debug) (moduleName-type): Output debug for module");
+        sender.sendMessage(prefix + "/intect (info) (playerName): Get information about a player");
     }
 
     private void fetchMoreInformation(int running, CommandSender sender, String prefix, boolean latest)
@@ -349,8 +335,9 @@ public class IntectCommand implements CommandExecutor
 
         sender.sendMessage("");
         sendIntectVersion(sender, prefix);
-        sender.sendMessage(prefix + "Made in Germany by the Intect development team");
-        sender.sendMessage(prefix + "Visit our website for a full list of contributors");
+        sender.sendMessage(String.format("%sMade in Germany by the Intect development team", prefix));
+        sender.sendMessage(String.format("%sVisit our website for a full list of contributors", prefix));
+        sender.sendMessage(String.format("%sLicensed for %s", prefix, intect.getState()[4]));
     }
 
     private String formatBuildGeneric(int running, int latest)
@@ -380,11 +367,38 @@ public class IntectCommand implements CommandExecutor
     {
 
         int running = Integer.parseInt(intect.getDescription().getVersion());
-        int latest = intect.getUpdateManager().getLatestBuild();
 
-        String s = formatBuildGeneric(running, latest);
+        try
+        {
+            JsonObject latestCommits = intect.getUpdateManager()
+                .readJsonFromUrl(
+                    String.format("https://jenkins.squarecode.de/job/Intect/job/master/%d/api/json", running));
 
-        sender.sendMessage(
-            prefix + "Running Intect Build#" + running + " (" + s.toLowerCase() + ")");
+            long timestamp = latestCommits.get("timestamp").getAsLong();
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis() - timestamp);
+
+            int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+            int mHours = calendar.get(Calendar.HOUR);
+
+            String day;
+
+            if (mDay == 1)
+            {
+                day = "one day";
+            }
+            else
+            {
+                day = mDay + " days";
+            }
+
+            sender.sendMessage(
+                prefix + "Running Intect v" + running + " (" + day + " & " + mHours + " hours old)");
+
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 }

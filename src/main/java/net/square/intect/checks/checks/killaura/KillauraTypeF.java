@@ -31,16 +31,13 @@ public class KillauraTypeF extends Check
 
             long delay = now() - lastAura;
 
-            if (count > 2 && !getStorage().getCombatProcessor()
-                .getTarget()
-                .equals(getStorage().getCombatProcessor().getLastTarget())
-                && delay < 10)
+            if (count > 2 && !getStorage().getCombatProcessor().getTarget()
+                .equals(getStorage().getCombatProcessor().getLastTarget()) && delay < 10)
             {
-                fail();
+                fail("attacked too many in a short time span", String.format("delay %.4f < 10", delay), 1);
             }
             count = count + 1;
             lastAura = now();
-
         }
         else if (packet.getRawPacket() instanceof PacketPlayInFlying)
         {

@@ -21,7 +21,6 @@ public class KillauraTypeE extends Check
     private long lastStopSprinting = 0;
 
     private int count = 0;
-    private int threshold = 0;
 
     @Override
     public void handle(IntectPacket packet)
@@ -41,24 +40,24 @@ public class KillauraTypeE extends Check
             {
 
                 final long deltaAction = now() - lastStopSprinting;
-                count = count + 1;
+                count++;
 
                 if (deltaAction < 40L)
                 {
-                    if (threshold++ > 2)
+                    if (increaseBuffer() > 2)
                     {
-                        fail();
+                        fail("resprinted invalid", String.format("delt %.4f < 40", deltaAction), 1);
                         count = 0;
                     }
                 }
                 else
                 {
-                    threshold = threshold > 0 ? threshold - 1 : 0;
+                    decreaseBufferBy(0.5);
                 }
             }
             if (action == WrappedPacketInEntityAction.PlayerAction.STOP_SPRINTING)
             {
-                count = count + 1;
+                count++;
                 lastStopSprinting = now();
             }
         }

@@ -5,7 +5,7 @@
 
     <groupId>net.square</groupId>
     <artifactId>intect</artifactId>
-    <version>55</version>
+    <version>56</version>
 
     <packaging>jar</packaging>
 
@@ -54,13 +54,6 @@
             <groupId>io.github.retrooper</groupId>
             <artifactId>packetevents</artifactId>
             <version>1.8-pre-12</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>4.0.3</version>
             <scope>compile</scope>
         </dependency>
 

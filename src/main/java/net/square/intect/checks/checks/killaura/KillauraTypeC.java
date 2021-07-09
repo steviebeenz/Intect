@@ -19,8 +19,6 @@ public class KillauraTypeC extends Check
     private double lastMovement = 0.0;
     private double lastAccel = 0.0;
 
-    private int threshold = 0;
-
     @EventHandler
     public void handle(PlayerMoveEvent event)
     {
@@ -35,14 +33,14 @@ public class KillauraTypeC extends Check
         if ((event.getPlayer().isSprinting() || movement > 0.27) && accel < 0.01 && lastAccel < 0.01)
         {
 
-            if (++threshold > 10)
+            if (increaseBuffer() > 10)
             {
-                fail();
+                fail("sprinted while fighting", String.format("accel %.3f", accel), 1);
             }
         }
-        else if (threshold > 0)
+        else
         {
-            threshold -= 3;
+            decreaseBufferBy(0.75);
         }
         lastAccel = accel;
         lastMovement = movement;

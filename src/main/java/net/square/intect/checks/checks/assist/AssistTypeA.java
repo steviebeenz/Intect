@@ -16,8 +16,6 @@ public class AssistTypeA extends Check
         super(data);
     }
 
-    private int threshold = 0;
-
     @Override
     public void handle(IntectPacket packet)
     {
@@ -61,14 +59,14 @@ public class AssistTypeA extends Check
 
                 if (invalidX && invalidY)
                 {
-                    if (threshold++ > 3)
+                    if (increaseBuffer() > 3)
                     {
-                        fail();
+                        fail("moved invalid", "modX > 90, modY > 90", 1);
                     }
                 }
                 else
                 {
-                    threshold -= threshold > 0 ? 1 : 0;
+                    decreaseBufferBy(0.25);
                 }
             }
         }

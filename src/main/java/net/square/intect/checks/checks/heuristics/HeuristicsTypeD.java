@@ -79,7 +79,7 @@ public class HeuristicsTypeD extends Check
 
                 if (level.get() >= 8 && averageYaw > 1.d && averagePitch > 1.d)
                 {
-                    fail();
+                    fail("rotated invalid", "lvl >= 8, aY > 1.d, aP > 1.d", 1);
                 }
                 samplesYaw.clear();
                 samplesPitch.clear();

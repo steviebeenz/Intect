@@ -15,8 +15,6 @@ public class HeuristicsTypeF extends Check
         super(data);
     }
 
-    private int threshold = 0;
-
     @Override
     public void handle(IntectPacket packet)
     {
@@ -33,14 +31,14 @@ public class HeuristicsTypeF extends Check
 
             if (invalid)
             {
-                if (threshold++ > 3)
+                if (increaseBuffer() > 3)
                 {
-                    fail();
+                    fail("rotated invalid", "dP % 1, cF % 1, dp != 0, cF != 0", 1);
                 }
             }
             else
             {
-                threshold -= threshold > 0 ? 1 : 0;
+                decreaseBufferBy(0.5);
             }
         }
     }

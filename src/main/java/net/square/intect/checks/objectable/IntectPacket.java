@@ -31,5 +31,8 @@ public class IntectPacket
     }
 
     public enum Direction
-    {SEND, RECEIVE}
+    {
+        SEND,
+        RECEIVE
+    }
 }

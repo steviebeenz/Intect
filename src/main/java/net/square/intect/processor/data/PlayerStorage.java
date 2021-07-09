@@ -9,6 +9,7 @@ import net.square.intect.processor.custom.CombatProcessor;
 import net.square.intect.processor.custom.PositionProcessor;
 import net.square.intect.processor.custom.RotationProcessor;
 import net.square.intect.processor.manager.ModuleManager;
+import net.square.intect.utils.objectable.CustomLocation;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -23,6 +24,8 @@ public class PlayerStorage
     private final Player player;
     @Getter
     private final List<Check> checks = ModuleManager.loadChecks(this);
+
+    private CustomLocation lastLocation;
 
     private final ActionProcessor actionProcessor = new ActionProcessor(this);
     private final CombatProcessor combatProcessor = new CombatProcessor(this);

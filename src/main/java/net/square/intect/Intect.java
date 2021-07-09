@@ -3,16 +3,13 @@ package net.square.intect;
 import io.github.retrooper.packetevents.PacketEvents;
 import lombok.Getter;
 import net.square.intect.commands.IntectCommand;
-import net.square.intect.commands.LogsCommand;
 import net.square.intect.handler.config.ConfigHandler;
-import net.square.intect.handler.database.MySQLManager;
 import net.square.intect.listener.bukkit.*;
 import net.square.intect.processor.manager.*;
 import net.square.intect.utils.metrics.Metrics;
+import net.square.intect.utils.verify.IntectLocalVerify;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.logging.Level;
 
 public final class Intect extends JavaPlugin
@@ -23,24 +20,29 @@ public final class Intect extends JavaPlugin
     @Getter
     private StorageManager storageManager;
     @Getter
-    private MySQLManager mySQLManager;
-    @Getter
     private ConfigHandler configHandler;
-    @Getter
-    private ExecutorService service = Executors.newCachedThreadPool();
     @Getter
     private final TickManager tickManager = new TickManager();
     @Getter
     private final UpdateManager updateManager = new UpdateManager();
     @Getter
+    private IntectLocalVerify intectLocalVerify;
+    @Getter
     private static Intect intect;
     @Getter
-    private final String prefix = "§9§lIntect §8> §7";
+    private final String prefix = "§8[§c§lIntect§8] §7";
+    @Getter
+    private String[] state;
 
     @Override
     public void onLoad()
     {
         this.configHandler = new ConfigHandler(this);
+        this.intectLocalVerify = new IntectLocalVerify(this,
+                                                       "E8YJP-00OOQ-VOFWP-3KCJW-8242W",
+                                                       "https://dash.squarecode.de/api/client",
+                                                       "4994153f292d7804c4173ab06515bca924659c4c");
+        this.state = intectLocalVerify.isValid();
     }
 
     @Override
@@ -48,35 +50,41 @@ public final class Intect extends JavaPlugin
     {
         // Plugin startup logic
 
+        // Todo: redesign the whole anticheat like intave
+
         final double now = System.currentTimeMillis();
+
+        if (!state[0].equalsIgnoreCase("3") && !state[0].equalsIgnoreCase("2"))
+        {
+            this.getLogger().log(Level.WARNING,
+                                 String.format("Invalid license! Shutdown... (%s/%s)", state[0], state[1]));
+            this.getPluginLoader().disablePlugin(this);
+            return;
+        }
 
         this.getLogger().log(Level.INFO, "Trying to start intect...");
 
+        this.getLogger().log(Level.INFO, String.format("Licensed for: %s", state[4]));
+        
         intect = this;
 
         packetManager = new PacketManager(this);
         storageManager = new StorageManager();
-        this.mySQLManager = new MySQLManager(this.configHandler.getYamlConfiguration().getString("mysql.address"),
-                                             this.configHandler.getYamlConfiguration().getString("mysql.database"),
-                                             this.configHandler.getYamlConfiguration().getString("mysql.username"),
-                                             this.configHandler.getYamlConfiguration().getString("mysql.password"),
-                                             this.configHandler.getYamlConfiguration().getInt("mysql.port"),
-                                             this.configHandler.getYamlConfiguration().getString("mysql.prefix"));
+
         updateManager.init();
         ModuleManager.setup();
 
         PacketEvents.create(this).load();
+        PacketEvents.get().loadAsyncNewThread();
 
         new Metrics(this, 11518);
 
         this.getServer().getPluginManager().registerEvents(new PlayerInjectListener(this), this);
         this.getServer().getPluginManager().registerEvents(new PlayerUninjectListener(this), this);
         this.getServer().getPluginManager().registerEvents(new PlayerInteractListener(), this);
-        this.getServer().getPluginManager().registerEvents(new PlayerInventoryListener(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
 
         this.getCommand("intect").setExecutor(new IntectCommand(this));
-        this.getCommand("logs").setExecutor(new LogsCommand());
 
         tickManager.start();
 
@@ -84,7 +92,7 @@ public final class Intect extends JavaPlugin
         packetManager.initPacketHandler();
 
         this.getLogger()
-            .log(Level.INFO, "Plugin started successfully after " + (System.currentTimeMillis() - now) + "ms");
+            .log(Level.INFO, "Intect booted successful after " + (System.currentTimeMillis() - now) + "ms");
     }
 
     @Override
@@ -94,7 +102,6 @@ public final class Intect extends JavaPlugin
         // Plugin shutdown logic
 
         tickManager.stop();
-        mySQLManager.close();
     }
 
     /**

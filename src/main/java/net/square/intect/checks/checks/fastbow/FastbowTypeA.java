@@ -36,7 +36,7 @@ public class FastbowTypeA extends Check
 
         if ((pullBackSpeed >= 0.01 || pullBackSpeed == Double.POSITIVE_INFINITY))
         {
-            fail();
+            fail("pulled bow invalid", "pBS >= 0.01 | PI", 2);
             event.setCancelled(true);
         }
     }

@@ -20,8 +20,6 @@ public class KillauraTypeB extends Check
         super(data);
     }
 
-    private int combatAnalyticsThreshold = 0;
-
     @Override
     public void handle(IntectPacket packet)
     {
@@ -48,13 +46,15 @@ public class KillauraTypeB extends Check
 
                 if (angle > 2.0)
                 {
-                    if (combatAnalyticsThreshold++ > 1)
+                    if (increaseBuffer() > 1)
                     {
-                        fail();
+                        fail("attacked a player out of angle", String.format("ang %.4f", angle), 1);
                     }
                 }
                 else
-                    combatAnalyticsThreshold -= combatAnalyticsThreshold > 0 ? 1 : 0;
+                {
+                    decreaseBufferBy(0.25);
+                }
             }
         }
     }

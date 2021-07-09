@@ -16,8 +16,6 @@ public class HeuristicsTypeA extends Check
         super(data);
     }
 
-    private int threshold = 0;
-
     @EventHandler
     public void handle(PlayerMoveEvent event)
     {
@@ -29,17 +27,15 @@ public class HeuristicsTypeA extends Check
 
         if (deltaPitch < 0.1 && deltaYaw > 3.5)
         {
-            if (++threshold > 8)
+            if (increaseBuffer() > 8)
             {
 
-                threshold = threshold - 3;
-
-                fail();
+                fail("rotated invalid", "dP < 0.1, dY > 3.5", 1);
             }
         }
         else
         {
-            threshold = ((threshold > 0) ? 1 : 0);
+            decreaseBufferBy(2.25);
         }
     }
 

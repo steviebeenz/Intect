@@ -32,9 +32,13 @@ public class KillauraTypeD extends Check
 
             if (swings >= 100)
             {
-                if (hits >= 97)
+                if (hits >= 97 && increaseBuffer() > 1)
                 {
-                    fail();
+                    fail("is attacking too accurate", "acc " + hits, 1);
+                }
+                else
+                {
+                    decreaseBufferBy(0.25);
                 }
                 swings = 0;
                 hits = 0;
