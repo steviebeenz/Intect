@@ -3,6 +3,10 @@ package net.square.intect.processor.manager;
 import net.square.intect.Intect;
 import net.square.intect.checks.checks.aim.*;
 import net.square.intect.checks.checks.assist.*;
+import net.square.intect.checks.checks.clicker.ClickerTypeA;
+import net.square.intect.checks.checks.clicker.ClickerTypeB;
+import net.square.intect.checks.checks.clicker.ClickerTypeC;
+import net.square.intect.checks.checks.clicker.ClickerTypeD;
 import net.square.intect.checks.checks.fastbow.FastbowTypeA;
 import net.square.intect.checks.checks.heuristics.*;
 import net.square.intect.checks.checks.killaura.*;
@@ -28,6 +32,11 @@ public class ModuleManager
         AimTypeD.class,
         AimTypeE.class,
 
+        ClickerTypeA.class,
+        ClickerTypeB.class,
+        ClickerTypeC.class,
+        ClickerTypeD.class,
+
         KillauraTypeA.class,
         KillauraTypeB.class,
         KillauraTypeC.class,
@@ -46,7 +55,6 @@ public class ModuleManager
 
         AssistTypeA.class,
         AssistTypeB.class,
-        AssistTypeD.class,
         AssistTypeE.class,
 
         ReachTypeA.class

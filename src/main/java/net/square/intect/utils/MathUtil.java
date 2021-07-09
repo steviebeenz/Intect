@@ -63,7 +63,7 @@ public class MathUtil
         return posY % 0.015625 == 0;
     }
 
-    public Pair<List<Double>, List<Double>> getOutliers(final Collection<? extends Number> collection)
+    public static Pair<List<Double>, List<Double>> getOutliers(final Collection<? extends Number> collection)
     {
         final List<Double> values = new ArrayList<>();
 
@@ -95,7 +95,7 @@ public class MathUtil
         return tuple;
     }
 
-    public double getSkewness(final Collection<? extends Number> data)
+    public static double getSkewness(final Collection<? extends Number> data)
     {
         double sum = 0;
         int count = 0;
@@ -134,7 +134,7 @@ public class MathUtil
         return count > 0 ? sum / count : 0D;
     }
 
-    public double getKurtosis(final Collection<? extends Number> data)
+    public static double getKurtosis(final Collection<? extends Number> data)
     {
         double sum = 0.0;
         int count = 0;
@@ -212,7 +212,7 @@ public class MathUtil
         return mode;
     }
 
-    private double getMedian(final List<Double> data)
+    private static double getMedian(final List<Double> data)
     {
         if (data.size() % 2 == 0)
         {
@@ -246,7 +246,7 @@ public class MathUtil
         }
     }
 
-    public double getCps(final Collection<? extends Number> data)
+    public static double getCps(final Collection<? extends Number> data)
     {
         return (20 / getAverage(data)) * 50;
     }

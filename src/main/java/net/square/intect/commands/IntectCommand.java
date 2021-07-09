@@ -7,6 +7,7 @@ import io.github.retrooper.packetevents.PacketEvents;
 import net.square.intect.Intect;
 import net.square.intect.checks.objectable.Check;
 import net.square.intect.processor.data.PlayerStorage;
+import net.square.intect.utils.DateUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,14 +15,18 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class IntectCommand implements CommandExecutor
 {
 
     private final Intect intect;
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 
     public IntectCommand(Intect intect)
     {
@@ -278,23 +283,14 @@ public class IntectCommand implements CommandExecutor
                 .readJsonFromUrl("https://jenkins.squarecode.de/job/Intect/job/master/" + running + "/api/json");
 
             long timestamp = run.get("timestamp").getAsLong();
+            LocalDateTime timestampDateTime = LocalDateTime.ofInstant(
+                Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
 
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(timestamp);
-
-            int mYear = calendar.get(Calendar.YEAR);
-            int mMonth = calendar.get(Calendar.MONTH);
-            int mDay = calendar.get(Calendar.DAY_OF_MONTH);
-            int mHours = calendar.get(Calendar.HOUR);
-            int mMinute = calendar.get(Calendar.MINUTE);
-            int mSecs = calendar.get(Calendar.SECOND);
-
+            String formattedDateTime = timestampDateTime.format(this.dateTimeFormatter);
             if (latest)
             {
-                //noinspection DuplicateExpressions
                 sender.sendMessage(
-                    String.format("%sBuild #%d released at (%d.%d.%d - %d:%d:%d)",
-                                  prefix, running, mDay, mMonth, mYear, mHours, mMinute, mSecs));
+                    String.format("%sBuild #%d released at (%s)", prefix, running, formattedDateTime));
 
                 sender.sendMessage(String.format("%sChanges:", prefix));
 
@@ -307,19 +303,17 @@ public class IntectCommand implements CommandExecutor
                 {
                     JsonObject asJsonObject = changeSet.getAsJsonObject();
 
-                    for (JsonElement items : asJsonObject.get("items").getAsJsonArray())
+                    for (JsonElement item : asJsonObject.get("items").getAsJsonArray())
                     {
                         sender.sendMessage(
-                            prefix + " §8- §7" + items.getAsJsonObject().get("msg").getAsString());
+                            prefix + " §8- §7" + item.getAsJsonObject().get("msg").getAsString());
                     }
                 }
             }
             else
             {
-                //noinspection DuplicateExpressions
                 sender.sendMessage(
-                    String.format("%sBuild #%d released at (%d.%d.%d - %d:%d:%d)",
-                                  prefix, running, mDay, mMonth, mYear, mHours, mMinute, mSecs));
+                    String.format("%sBuild #%d released at (%s)", prefix, running, formattedDateTime));
             }
         } catch (IOException e)
         {
@@ -340,6 +334,7 @@ public class IntectCommand implements CommandExecutor
         sender.sendMessage(String.format("%sLicensed for %s", prefix, intect.getState()[4]));
     }
 
+    @SuppressWarnings("unused")
     private String formatBuildGeneric(int running, int latest)
     {
         String message;
@@ -374,27 +369,9 @@ public class IntectCommand implements CommandExecutor
                 .readJsonFromUrl(
                     String.format("https://jenkins.squarecode.de/job/Intect/job/master/%d/api/json", running));
 
-            long timestamp = latestCommits.get("timestamp").getAsLong();
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(System.currentTimeMillis() - timestamp);
-
-            int mDay = calendar.get(Calendar.DAY_OF_MONTH);
-            int mHours = calendar.get(Calendar.HOUR);
-
-            String day;
-
-            if (mDay == 1)
-            {
-                day = "one day";
-            }
-            else
-            {
-                day = mDay + " days";
-            }
-
             sender.sendMessage(
-                prefix + "Running Intect v" + running + " (" + day + " & " + mHours + " hours old)");
+                prefix + "Running Intect v" + running + " (" + DateUtils.calculateTimeAgo(
+                    latestCommits.get("timestamp").getAsLong()) + ")");
 
         } catch (IOException e)
         {
