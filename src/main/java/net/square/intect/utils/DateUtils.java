@@ -29,17 +29,16 @@ public final class DateUtils
 
         String hoursString = hours == 1 ? "one hour" : hours + " hours";
 
-        if (days == 0)
+        if (days == 0 && hours > 0)
         {
             return hoursString + " old";
-        }
 
-        if (hours == 0)
-        {
+        } else if(days == 0 && hours == 0) {
             return "recently released";
-        }
 
-        String dayString = days == 1 ? "one day" : days + " days";
-        return dayString + " & " + hoursString + " old";
+        } else {
+            String dayString = days == 1 ? "one day" : days + " days";
+            return dayString + " & " + hoursString + " old";
+        }
     }
 }

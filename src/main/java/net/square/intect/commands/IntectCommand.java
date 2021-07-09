@@ -334,30 +334,6 @@ public class IntectCommand implements CommandExecutor
         sender.sendMessage(String.format("%sLicensed for %s", prefix, intect.getState()[4]));
     }
 
-    @SuppressWarnings("unused")
-    private String formatBuildGeneric(int running, int latest)
-    {
-        String message;
-        if (latest == -1)
-        {
-            message = "Error fetching version";
-        }
-        else if (running > latest)
-        {
-            message = "Unknown version(custom build?)";
-        }
-        else if (running == latest)
-        {
-            message = "Latest version";
-        }
-        else
-        {
-            int var = latest - running;
-            message = "Outdated (" + var + " versions behind)";
-        }
-        return message;
-    }
-
     private void sendIntectVersion(CommandSender sender, String prefix)
     {
 
