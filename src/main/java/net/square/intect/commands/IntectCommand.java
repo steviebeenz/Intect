@@ -6,12 +6,14 @@ import com.google.gson.JsonObject;
 import io.github.retrooper.packetevents.PacketEvents;
 import net.square.intect.Intect;
 import net.square.intect.checks.objectable.Check;
+import net.square.intect.checks.objectable.CheckInfo;
 import net.square.intect.processor.data.PlayerStorage;
 import net.square.intect.utils.DateUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
@@ -22,7 +24,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IntectCommand implements CommandExecutor
+public class IntectCommand implements CommandExecutor, TabExecutor
 {
 
     private final Intect intect;
@@ -178,8 +180,8 @@ public class IntectCommand implements CommandExecutor
             if (args.length == 1)
             {
                 sender.sendMessage(prefix + "Available subcommands:");
-                sender.sendMessage(prefix + "/intect <diagnostics) <performance): Output performance data");
-                sender.sendMessage(prefix + "/intect <diagnostics) <statistics): Output check statistics");
+                sender.sendMessage(prefix + "/intect (diagnostics) (performance): Output performance data");
+                sender.sendMessage(prefix + "/intect (diagnostics) (statistics): Output check statistics");
                 return true;
             }
 
@@ -353,5 +355,59 @@ public class IntectCommand implements CommandExecutor
         {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender commandSender, Command command, String mainCommand,
+                                      String[] strings)
+    {
+        if (strings.length == 1)
+        {
+            List<String> tempMap = new ArrayList<>();
+            tempMap.add("update");
+            tempMap.add("version");
+            tempMap.add("verbose");
+            tempMap.add("diagnostics");
+            tempMap.add("debug");
+            tempMap.add("info");
+            return tempMap;
+        }
+        else if (strings.length > 1)
+        {
+            String var = strings[0];
+
+            if (var.equalsIgnoreCase("debug"))
+            {
+                List<String> tempMap = new ArrayList<>();
+
+                for (Check check : PlayerStorage.storageHashMap.get((Player) commandSender).getChecks())
+                {
+                    CheckInfo checkInfo = check.getCheckInfo();
+                    tempMap.add(checkInfo.name() + "-" + checkInfo.type());
+                }
+                return tempMap;
+            }
+            else if (var.equalsIgnoreCase("info"))
+            {
+                List<String> tempMap = new ArrayList<>();
+
+                for (Player onlinePlayer : this.intect.getServer().getOnlinePlayers())
+                {
+                    tempMap.add(onlinePlayer.getName());
+                }
+
+                return tempMap;
+            }
+            else if (var.equalsIgnoreCase("diagnostics"))
+            {
+                List<String> tempMap = new ArrayList<>();
+
+                tempMap.add("performance");
+                tempMap.add("statistics");
+
+                return tempMap;
+            }
+        }
+        return null;
     }
 }
