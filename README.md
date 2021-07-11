@@ -12,7 +12,7 @@ Intect is an event- &amp; packetbased cheat detection software
 
 ## VERSION COMPATIBILITY
 - Intect is compatible with the **Spigot**, **Craftbukkit** and the **PaperSpigot** for 
-  version 1.8.8, 1.9.4, 1.10.2, 1.11.2, 1.12.2, 1.13.2, 1.14.4 and 1.15.2
+  version 1.8.8, 1.9.4, 1.10.2, 1.11.2, 1.12.2, 1.13.2, 1.14.4, 1.15.2 and 1.16.5
 - Intect **does not** and will **never** support **1.7** or earlier versioning.
 
 
