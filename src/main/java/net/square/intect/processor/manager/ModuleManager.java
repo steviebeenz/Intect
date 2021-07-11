@@ -1,17 +1,17 @@
 package net.square.intect.processor.manager;
 
 import net.square.intect.Intect;
-import net.square.intect.checks.checks.aim.*;
-import net.square.intect.checks.checks.assist.*;
-import net.square.intect.checks.checks.clicker.ClickerTypeA;
-import net.square.intect.checks.checks.clicker.ClickerTypeB;
-import net.square.intect.checks.checks.clicker.ClickerTypeC;
-import net.square.intect.checks.checks.clicker.ClickerTypeD;
-import net.square.intect.checks.checks.fastbow.FastbowTypeA;
-import net.square.intect.checks.checks.heuristics.*;
-import net.square.intect.checks.checks.killaura.*;
-import net.square.intect.checks.checks.pattern.PatternTypeA;
-import net.square.intect.checks.checks.reach.ReachTypeA;
+import net.square.intect.checks.impl.aim.*;
+import net.square.intect.checks.impl.assist.*;
+import net.square.intect.checks.impl.clicker.ClickerTypeA;
+import net.square.intect.checks.impl.clicker.ClickerTypeB;
+import net.square.intect.checks.impl.clicker.ClickerTypeC;
+import net.square.intect.checks.impl.clicker.ClickerTypeD;
+import net.square.intect.checks.impl.fastbow.FastbowTypeA;
+import net.square.intect.checks.impl.heuristics.*;
+import net.square.intect.checks.impl.killaura.*;
+import net.square.intect.checks.impl.pattern.PatternTypeB;
+import net.square.intect.checks.impl.reach.ReachTypeA;
 import net.square.intect.checks.objectable.Check;
 import net.square.intect.processor.data.PlayerStorage;
 import org.bukkit.Bukkit;
@@ -55,12 +55,12 @@ public class ModuleManager
 
         AssistTypeA.class,
         AssistTypeB.class,
-        AssistTypeE.class,
+        AssistTypeC.class,
 
-        ReachTypeA.class
+        ReachTypeA.class,
 
+        PatternTypeB.class
         //PatternTypeA.class
-
     };
 
     private static final List<Constructor<?>> CONSTRUCTORS = new ArrayList<>();

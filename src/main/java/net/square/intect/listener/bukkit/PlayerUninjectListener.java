@@ -22,6 +22,8 @@ public class PlayerUninjectListener implements Listener
     {
         Player player = event.getPlayer();
         PlayerStorage.storageHashMap.remove(player);
-        this.intect.getPacketManager().getPacketReceivor().uninject(player);
+        if(this.intect.getPacketManager().getPacketReceivor() != null) {
+            this.intect.getPacketManager().getPacketReceivor().uninject(player);
+        }
     }
 }

@@ -26,7 +26,8 @@ public class PlayerJoinListener implements Listener
         Intect.getIntect()
             .getLogger()
             .log(Level.INFO,
-                 "Client " + event.getPlayer().getName() + "/" + event.getPlayer().getUniqueId() + " connected with "
+                 "Client " + event.getPlayer().getName() + "/" + event.getPlayer().getUniqueId() + "["
+                     + event.getPlayer().getAddress().getAddress().getHostAddress() + "] connected with "
                      + PacketEvents.get().getPlayerUtils().getClientVersion(event.getPlayer()).name());
 
         if (running < latest && Intect.getIntect()

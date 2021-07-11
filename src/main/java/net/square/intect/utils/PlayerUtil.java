@@ -6,7 +6,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Vehicle;
@@ -19,12 +18,6 @@ import java.util.List;
 
 public class PlayerUtil
 {
-
-    @SuppressWarnings("unused")
-    public int getPing(final Player player)
-    {
-        return ((CraftPlayer) player).getHandle().ping;
-    }
 
     @SuppressWarnings("unused")
     public static double getBaseSpeed(Player player)

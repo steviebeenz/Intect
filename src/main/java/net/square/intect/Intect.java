@@ -48,9 +48,6 @@ public final class Intect extends JavaPlugin
     @Override
     public void onEnable()
     {
-        // Plugin startup logic
-
-        // Todo: redesign the whole anticheat like intave
 
         final double now = System.currentTimeMillis();
 

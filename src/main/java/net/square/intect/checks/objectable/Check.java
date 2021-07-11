@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import net.square.intect.Intect;
 import net.square.intect.processor.data.PlayerStorage;
+import net.square.intect.utils.objectable.IntectHandler;
+import net.square.intect.utils.objectable.IntectPacket;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -42,7 +44,7 @@ public abstract class Check implements IntectHandler, Listener
     public void fail(String message, String information, int points)
     {
 
-        if(kicked) return;
+        if (kicked) return;
 
         verbose = verbose + points;
 
@@ -54,8 +56,7 @@ public abstract class Check implements IntectHandler, Listener
 
         final String msg = information == null ? "" : "(" + information + ")";
 
-        for (Player player1 : intect.getStorageManager()
-            .getVerboseMode())
+        for (Player player1 : intect.getStorageManager().getVerboseMode())
         {
             player1.sendMessage(ChatColor.translateAlternateColorCodes(
                 '&',
@@ -68,27 +69,25 @@ public abstract class Check implements IntectHandler, Listener
         {
             kicked = true;
 
-            intect.getServer().getScheduler().runTask(intect, () ->
+            for (Player player : Bukkit.getOnlinePlayers())
             {
-                for (Player player : Bukkit.getOnlinePlayers())
+                if (player.hasPermission("intect.admin.notify"))
                 {
-                    if (player.hasPermission("intect.admin.notify"))
-                    {
-                        player.sendMessage(intect.getPrefix() + "§c§lNotify §c" + currentPlayer.getName()
-                                               + " §7has been removed for attacking suspiciously");
-                    }
+                    player.sendMessage(intect.getPrefix() + "§c§lNotify §c" + currentPlayer.getName()
+                                           + " §7has been removed for attacking suspiciously");
                 }
-                storage.getPlayer()
-                    .kickPlayer(intect.getPrefix() + "§7Attacking suspiciously");
-            });
+            }
+            storage.getPlayer().kickPlayer(intect.getPrefix() + "Attacking suspiciously");
         }
     }
 
-    public double increaseBuffer() {
+    public double increaseBuffer()
+    {
         return buffer = Math.min(10000, buffer + 1);
     }
 
-    public void decreaseBufferBy(final double amount) {
+    public void decreaseBufferBy(final double amount)
+    {
         buffer = Math.max(0, buffer - amount);
     }
 

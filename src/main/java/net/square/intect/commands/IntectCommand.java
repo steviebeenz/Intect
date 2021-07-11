@@ -130,8 +130,6 @@ public class IntectCommand implements CommandExecutor, TabExecutor
 
             PlayerStorage playerStorage = PlayerStorage.storageHashMap.get(target);
 
-            sender.sendMessage("");
-
             sender.sendMessage(String.format("%s§7Information about §c%s", prefix, target.getName()));
             sender.sendMessage(String.format("%s§7UUID: %s", prefix, target.getUniqueId().toString().replace("-", "")));
             sender.sendMessage(
@@ -267,7 +265,6 @@ public class IntectCommand implements CommandExecutor, TabExecutor
 
         final String prefix = Intect.getIntect().getPrefix();
 
-        sender.sendMessage("");
         sender.sendMessage(prefix + "Available subcommands:");
         sender.sendMessage(prefix + "/intect (update): Checks for update");
         sender.sendMessage(prefix + "/intect (version): Show default info");
@@ -329,7 +326,6 @@ public class IntectCommand implements CommandExecutor, TabExecutor
 
         final String prefix = Intect.getIntect().getPrefix();
 
-        sender.sendMessage("");
         sendIntectVersion(sender, prefix);
         sender.sendMessage(String.format("%sMade in Germany by the Intect development team", prefix));
         sender.sendMessage(String.format("%sVisit our website for a full list of contributors", prefix));

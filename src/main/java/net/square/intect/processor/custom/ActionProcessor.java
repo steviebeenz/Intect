@@ -11,7 +11,6 @@ import net.square.intect.processor.data.PlayerStorage;
 import net.square.intect.utils.MathUtil;
 import net.square.intect.utils.PlayerUtil;
 import net.square.intect.utils.objectable.EvictingList;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -32,7 +31,7 @@ public class ActionProcessor
     private int heldItemSlot, lastHeldItemSlot, lastDiggingTick, lastPlaceTick, lastBreakTick,
         sprintingTicks, sneakingTicks;
 
-    private long lastFlyingTime, ping;
+    private long lastFlyingTime;
 
     public ActionProcessor(final PlayerStorage data)
     {
@@ -162,6 +161,5 @@ public class ActionProcessor
             lagging = deviation > 120;
         }
         lastFlyingTime = System.currentTimeMillis();
-        ping = ((CraftPlayer) data.getPlayer()).getHandle().ping;
     }
 }

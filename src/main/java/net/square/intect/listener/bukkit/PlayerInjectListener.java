@@ -7,6 +7,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.util.logging.Level;
+
 public class PlayerInjectListener implements Listener
 {
 
@@ -22,6 +24,19 @@ public class PlayerInjectListener implements Listener
     {
         Player player = event.getPlayer();
         PlayerStorage.storageHashMap.put(player, new PlayerStorage(player));
-        this.intect.getPacketManager().getPacketReceivor().inject(player);
+        if (this.intect.getPacketManager().getPacketReceivor() != null)
+        {
+            this.intect.getPacketManager().getPacketReceivor().inject(player);
+        }
+        else
+        {
+            player.kickPlayer(this.intect.getPrefix() + "§cNo packet-receivor available! Look console for details");
+            this.intect.getLogger().log(Level.WARNING, "Operating version: " + this.intect.getRunningVersion());
+            this.intect.getLogger().log(Level.WARNING, "Available versions: ");
+            this.intect.getPacketManager()
+                .getReceivorList()
+                .forEach((s, packetReceivor) -> this.intect.getLogger()
+                    .log(Level.WARNING, "Version: " + packetReceivor.getName()));
+        }
     }
 }

@@ -1,7 +1,5 @@
 package net.square.intect.utils;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -14,7 +12,6 @@ public final class DateUtils
         throw new RuntimeException("Cannot instantiate utility class");
     }
 
-    @NotNull
     public static String calculateTimeAgo(long timestamp)
     {
         LocalDateTime timestampDateTime = LocalDateTime.ofInstant(

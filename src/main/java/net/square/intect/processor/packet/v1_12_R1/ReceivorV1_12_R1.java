@@ -1,4 +1,4 @@
-package net.square.intect.processor.packet.v1_8_R3;
+package net.square.intect.processor.packet.v1_12_R1;
 
 import com.google.common.collect.Maps;
 import io.github.retrooper.packetevents.packetwrappers.NMSPacket;
@@ -12,28 +12,27 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import lombok.Getter;
-import net.minecraft.server.v1_8_R3.*;
+import net.minecraft.server.v1_12_R1.*;
 import net.square.intect.Intect;
 import net.square.intect.checks.objectable.Check;
-import net.square.intect.utils.objectable.IntectPacket;
 import net.square.intect.processor.custom.custom.WrappedPacketInArmAnimation;
 import net.square.intect.processor.data.PlayerStorage;
 import net.square.intect.processor.receivor.PacketReceivor;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import net.square.intect.utils.objectable.IntectPacket;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class ReceivorV1_8_R3 implements PacketReceivor
+public class ReceivorV1_12_R1 implements PacketReceivor
 {
-
     @Getter
     private final Intect intect;
 
     private final HashMap<Player, Channel> channelHashMap = Maps.newHashMap();
 
-    public ReceivorV1_8_R3(Intect intect)
+    public ReceivorV1_12_R1(Intect intect)
     {
         this.intect = intect;
     }
@@ -41,6 +40,7 @@ public class ReceivorV1_8_R3 implements PacketReceivor
     @Override
     public void inject(Player player)
     {
+        //noinspection DuplicatedCode
         CraftPlayer cPlayer = (CraftPlayer) player;
         Channel channel = cPlayer.getHandle().playerConnection.networkManager.channel;
         channel.pipeline().addAfter("decoder", "PacketInjector", new MessageToMessageDecoder<Packet<?>>()
@@ -61,9 +61,10 @@ public class ReceivorV1_8_R3 implements PacketReceivor
         channelHashMap.put(player, channel);
     }
 
-    public void readPacket(Packet<?> packet, Player player)
+    public void readPacket(@SuppressWarnings("rawtypes") Packet packet, Player player)
     {
 
+        //noinspection DuplicatedCode
         PlayerStorage data = PlayerStorage.storageHashMap.get(player);
 
         if (packet instanceof PacketPlayInEntityAction)
@@ -114,12 +115,13 @@ public class ReceivorV1_8_R3 implements PacketReceivor
             data.getActionProcessor().handleFlying();
             data.getCombatProcessor().handleFlying();
 
-            if (wrapper.isPosition())
+            if (wrapper.isMoving())
             {
                 data.getPositionProcessor()
-                    .handle(wrapper.getX(), wrapper.getY(), wrapper.getZ(), wrapper.isOnGround());
+                    .handle(wrapper.getPosition().getX(), wrapper.getPosition().getY(), wrapper.getPosition().getZ(),
+                            wrapper.isOnGround());
             }
-            if (wrapper.isLook())
+            if (wrapper.isRotating())
             {
                 data.getRotationProcessor().handle(wrapper.getYaw(), wrapper.getPitch());
             }
@@ -158,6 +160,6 @@ public class ReceivorV1_8_R3 implements PacketReceivor
     @Override
     public String getName()
     {
-        return "V1_8_R3";
+        return "v1_12_R1";
     }
 }
