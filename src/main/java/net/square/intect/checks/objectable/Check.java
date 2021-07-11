@@ -77,7 +77,9 @@ public abstract class Check implements IntectHandler, Listener
                                            + " §7has been removed for attacking suspiciously");
                 }
             }
-            storage.getPlayer().kickPlayer(intect.getPrefix() + "Attacking suspiciously");
+            intect.getServer()
+                .getScheduler()
+                .runTask(intect, () -> storage.getPlayer().kickPlayer(intect.getPrefix() + "Attacking suspiciously"));
         }
     }
 
