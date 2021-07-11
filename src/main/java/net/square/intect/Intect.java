@@ -39,9 +39,9 @@ public final class Intect extends JavaPlugin
     {
         this.configHandler = new ConfigHandler(this);
         this.intectLocalVerify = new IntectLocalVerify(this,
-                                                       "E8YJP-00OOQ-VOFWP-3KCJW-8242W",
+                                                       this.configHandler.getYamlConfiguration().getString("verify.license"),
                                                        "https://dash.squarecode.de/api/client",
-                                                       "4994153f292d7804c4173ab06515bca924659c4c");
+                                                       this.configHandler.getYamlConfiguration().getString("verify.api"));
         this.state = intectLocalVerify.isValid();
     }
 

@@ -5,7 +5,7 @@
 
     <groupId>net.square</groupId>
     <artifactId>intect</artifactId>
-    <version>60</version>
+    <version>61</version>
 
     <packaging>jar</packaging>
 
@@ -28,8 +28,8 @@
         </repository>
 
         <repository>
-            <id>spigotmc-packet</id>
-            <url>https://repo.squarecode.de/repository/packet/</url>
+            <id>spigotmc-square</id>
+            <url>https://repo.squarecode.de/repository/spigot/</url>
         </repository>
 
         <repository>
@@ -94,6 +94,13 @@
             <groupId>org.github.spigot</groupId>
             <artifactId>1.15.2</artifactId>
             <version>1.15.2</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.github.spigot</groupId>
+            <artifactId>1.16.5</artifactId>
+            <version>1.16.5</version>
             <scope>provided</scope>
         </dependency>
 

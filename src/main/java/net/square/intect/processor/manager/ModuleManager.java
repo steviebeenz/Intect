@@ -57,7 +57,7 @@ public class ModuleManager
         AssistTypeB.class,
         AssistTypeC.class,
 
-        ReachTypeA.class,
+        //ReachTypeA.class,
 
         PatternTypeB.class
         //PatternTypeA.class
