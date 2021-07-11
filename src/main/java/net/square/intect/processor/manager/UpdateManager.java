@@ -7,6 +7,8 @@ import net.square.intect.Intect;
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class UpdateManager
 {
@@ -48,6 +50,14 @@ public class UpdateManager
         } catch (IOException e)
         {
             latestBuild = -1;
+        }
+    }
+
+    public static void downloadFile(URL url, String fileName) throws Exception
+    {
+        try (InputStream in = url.openStream())
+        {
+            Files.copy(in, Paths.get(fileName));
         }
     }
 

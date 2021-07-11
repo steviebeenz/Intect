@@ -3,54 +3,56 @@ package net.square.intect.checks.impl.pattern;
 import io.github.retrooper.packetevents.packetwrappers.play.in.flying.WrappedPacketInFlying;
 import net.square.intect.checks.objectable.Check;
 import net.square.intect.checks.objectable.CheckInfo;
-import net.square.intect.utils.objectable.IntectPacket;
-import net.square.intect.processor.custom.RotationProcessor;
 import net.square.intect.processor.data.PlayerStorage;
+import net.square.intect.utils.MathUtil;
+import net.square.intect.utils.objectable.EvictingList;
+import net.square.intect.utils.objectable.IntectPacket;
 
-@CheckInfo(name = "Pattern", type = "A", maxVL = 5, description = "Checks for liquid heuristics", experimental = true)
+@CheckInfo(name = "Pattern", type = "B", description = "Checks for sens gcd", maxVL = 1)
 public class PatternTypeA extends Check
 {
-
     public PatternTypeA(PlayerStorage data)
     {
         super(data);
     }
 
-    private double lastLiquidYaw = 0.0;
-    private double lastLiquidPitch = 0.0;
+    private final EvictingList<Double> samples = new EvictingList<>(100);
+
+    private double lastSens = 0;
 
     @Override
     public void handle(IntectPacket packet)
     {
-
         if (packet.getRawPacket() instanceof WrappedPacketInFlying)
         {
             if (((WrappedPacketInFlying) packet.getRawPacket()).isLook())
             {
-                if (shouldBypass()) return;
 
-                RotationProcessor processor = getStorage().getRotationProcessor();
+                double finalSensitivity = getStorage().getRotationProcessor().getFinalSensitivity();
 
-                double f = processor.getFinalSensitivity() * 0.6F + 0.2F;
-                double gcd = f * f * f * 1.2F;
+                samples.add(MathUtil.getGcd(Math.abs(finalSensitivity), Math.abs(lastSens)));
 
-                double deltaYaw = processor.getDeltaYaw() % gcd;
-                double deltaPitch = processor.getDeltaPitch() % gcd;
+                if (samples.isFull())
+                {
 
-                double yaw = deltaYaw - this.lastLiquidYaw;
-                double pitch = deltaPitch - this.lastLiquidPitch;
+                    double average = MathUtil.getAverage(samples);
 
-                double sync = Math.abs(deltaYaw + deltaPitch + processor.getGcd());
+                    if (average > 200.00)
+                    {
+                        if (increaseBuffer() > 1)
+                        {
+                            fail("rotated invalid", String.format("avg=%.2f", average), 1);
+                        }
+                    }
+                    else
+                    {
+                        decreaseBufferBy(0.5);
+                    }
 
-                //if (pitch != 0.0 && yaw != 0.0)
-                //{
-                //    debug(String.format("pitch=%.2f yaw=%.2f sync:%.2f threshold:%d >= 2", Math.abs(pitch), Math
-                //    .abs(yaw), sync,
-                //                        threshold));
-                //}
-
-                this.lastLiquidYaw = deltaYaw;
-                this.lastLiquidPitch = deltaPitch;
+                    debug(String.format("average=%.2f", average));
+                    samples.clear();
+                }
+                lastSens = finalSensitivity;
             }
         }
     }

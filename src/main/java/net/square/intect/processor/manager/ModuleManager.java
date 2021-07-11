@@ -10,7 +10,7 @@ import net.square.intect.checks.impl.clicker.ClickerTypeD;
 import net.square.intect.checks.impl.fastbow.FastbowTypeA;
 import net.square.intect.checks.impl.heuristics.*;
 import net.square.intect.checks.impl.killaura.*;
-import net.square.intect.checks.impl.pattern.PatternTypeB;
+import net.square.intect.checks.impl.pattern.PatternTypeA;
 import net.square.intect.checks.impl.reach.ReachTypeA;
 import net.square.intect.checks.objectable.Check;
 import net.square.intect.processor.data.PlayerStorage;
@@ -57,10 +57,9 @@ public class ModuleManager
         AssistTypeB.class,
         AssistTypeC.class,
 
-        //ReachTypeA.class,
+        ReachTypeA.class,
 
-        PatternTypeB.class
-        //PatternTypeA.class
+        PatternTypeA.class
     };
 
     private static final List<Constructor<?>> CONSTRUCTORS = new ArrayList<>();

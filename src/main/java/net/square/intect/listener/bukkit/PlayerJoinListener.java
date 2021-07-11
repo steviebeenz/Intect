@@ -15,6 +15,13 @@ public class PlayerJoinListener implements Listener
     public void handle(PlayerJoinEvent event)
     {
 
+        Intect.getIntect()
+            .getLogger()
+            .log(Level.INFO,
+                 "Client " + event.getPlayer().getName() + "/" + event.getPlayer().getUniqueId() + "["
+                     + event.getPlayer().getAddress().getAddress().getHostAddress() + "] connected with "
+                     + PacketEvents.get().getPlayerUtils().getClientVersion(event.getPlayer()).name());
+
         if (!event.getPlayer().hasPermission("intect.admin.update.notify"))
         {
             return;
@@ -23,12 +30,6 @@ public class PlayerJoinListener implements Listener
         int running = Integer.parseInt(Intect.getIntect().getDescription().getVersion());
         int latest = Intect.getIntect().getUpdateManager().getLatestBuild();
 
-        Intect.getIntect()
-            .getLogger()
-            .log(Level.INFO,
-                 "Client " + event.getPlayer().getName() + "/" + event.getPlayer().getUniqueId() + "["
-                     + event.getPlayer().getAddress().getAddress().getHostAddress() + "] connected with "
-                     + PacketEvents.get().getPlayerUtils().getClientVersion(event.getPlayer()).name());
 
         if (running < latest && Intect.getIntect()
             .getConfigHandler()

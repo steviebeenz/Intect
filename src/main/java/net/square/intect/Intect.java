@@ -62,7 +62,8 @@ public final class Intect extends JavaPlugin
         this.getLogger().log(Level.INFO, "Trying to start intect...");
 
         this.getLogger().log(Level.INFO, String.format("Licensed for: %s", state[4]));
-        
+
+
         intect = this;
 
         packetManager = new PacketManager(this);
@@ -72,6 +73,7 @@ public final class Intect extends JavaPlugin
         ModuleManager.setup();
 
         PacketEvents.create(this).load();
+        PacketEvents.get().getUpdateChecker().checkForUpdate();
         PacketEvents.get().loadAsyncNewThread();
 
         new Metrics(this, 11518);
