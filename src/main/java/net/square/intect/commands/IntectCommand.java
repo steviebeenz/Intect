@@ -357,6 +357,9 @@ public class IntectCommand implements CommandExecutor, TabExecutor
     public List<String> onTabComplete(CommandSender commandSender, Command command, String mainCommand,
                                       String[] strings)
     {
+
+        if (!commandSender.hasPermission("intect.admin")) return null;
+
         if (strings.length == 1)
         {
             List<String> tempMap = new ArrayList<>();
