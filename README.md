@@ -1,3 +1,4 @@
+# NOTE: This is not a leak, crack or similar, just a fork of what the original author had on their github.
 # Intect 
 Intect is an event- &amp; packetbased cheat detection software
 
